@@ -1,0 +1,473 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A86D34031ADD49E80074A5FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34021ADD49E80074A5FC /* main.m */; };
+		A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34051ADD49E80074A5FC /* PMAppDelegate.m */; };
+		A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34081ADD49E80074A5FC /* PMLocationVC.m */; };
+		A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A86D340D1ADD49E80074A5FC /* Images.xcassets */; };
+		A86D34111ADD49E90074A5FC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */; };
+		A86D341D1ADD49E90074A5FC /* presentiemeterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */; };
+		A86D342B1ADD55C10074A5FC /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34271ADD55C10074A5FC /* EstimoteSDK.framework */; };
+		A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */; };
+		A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A86D34291ADD55C10074A5FC /* GooglePlus.bundle */; };
+		A86D342E1ADD55C10074A5FC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342A1ADD55C10074A5FC /* GooglePlus.framework */; };
+		A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */; };
+		A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342F1ADD575D0074A5FC /* CoreLocation.framework */; };
+		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A86D34171ADD49E90074A5FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A86D33F51ADD49E80074A5FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A86D33FC1ADD49E80074A5FC;
+			remoteInfo = presentiemeter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A86D33FD1ADD49E80074A5FC /* presentiemeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = presentiemeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A86D34011ADD49E80074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A86D34021ADD49E80074A5FC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A86D34041ADD49E80074A5FC /* PMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMAppDelegate.h; sourceTree = "<group>"; };
+		A86D34051ADD49E80074A5FC /* PMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMAppDelegate.m; sourceTree = "<group>"; };
+		A86D34071ADD49E80074A5FC /* PMLocationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLocationVC.h; sourceTree = "<group>"; };
+		A86D34081ADD49E80074A5FC /* PMLocationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMLocationVC.m; sourceTree = "<group>"; };
+		A86D340D1ADD49E80074A5FC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A86D34101ADD49E90074A5FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		A86D34161ADD49E90074A5FC /* presentiemeterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = presentiemeterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A86D341B1ADD49E90074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = presentiemeterTests.m; sourceTree = "<group>"; };
+		A86D34271ADD55C10074A5FC /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteSDK.framework; sourceTree = "<group>"; };
+		A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
+		A86D34291ADD55C10074A5FC /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
+		A86D342A1ADD55C10074A5FC /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
+		A86D342F1ADD575D0074A5FC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A86D34311ADD57630074A5FC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A86D33FA1ADD49E80074A5FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */,
+				A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */,
+				A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */,
+				A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */,
+				A86D342E1ADD55C10074A5FC /* GooglePlus.framework in Frameworks */,
+				A86D342B1ADD55C10074A5FC /* EstimoteSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A86D34131ADD49E90074A5FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A86D33F41ADD49E80074A5FC = {
+			isa = PBXGroup;
+			children = (
+				A86D33FF1ADD49E80074A5FC /* presentiemeter */,
+				A86D34191ADD49E90074A5FC /* presentiemeterTests */,
+				A86D33FE1ADD49E80074A5FC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A86D33FE1ADD49E80074A5FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A86D33FD1ADD49E80074A5FC /* presentiemeter.app */,
+				A86D34161ADD49E90074A5FC /* presentiemeterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A86D33FF1ADD49E80074A5FC /* presentiemeter */ = {
+			isa = PBXGroup;
+			children = (
+				A86D34041ADD49E80074A5FC /* PMAppDelegate.h */,
+				A86D34051ADD49E80074A5FC /* PMAppDelegate.m */,
+				A86D34071ADD49E80074A5FC /* PMLocationVC.h */,
+				A86D34081ADD49E80074A5FC /* PMLocationVC.m */,
+				A86D340D1ADD49E80074A5FC /* Images.xcassets */,
+				A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */,
+				A86D34001ADD49E80074A5FC /* Supporting Files */,
+			);
+			path = presentiemeter;
+			sourceTree = "<group>";
+		};
+		A86D34001ADD49E80074A5FC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A86D34261ADD55C10074A5FC /* Frameworks */,
+				A86D34011ADD49E80074A5FC /* Info.plist */,
+				A86D34021ADD49E80074A5FC /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A86D34191ADD49E90074A5FC /* presentiemeterTests */ = {
+			isa = PBXGroup;
+			children = (
+				A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */,
+				A86D341A1ADD49E90074A5FC /* Supporting Files */,
+			);
+			path = presentiemeterTests;
+			sourceTree = "<group>";
+		};
+		A86D341A1ADD49E90074A5FC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A86D341B1ADD49E90074A5FC /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A86D34261ADD55C10074A5FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */,
+				A86D34311ADD57630074A5FC /* CoreBluetooth.framework */,
+				A86D342F1ADD575D0074A5FC /* CoreLocation.framework */,
+				A86D34271ADD55C10074A5FC /* EstimoteSDK.framework */,
+				A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */,
+				A86D34291ADD55C10074A5FC /* GooglePlus.bundle */,
+				A86D342A1ADD55C10074A5FC /* GooglePlus.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A86D33FC1ADD49E80074A5FC /* presentiemeter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A86D34201ADD49E90074A5FC /* Build configuration list for PBXNativeTarget "presentiemeter" */;
+			buildPhases = (
+				A86D33F91ADD49E80074A5FC /* Sources */,
+				A86D33FA1ADD49E80074A5FC /* Frameworks */,
+				A86D33FB1ADD49E80074A5FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = presentiemeter;
+			productName = presentiemeter;
+			productReference = A86D33FD1ADD49E80074A5FC /* presentiemeter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A86D34151ADD49E90074A5FC /* presentiemeterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A86D34231ADD49E90074A5FC /* Build configuration list for PBXNativeTarget "presentiemeterTests" */;
+			buildPhases = (
+				A86D34121ADD49E90074A5FC /* Sources */,
+				A86D34131ADD49E90074A5FC /* Frameworks */,
+				A86D34141ADD49E90074A5FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A86D34181ADD49E90074A5FC /* PBXTargetDependency */,
+			);
+			name = presentiemeterTests;
+			productName = presentiemeterTests;
+			productReference = A86D34161ADD49E90074A5FC /* presentiemeterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A86D33F51ADD49E80074A5FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = PM;
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Peter Alserda";
+				TargetAttributes = {
+					A86D33FC1ADD49E80074A5FC = {
+						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = EBSX6CSZNX;
+					};
+					A86D34151ADD49E90074A5FC = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = A86D33FC1ADD49E80074A5FC;
+					};
+				};
+			};
+			buildConfigurationList = A86D33F81ADD49E80074A5FC /* Build configuration list for PBXProject "presentiemeter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A86D33F41ADD49E80074A5FC;
+			productRefGroup = A86D33FE1ADD49E80074A5FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A86D33FC1ADD49E80074A5FC /* presentiemeter */,
+				A86D34151ADD49E90074A5FC /* presentiemeterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A86D33FB1ADD49E80074A5FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A86D34111ADD49E90074A5FC /* LaunchScreen.xib in Resources */,
+				A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */,
+				A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A86D34141ADD49E90074A5FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A86D33F91ADD49E80074A5FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */,
+				A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */,
+				A86D34031ADD49E80074A5FC /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A86D34121ADD49E90074A5FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A86D341D1ADD49E90074A5FC /* presentiemeterTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A86D34181ADD49E90074A5FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A86D33FC1ADD49E80074A5FC /* presentiemeter */;
+			targetProxy = A86D34171ADD49E90074A5FC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A86D34101ADD49E90074A5FC /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A86D341E1ADD49E90074A5FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A86D341F1ADD49E90074A5FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A86D34211ADD49E90074A5FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/presentiemeter/Frameworks",
+				);
+				INFOPLIST_FILE = presentiemeter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		A86D34221ADD49E90074A5FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/presentiemeter/Frameworks",
+				);
+				INFOPLIST_FILE = presentiemeter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		A86D34241ADD49E90074A5FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = presentiemeterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/presentiemeter.app/presentiemeter";
+			};
+			name = Debug;
+		};
+		A86D34251ADD49E90074A5FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = presentiemeterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/presentiemeter.app/presentiemeter";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A86D33F81ADD49E80074A5FC /* Build configuration list for PBXProject "presentiemeter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A86D341E1ADD49E90074A5FC /* Debug */,
+				A86D341F1ADD49E90074A5FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A86D34201ADD49E90074A5FC /* Build configuration list for PBXNativeTarget "presentiemeter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A86D34211ADD49E90074A5FC /* Debug */,
+				A86D34221ADD49E90074A5FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A86D34231ADD49E90074A5FC /* Build configuration list for PBXNativeTarget "presentiemeterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A86D34241ADD49E90074A5FC /* Debug */,
+				A86D34251ADD49E90074A5FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A86D33F51ADD49E80074A5FC /* Project object */;
+}
