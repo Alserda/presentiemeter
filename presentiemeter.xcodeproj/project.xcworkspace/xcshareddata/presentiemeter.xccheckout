@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F4CD493D-852C-4066-939E-7177EECE6AE9</string>
+	<key>IDESourceControlProjectName</key>
+	<string>presentiemeter</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>24DFB72B68A61A1BE0E5A16CF6C8FC40C8ABDCBC</key>
+		<string>github.com:Alserda/presentiemeter.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>presentiemeter.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>24DFB72B68A61A1BE0E5A16CF6C8FC40C8ABDCBC</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:Alserda/presentiemeter.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>24DFB72B68A61A1BE0E5A16CF6C8FC40C8ABDCBC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>24DFB72B68A61A1BE0E5A16CF6C8FC40C8ABDCBC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>presentiemeter</string>
+		</dict>
+	</array>
+</dict>
+</plist>
