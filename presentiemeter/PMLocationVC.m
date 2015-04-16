@@ -175,23 +175,29 @@
 - (void)utilityManager:(ESTUtilityManager *)manager didDiscoverBeacons:(NSArray *)beacons
 {
     self.beaconsArray = beacons;
-    NSLog(@"%@", self.beaconsArray);
+    NSLog(@"Array of beacons: %@", self.beaconsArray);
+    
+    if (beacons.count == 0) {
+        
+    }
+    else {
+        id beacon = [beacons objectAtIndex:0];
+        ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
+        
+        NSMutableString *string1 = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
+        
+        [string1 insertString: @":" atIndex: 2];
+        [string1 insertString: @":" atIndex: 5];
+        [string1 insertString: @":" atIndex: 8];
+        [string1 insertString: @":" atIndex: 11];
+        [string1 insertString: @":" atIndex: 14];
+        
+        NSLog(@"Mac Address: %@", string1);
+    }
+
     
     [self.tableView reloadData];
 }
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.beaconsArray count];
-}
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -215,7 +221,7 @@
     {
         ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
         
-        NSMutableString *string1 = [NSMutableString stringWithString:[cBeacon.macAddress capitalizedString]];
+        NSMutableString *string1 = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
         
         [string1 insertString: @":" atIndex: 2];
         [string1 insertString: @":" atIndex: 5];
@@ -226,12 +232,13 @@
         cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", string1];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
         
-        NSLog(@"Mac Address: %@", string1);
+//        NSLog(@"Mac Address: %@", string1);
     }
     
     //    cell.imageView.image = beacon.isSecured ? [UIImage imageNamed:@"beacon_secure"] : [UIImage imageNamed:@"beacon"];
     
     return cell;
+//    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -247,6 +254,19 @@
     
     self.completion(selectedBeacon);
 }
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.beaconsArray count];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
