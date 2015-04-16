@@ -7,6 +7,7 @@
 //
 
 #import "PMLocationVC.h"
+#import "AFNetworking.h"
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -193,6 +194,24 @@
         [string1 insertString: @":" atIndex: 14];
         
         NSLog(@"Mac Address: %@", string1);
+        
+//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//        [manager GET:@"http://www.raywenderlich.com/demos/weather_sample/weather.php?format=json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            NSLog(@"JSON: %@", responseObject);
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"Error: %@", error);
+//        }];
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{
+                                     @"full_name": @"Peter Alserda",
+                                     @"email": @"peteralserda@hotmail.com",
+                                     @"address": string1};
+        
+        [manager POST:@"http://presentiemeter.peperzaken.nl:8000/api/employees/1/update_location/" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
     }
 
     
