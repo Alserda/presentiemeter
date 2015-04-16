@@ -215,8 +215,18 @@
     {
         ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
         
-        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", cBeacon.macAddress];
+        NSMutableString *string1 = [NSMutableString stringWithString:[cBeacon.macAddress capitalizedString]];
+        
+        [string1 insertString: @":" atIndex: 2];
+        [string1 insertString: @":" atIndex: 5];
+        [string1 insertString: @":" atIndex: 8];
+        [string1 insertString: @":" atIndex: 11];
+        [string1 insertString: @":" atIndex: 14];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", string1];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
+        
+        NSLog(@"Mac Address: %@", string1);
     }
     
     //    cell.imageView.image = beacon.isSecured ? [UIImage imageNamed:@"beacon_secure"] : [UIImage imageNamed:@"beacon"];
