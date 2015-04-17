@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <EstimoteSDK/EstimoteSDK.h>
+#import <GooglePlus/GooglePlus.h>
 
 typedef enum : int
 {

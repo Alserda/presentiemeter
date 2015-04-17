@@ -9,6 +9,7 @@
 #import "PMLocationVC.h"
 #import "AFNetworking.h"
 #import "PMBackend.h"
+#import <GoogleOpenSource/GoogleOpenSource.h>
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -218,6 +219,44 @@
         NSLog(@"Mac Address: %@", string1);
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
+        
+        // 1. Create a |GTLServicePlus| instance to send a request to Google+.
+        GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
+        plusService.retryEnabled = YES;
+        
+        // 2. Set a valid |GTMOAuth2Authentication| object as the authorizer.
+        [plusService setAuthorizer:[GPPSignIn sharedInstance].authentication];
+        
+        
+        GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
+        
+        // *4. Use the "v1" version of the Google+ API.*
+        plusService.apiVersion = @"v1";
+        
+        [plusService executeQuery:query
+                completionHandler:^(GTLServiceTicket *ticket,
+                                    GTLPlusPerson *person,
+                                    NSError *error) {
+                    if (error) {
+                        
+                        
+                        
+                        //Handle Error
+                        
+                    } else
+                    {
+                        
+                        
+                        NSLog(@"Email= %@",[GPPSignIn sharedInstance].authentication.userEmail);
+                        NSLog(@"GoogleID=%@",person.identifier);
+                        NSLog(@"User Name=%@",[person.name.givenName stringByAppendingFormat:@" %@",person.name.familyName]);
+                        NSLog(@"Gender=%@",person.gender);
+                        
+                    }
+                }];
+    
+        
+        
         NSDictionary *parameters = @{
                                      @"full_name": @"Peter Alserda",
                                      @"email": @"p.alserda@peperzaken.nl",

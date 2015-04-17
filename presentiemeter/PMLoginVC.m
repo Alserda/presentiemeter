@@ -42,7 +42,9 @@
     if (error) {
         NSLog(@"Error bij finishedWithAuth");
     } else {
+        
         [self refreshInterfaceBasedOnSignIn];
+        
     }
 }
 
