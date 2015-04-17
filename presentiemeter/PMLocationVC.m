@@ -92,7 +92,7 @@
     }
     else
     {
-        [self.utilityManager startEstimoteBeaconDiscovery];
+        [self.utilityManager startEstimoteBeaconDiscoveryWithUpdateInterval:1];
     }
 }
 
