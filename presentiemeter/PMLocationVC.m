@@ -8,6 +8,7 @@
 
 #import "PMLocationVC.h"
 #import "AFNetworking.h"
+#import "PMBackend.h"
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -77,6 +78,9 @@
      */
     self.region = [[CLBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID
                                                      identifier:@"EstimoteSampleRegion"];
+    self.region.notifyEntryStateOnDisplay = YES;
+    self.region.notifyOnEntry = YES;
+    self.region.notifyOnExit = YES;
     
     /*
      * Starts looking for Estimote beacons.
@@ -96,8 +100,26 @@
 {
     if ([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
     {
-        [self.beaconManager requestAlwaysAuthorization];
-        [self.beaconManager startRangingBeaconsInRegion:self.region];
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+            /*
+             * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
+            */
+
+            [self.beaconManager startMonitoringForRegion:self.region];
+            [self.beaconManager startRangingBeaconsInRegion:self.region];
+        } else {
+            /*
+             * Request permission to use Location Services. (new in iOS 8)
+             * We ask for "always" authorization so that the Notification Demo can benefit as well.
+             * Also requires NSLocationAlwaysUsageDescription in Info.plist file.
+             *
+             * For more details about the new Location Services authorization model refer to:
+             * https://community.estimote.com/hc/en-us/articles/203393036-Estimote-SDK-and-iOS-8-Location-Services
+             */
+            
+            [self.beaconManager requestAlwaysAuthorization];
+            
+        }
     }
     else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways)
     {
@@ -123,17 +145,6 @@
         
         [alert show];
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    /*
-     *Stops ranging after exiting the view.
-     */
-    [self.beaconManager stopRangingBeaconsInRegion:self.region];
-    [self.utilityManager stopEstimoteBeaconDiscovery];
 }
 
 - (void)dismiss
@@ -175,11 +186,22 @@
 
 - (void)utilityManager:(ESTUtilityManager *)manager didDiscoverBeacons:(NSArray *)beacons
 {
+
     self.beaconsArray = beacons;
-    NSLog(@"Array of beacons: %@", self.beaconsArray);
+//    NSLog(@"Array of beacons: %@", self.beaconsArray);
     
     if (beacons.count == 0) {
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
+        NSDictionary *parameters = @{
+                                     @"full_name": @"Peter Alserda",
+                                     @"email": @"p.alserda@peperzaken.nl",
+                                     @"address": @"None"};
         
+        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
     }
     else {
         id beacon = [beacons objectAtIndex:0];
@@ -195,27 +217,29 @@
         
         NSLog(@"Mac Address: %@", string1);
         
-//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        [manager GET:@"http://www.raywenderlich.com/demos/weather_sample/weather.php?format=json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            NSLog(@"JSON: %@", responseObject);
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"Error: %@", error);
-//        }];
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
         NSDictionary *parameters = @{
                                      @"full_name": @"Peter Alserda",
-                                     @"email": @"peteralserda@hotmail.com",
+                                     @"email": @"p.alserda@peperzaken.nl",
                                      @"address": string1};
         
-        [manager POST:@"http://presentiemeter.peperzaken.nl:8000/api/employees/1/update_location/" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
-    }
+}
 
     
     [self.tableView reloadData];
+}
+
+- (void)beaconManager:(id)manager didEnterRegion:(CLBeaconRegion *)region {
+    NSLog(@"didEnterRegion:%@", region);
+}
+
+- (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
+    NSLog(@"didExitRegion:%@", region);
 }
 
 
@@ -253,9 +277,6 @@
         
 //        NSLog(@"Mac Address: %@", string1);
     }
-    
-    //    cell.imageView.image = beacon.isSecured ? [UIImage imageNamed:@"beacon_secure"] : [UIImage imageNamed:@"beacon"];
-    
     return cell;
 //    return nil;
 }

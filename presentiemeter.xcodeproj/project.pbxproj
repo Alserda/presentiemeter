@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9E4236889FCDA16632A08631 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA35D4F29181A5A0F3807124 /* libPods.a */; };
+		A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */; };
 		A83E462E1ADFA0170096F029 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A83E462D1ADFA0170096F029 /* Podfile */; };
 		A86D34031ADD49E80074A5FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34021ADD49E80074A5FC /* main.m */; };
 		A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34051ADD49E80074A5FC /* PMAppDelegate.m */; };
@@ -36,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		104EFFA87FD923A1B4E8BF6B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBackend.h; sourceTree = "<group>"; };
+		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBackend.m; sourceTree = "<group>"; };
 		A83E462D1ADFA0170096F029 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A86D33FD1ADD49E80074A5FC /* presentiemeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = presentiemeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A86D34011ADD49E80074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -94,6 +97,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A80A1EB01AE0F8BF00D36F5D /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */,
+				A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
 		A86D33F41ADD49E80074A5FC = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +130,7 @@
 		A86D33FF1ADD49E80074A5FC /* presentiemeter */ = {
 			isa = PBXGroup;
 			children = (
+				A80A1EB01AE0F8BF00D36F5D /* API */,
 				A86D34041ADD49E80074A5FC /* PMAppDelegate.h */,
 				A86D34051ADD49E80074A5FC /* PMAppDelegate.m */,
 				A86D34071ADD49E80074A5FC /* PMLocationVC.h */,
@@ -319,6 +332,7 @@
 				A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */,
 				A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */,
 				A86D34031ADD49E80074A5FC /* main.m in Sources */,
+				A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,7 +458,7 @@
 					"$(PROJECT_DIR)/presentiemeter/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -463,7 +477,7 @@
 					"$(PROJECT_DIR)/presentiemeter/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
