@@ -147,17 +147,6 @@
     }
 }
 
-//- (void)viewDidDisappear:(BOOL)animated
-//{
-//    [super viewDidDisappear:animated];
-//    
-//    /*
-//     *Stops ranging after exiting the view.
-//     */
-//    [self.beaconManager stopRangingBeaconsInRegion:self.region];
-//    [self.utilityManager stopEstimoteBeaconDiscovery];
-//}
-
 - (void)dismiss
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -197,20 +186,19 @@
 
 - (void)utilityManager:(ESTUtilityManager *)manager didDiscoverBeacons:(NSArray *)beacons
 {
-    NSString *updateLocationPath = [kPresentiemeterBaseURL stringByAppendingString:kPresentiemeterUpdateLocationPath];
-    NSLog(@"API URL: %@", updateLocationPath);
+
     self.beaconsArray = beacons;
-    NSLog(@"Array of beacons: %@", self.beaconsArray);
+//    NSLog(@"Array of beacons: %@", self.beaconsArray);
     
     if (beacons.count == 0) {
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
         NSDictionary *parameters = @{
                                      @"full_name": @"Peter Alserda",
-                                     @"email": @"peteralserda@hotmail.com",
+                                     @"email": @"p.alserda@peperzaken.nl",
                                      @"address": @"None"};
         
-        [manager POST:updateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"JSON: %@", responseObject);
+        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
@@ -229,24 +217,18 @@
         
         NSLog(@"Mac Address: %@", string1);
         
-//        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//        [manager GET:@"http://www.raywenderlich.com/demos/weather_sample/weather.php?format=json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            NSLog(@"JSON: %@", responseObject);
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"Error: %@", error);
-//        }];
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
         NSDictionary *parameters = @{
                                      @"full_name": @"Peter Alserda",
-                                     @"email": @"peteralserda@hotmail.com",
+                                     @"email": @"p.alserda@peperzaken.nl",
                                      @"address": string1};
         
-        [manager POST:updateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
-    }
+}
 
     
     [self.tableView reloadData];
@@ -259,8 +241,6 @@
 - (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
     NSLog(@"didExitRegion:%@", region);
 }
-
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -297,9 +277,6 @@
         
 //        NSLog(@"Mac Address: %@", string1);
     }
-    
-    //    cell.imageView.image = beacon.isSecured ? [UIImage imageNamed:@"beacon_secure"] : [UIImage imageNamed:@"beacon"];
-    
     return cell;
 //    return nil;
 }
