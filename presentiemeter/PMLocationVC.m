@@ -8,6 +8,7 @@
 
 #import "PMLocationVC.h"
 #import "AFNetworking.h"
+#import "PMBackend.h"
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -196,6 +197,8 @@
 
 - (void)utilityManager:(ESTUtilityManager *)manager didDiscoverBeacons:(NSArray *)beacons
 {
+    NSString *updateLocationPath = [kPresentiemeterBaseURL stringByAppendingString:kPresentiemeterUpdateLocationPath];
+    NSLog(@"API URL: %@", updateLocationPath);
     self.beaconsArray = beacons;
     NSLog(@"Array of beacons: %@", self.beaconsArray);
     
@@ -206,7 +209,7 @@
                                      @"email": @"peteralserda@hotmail.com",
                                      @"address": @"None"};
         
-        [manager POST:@"http://presentiemeter.peperzaken.nl:8000/api/employees/1/update_location/" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:updateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
@@ -238,7 +241,7 @@
                                      @"email": @"peteralserda@hotmail.com",
                                      @"address": string1};
         
-        [manager POST:@"http://presentiemeter.peperzaken.nl:8000/api/employees/1/update_location/" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:updateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
