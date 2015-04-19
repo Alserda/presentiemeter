@@ -14,3 +14,4 @@ NSString * const kPresentiemeterBaseURL = @"http://presentiemeter.peperzaken.nl:
 // URL for updating locations
 NSString * const kPresentiemeterUpdateLocationPath = @"employees/1/update_location/";
 
+NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";

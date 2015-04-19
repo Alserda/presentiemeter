@@ -13,3 +13,4 @@ extern NSString * const kPresentiemeterBaseURL;
 
 // API paths
 extern NSString * const kPresentiemeterUpdateLocationPath;
+extern NSString * const kPresentiemeterEmployeeLocationPath;

@@ -25,11 +25,11 @@
     self.window.rootViewController = [[PMLoginVC alloc] init];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
+
     [ESTCloudManager setupAppID:@"app_2f865fbwyx" andAppToken:@"e05409fc493936dd3c279b9563b72e75"];
     [ESTCloudManager enableAnalytics:YES];
     
-//    [[GPPSignIn sharedInstance] trySilentAuthentication];
+
     return YES;
 }
 
