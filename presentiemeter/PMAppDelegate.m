@@ -8,6 +8,8 @@
 
 #import "PMAppDelegate.h"
 #import "PMLoginVC.h"
+#import "PMLocationVC.h"
+#import "PMUserLogin.h"
 #import <EstimoteSDK/EstimoteSDK.h>
 #import <GooglePlus.h>
 
@@ -22,13 +24,21 @@
     [GPPSignIn sharedInstance].clientID = kClientId;
     [[GPPSignIn sharedInstance] trySilentAuthentication];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [[PMLoginVC alloc] init];
+    
+    if ([PMUserLogin isAuthenticated]) {
+        // Should we start checking for beacons?
+        self.window.rootViewController = [[PMLocationVC alloc] init];
+    } else {
+        PMLoginVC *loginvc = [[PMLoginVC alloc] init];
+        loginvc.delegate = self;
+        self.window.rootViewController = loginvc;
+    }
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
 
     [ESTCloudManager setupAppID:@"app_2f865fbwyx" andAppToken:@"e05409fc493936dd3c279b9563b72e75"];
     [ESTCloudManager enableAnalytics:YES];
-    
 
     return YES;
 }
@@ -75,6 +85,19 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
 //    NSLog(@"applicationWillTerminate");
+}
+
+#pragma mark - PMLoginViewControllerDelegate methods
+
+- (void)didLogin {
+    // Alright we successfully logged in, lets get to action
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Show the right view controller
+        PMLocationVC *locationvc = [[PMLocationVC alloc] init];
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:locationvc];
+    });
+        // Start scanning the beacons
+//    [locationvc startScanningOrSomething];
 }
 
 @end

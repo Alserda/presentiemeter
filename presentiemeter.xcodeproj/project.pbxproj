@@ -10,6 +10,7 @@
 		9E4236889FCDA16632A08631 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA35D4F29181A5A0F3807124 /* libPods.a */; };
 		A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */; };
 		A83E462E1ADFA0170096F029 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A83E462D1ADFA0170096F029 /* Podfile */; };
+		A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A84944F91AE51646003BC1C3 /* PMUserLogin.m */; };
 		A858ED901AE12F8900A788D3 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED8F1AE12F8900A788D3 /* AddressBook.framework */; };
 		A858ED921AE12F9000A788D3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED911AE12F9000A788D3 /* AssetsLibrary.framework */; };
 		A858ED941AE12F9900A788D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED931AE12F9900A788D3 /* Foundation.framework */; };
@@ -53,9 +54,11 @@
 
 /* Begin PBXFileReference section */
 		104EFFA87FD923A1B4E8BF6B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBackend.h; sourceTree = "<group>"; };
-		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBackend.m; sourceTree = "<group>"; };
+		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBackend.h; path = API/PMBackend.h; sourceTree = "<group>"; };
+		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBackend.m; path = API/PMBackend.m; sourceTree = "<group>"; };
 		A83E462D1ADFA0170096F029 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A84944F81AE51646003BC1C3 /* PMUserLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUserLogin.h; path = API/PMUserLogin.h; sourceTree = "<group>"; };
+		A84944F91AE51646003BC1C3 /* PMUserLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMUserLogin.m; path = API/PMUserLogin.m; sourceTree = "<group>"; };
 		A858ED8F1AE12F8900A788D3 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A858ED911AE12F9000A788D3 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		A858ED931AE12F9900A788D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -150,6 +153,8 @@
 			children = (
 				A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */,
 				A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */,
+				A84944F81AE51646003BC1C3 /* PMUserLogin.h */,
+				A84944F91AE51646003BC1C3 /* PMUserLogin.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -425,6 +430,7 @@
 				A88943821AE4F27200130D64 /* PMBeacon.m in Sources */,
 				A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */,
 				A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */,
+				A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */,
 				A86D34031ADD49E80074A5FC /* main.m in Sources */,
 				A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */,
 			);

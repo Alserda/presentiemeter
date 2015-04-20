@@ -11,6 +11,7 @@
 
 #import "PMLocationVC.h"
 #import "PMBackend.h"
+#import "PMUserLogin.h"
 #import "PMTableViewCell.h"
 
 
@@ -27,7 +28,6 @@
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
 @end
-
 
 @implementation PMLocationVC
 
@@ -46,7 +46,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [PMBackend fetchGooglePlusUserData];
+    [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
+        NSLog(@"received userinfo: %@", googleUserInfo);
+        self.googlePlusUserInfo = googleUserInfo;
+    }];
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
     
     self.beaconManager = [[ESTBeaconManager alloc] init];
@@ -231,37 +234,41 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+
+    NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = [userinfo objectForKey:@"full_name"];
+    cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
     
-    /*
-     * Fill the table with beacon data.
-     */
-    
-    id beacon = [self.beaconsArray objectAtIndex:indexPath.row];
-    
-    if ([beacon isKindOfClass:[CLBeacon class]])
-    {
-        CLBeacon *cBeacon = (CLBeacon *)beacon;
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"Major: %@, Minor: %@", cBeacon.major, cBeacon.minor];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Distance: %.2f", cBeacon.accuracy];
-    }
-    else if([beacon isKindOfClass:[ESTBluetoothBeacon class]])
-    {
-        ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
-        
-        // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
-        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
-        [macAddress insertString: @":" atIndex: 2];
-        [macAddress insertString: @":" atIndex: 5];
-        [macAddress insertString: @":" atIndex: 8];
-        [macAddress insertString: @":" atIndex: 11];
-        [macAddress insertString: @":" atIndex: 14];
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", macAddress];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
-        
-//        NSLog(@"Mac Address: %@", macAddress);
-    }
+//    /*
+//     * Fill the table with beacon data.
+//     */
+//    
+//    id beacon = [self.beaconsArray objectAtIndex:indexPath.row];
+//    
+//    if ([beacon isKindOfClass:[CLBeacon class]])
+//    {
+//        CLBeacon *cBeacon = (CLBeacon *)beacon;
+//        
+//        cell.textLabel.text = [NSString stringWithFormat:@"Major: %@, Minor: %@", cBeacon.major, cBeacon.minor];
+//        cell.detailTextLabel.text = [NSString stringWithFormat:@"Distance: %.2f", cBeacon.accuracy];
+//    }
+//    else if([beacon isKindOfClass:[ESTBluetoothBeacon class]])
+//    {
+//        ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
+//        
+//        // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
+//        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
+//        [macAddress insertString: @":" atIndex: 2];
+//        [macAddress insertString: @":" atIndex: 5];
+//        [macAddress insertString: @":" atIndex: 8];
+//        [macAddress insertString: @":" atIndex: 11];
+//        [macAddress insertString: @":" atIndex: 14];
+//        
+//        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", macAddress];
+//        cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
+//        
+////        NSLog(@"Mac Address: %@", macAddress);
+//    }
     return cell;
 //    return nil;
 }
@@ -275,9 +282,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CLBeacon *selectedBeacon = [self.beaconsArray objectAtIndex:indexPath.row];
+//    CLBeacon *selectedBeacon = [self.beaconsArray objectAtIndex:indexPath.row];
     
-    self.completion(selectedBeacon);
+//    self.completion(selectedBeacon);
 }
 
 #pragma mark - Table view data source
@@ -289,34 +296,44 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.beaconsArray count];
+    return [self.colleagueArray count];
 }
 
 - (void)makeColleagueLocationRequest {
     
-    NSURL *url = [NSURL URLWithString:@"http://presentiemeter.peperzaken.nl:8000/api/employees/"];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    //AFNetworking asynchronous url request
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        self.colleagueArray = responseObject;
-        
-        NSLog(@"The Array: %@",self.colleagueArray);
-        
-        [self.tableView reloadData];
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-        
-    }];
-    
-    [operation start];
+    [[PMBackend sharedInstance] retrievePath:kPresentiemeterEmployeeLocationPath
+                                     success:^(id json) {
+                                         self.colleagueArray = json;
+                                         
+                                         NSLog(@"The Array: %@",self.colleagueArray);
+                                         
+                                         [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+                                     } failure:^(NSError *error) {
+                                         NSLog(@"Failure: %@", error);
+                                     }];
+//    NSURL *url = [NSURL URLWithString:@"http://presentiemeter.peperzaken.nl:8000/api/employees/"];
+//    
+//    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+//    //AFNetworking asynchronous url request
+//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+//    
+//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        self.colleagueArray = responseObject;
+//        
+//        NSLog(@"The Array: %@",self.colleagueArray);
+//        
+//        [self.tableView reloadData];
+//        
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        NSLog(@"Request Failed: %@, %@", error, error.userInfo);
+//        
+//    }];
+//    
+//    [operation start];
 }
 
 - (void)didReceiveMemoryWarning {

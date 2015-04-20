@@ -51,8 +51,10 @@
 -(void)refreshInterfaceBasedOnSignIn {
     if ([[GPPSignIn sharedInstance] authentication]) {
         // The user is signed in.
-        [self performSelectorOnMainThread:@selector(displayViewController) withObject:nil waitUntilDone:YES];
-        
+//        [self performSelectorOnMainThread:@selector(displayViewController) withObject:nil waitUntilDone:YES];
+        if ([self.delegate respondsToSelector:@selector(didLogin)]) {
+            [self.delegate performSelector:@selector(didLogin)];
+        }
     } else {
         self.googlePlusSignInButton.hidden = NO;
         NSLog(@"Google button hidden = NO");
