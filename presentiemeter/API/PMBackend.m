@@ -42,14 +42,23 @@ NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";
 
 #pragma mark - Public methods
 
-- (void)updateUserLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email {
+- (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure {
     
-    [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
-        NSLog(@"received userinfo: %@", googleUserInfo);
-        self.googlePlusUserInfo = googleUserInfo;
-    }];
-
+    AFHTTPRequestOperation *operation = [self.manager POST:path
+                                                       parameters:nil
+                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                              if (success) {
+                                                                  // Convert the response object to JSON object (NSArray or NSDictionary)
+                                                                  success(responseObject);
+                                                              }
+                                                          }
+                                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                              if (failure) {
+                                                                  failure(error);
+                                                              }
+                                                          }];
 }
+
 
 - (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure {
     AFHTTPRequestOperation *operation = [self.manager GET:path

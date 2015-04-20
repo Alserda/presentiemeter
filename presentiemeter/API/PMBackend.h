@@ -30,7 +30,7 @@ extern NSString * const kPresentiemeterEmployeeLocationPath;
  @param username Full user name
  @param email User identifier email
  */
-- (void)updateUserLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email;
+- (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
 
 - (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
 

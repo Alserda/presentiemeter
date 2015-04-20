@@ -216,6 +216,25 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
+        
+        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+    withLocation:macAddress forUsername:self.googlePlusUserInfo[@"full_name"] andEmail:self.googlePlusUserInfo[@"email"] success:^(id json) {
+        NSLog(@"POST succesful");
+    } failure:^(NSError *error) {
+        NSLog(@"POST failed");
+    }];
+        
+        
+        [[PMBackend sharedInstance] retrievePath:kPresentiemeterEmployeeLocationPath
+                                         success:^(id json) {
+                                             self.colleagueArray = json;
+                                             
+                                             NSLog(@"The Array: %@",self.colleagueArray);
+                                             
+                                             [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+                                         } failure:^(NSError *error) {
+                                             NSLog(@"Failure: %@", error);
+                                         }];
 }
 
     
@@ -238,39 +257,8 @@
     NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
     cell.textLabel.text = [userinfo objectForKey:@"full_name"];
     cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
-    
-//    /*
-//     * Fill the table with beacon data.
-//     */
-//    
-//    id beacon = [self.beaconsArray objectAtIndex:indexPath.row];
-//    
-//    if ([beacon isKindOfClass:[CLBeacon class]])
-//    {
-//        CLBeacon *cBeacon = (CLBeacon *)beacon;
-//        
-//        cell.textLabel.text = [NSString stringWithFormat:@"Major: %@, Minor: %@", cBeacon.major, cBeacon.minor];
-//        cell.detailTextLabel.text = [NSString stringWithFormat:@"Distance: %.2f", cBeacon.accuracy];
-//    }
-//    else if([beacon isKindOfClass:[ESTBluetoothBeacon class]])
-//    {
-//        ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
-//        
-//        // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
-//        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
-//        [macAddress insertString: @":" atIndex: 2];
-//        [macAddress insertString: @":" atIndex: 5];
-//        [macAddress insertString: @":" atIndex: 8];
-//        [macAddress insertString: @":" atIndex: 11];
-//        [macAddress insertString: @":" atIndex: 14];
-//        
-//        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", macAddress];
-//        cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
-//        
-////        NSLog(@"Mac Address: %@", macAddress);
-//    }
     return cell;
-//    return nil;
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
