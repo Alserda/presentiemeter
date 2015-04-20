@@ -6,10 +6,13 @@
 //  Copyright (c) 2015 Peter Alserda. All rights reserved.
 //
 
-#import "PMLocationVC.h"
-#import "AFNetworking.h"
-#import "PMBackend.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
+#import "AFNetworking.h"
+
+#import "PMLocationVC.h"
+#import "PMBackend.h"
+#import "PMTableViewCell.h"
+
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -23,23 +26,6 @@
 @property (nonatomic, strong) NSArray *colleagueArray;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
-@end
-
-@interface PMTableViewCell : UITableViewCell
-
-@end
-
-@implementation PMTableViewCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
-    if (self)
-    {
-        
-    }
-    return self;
-}
 @end
 
 
@@ -60,7 +46,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self fetchGooglePlusUserData];
+    [PMBackend fetchGooglePlusUserData];
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
     
     self.beaconManager = [[ESTBeaconManager alloc] init];
@@ -68,7 +54,7 @@
     
     self.utilityManager = [[ESTUtilityManager alloc] init];
     self.utilityManager.delegate = self;
-//    [self makeColleagueLocationRequest];
+    [self makeColleagueLocationRequest];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -150,11 +136,6 @@
         
         [alert show];
     }
-}
-
-- (void)dismiss
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - ESTBeaconManager delegate
@@ -336,51 +317,6 @@
     }];
     
     [operation start];
-}
-
-- (void)fetchGooglePlusUserData {
-    // 1. Create a |GTLServicePlus| instance to send a request to Google+.
-    GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
-    plusService.retryEnabled = YES;
-    
-    // 2. Set a valid |GTMOAuth2Authentication| object as the authorizer.
-    [plusService setAuthorizer:[GPPSignIn sharedInstance].authentication];
-    
-    
-    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
-    
-    // *4. Use the "v1" version of the Google+ API.*
-    plusService.apiVersion = @"v1";
-    
-    [plusService executeQuery:query
-            completionHandler:^(GTLServiceTicket *ticket,
-                                GTLPlusPerson *person,
-                                NSError *error) {
-                if (error) {
-                    
-                    
-                    
-                    //Handle Error
-                    
-                } else
-                {
-                    self.googlePlusUserInfo = @{
-                                                @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
-                                                @"full_name" : [person.name.givenName stringByAppendingFormat:@" %@",person.name.familyName]
-                                                };
-                    
-                    
-                    // It's possible to retrieve:
-                    // GoogleID with "person.identifier".
-                    // Gender with "person.gender".
-
-                    
-                    NSLog(@"User information: %@", self.googlePlusUserInfo);
-                    
-                    
-                }
-                
-            }];
 }
 
 - (void)didReceiveMemoryWarning {
