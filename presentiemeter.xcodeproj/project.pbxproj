@@ -22,7 +22,6 @@
 		A858EDA31AE12FD700A788D3 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA11AE12FD700A788D3 /* GoogleOpenSource.framework */; };
 		A858EDA41AE12FD700A788D3 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA21AE12FD700A788D3 /* GooglePlus.framework */; };
 		A858EDAB1AE1305800A788D3 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */; };
-		A858EDAC1AE1305800A788D3 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A858EDA81AE1305800A788D3 /* GooglePlus.bundle */; };
 		A858EDAD1AE1305800A788D3 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA91AE1305800A788D3 /* GooglePlus.framework */; };
 		A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A858EDAF1AE1317900A788D3 /* PMLoginVC.m */; };
 		A86D34031ADD49E80074A5FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34021ADD49E80074A5FC /* main.m */; };
@@ -67,7 +66,6 @@
 		A858EDA11AE12FD700A788D3 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = Frameworks/GoogleOpenSource.framework; sourceTree = "<group>"; };
 		A858EDA21AE12FD700A788D3 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = Frameworks/GooglePlus.framework; sourceTree = "<group>"; };
 		A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
-		A858EDA81AE1305800A788D3 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
 		A858EDA91AE1305800A788D3 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		A858EDAE1AE1317900A788D3 /* PMLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLoginVC.h; sourceTree = "<group>"; };
 		A858EDAF1AE1317900A788D3 /* PMLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLoginVC.m; sourceTree = "<group>"; };
@@ -150,18 +148,9 @@
 			name = API;
 			sourceTree = "<group>";
 		};
-		A858EDA51AE1305800A788D3 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			path = presentiemeter/Frameworks;
-			sourceTree = "<group>";
-		};
 		A86D33F41ADD49E80074A5FC = {
 			isa = PBXGroup;
 			children = (
-				A858EDA51AE1305800A788D3 /* Frameworks */,
 				A86D33FF1ADD49E80074A5FC /* presentiemeter */,
 				A86D34191ADD49E90074A5FC /* presentiemeterTests */,
 				A86D33FE1ADD49E80074A5FC /* Products */,
@@ -229,7 +218,6 @@
 			children = (
 				A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */,
 				A858EDA91AE1305800A788D3 /* GooglePlus.framework */,
-				A858EDA81AE1305800A788D3 /* GooglePlus.bundle */,
 				A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */,
 				A86D34311ADD57630074A5FC /* CoreBluetooth.framework */,
 				A86D342F1ADD575D0074A5FC /* CoreLocation.framework */,
@@ -345,7 +333,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A86D34111ADD49E90074A5FC /* LaunchScreen.xib in Resources */,
-				A858EDAC1AE1305800A788D3 /* GooglePlus.bundle in Resources */,
 				A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */,
 				A83E462E1ADFA0170096F029 /* Podfile in Resources */,
 				A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */,
@@ -530,7 +517,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -550,7 +537,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

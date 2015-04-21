@@ -9,6 +9,7 @@
 #import "PMLocationVC.h"
 #import "AFNetworking.h"
 #import "PMBackend.h"
+#import <GoogleOpenSource/GoogleOpenSource.h>
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -19,6 +20,8 @@
 @property (nonatomic, strong) ESTUtilityManager *utilityManager;
 @property (nonatomic, strong) CLBeaconRegion *region;
 @property (nonatomic, strong) NSArray *beaconsArray;
+@property (nonatomic, strong) NSArray *colleagueArray;
+@property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
 @end
 
@@ -57,6 +60,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self fetchGooglePlusUserData];
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
     
     self.beaconManager = [[ESTBeaconManager alloc] init];
@@ -64,6 +68,7 @@
     
     self.utilityManager = [[ESTUtilityManager alloc] init];
     self.utilityManager.delegate = self;
+//    [self makeColleagueLocationRequest];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -186,15 +191,14 @@
 
 - (void)utilityManager:(ESTUtilityManager *)manager didDiscoverBeacons:(NSArray *)beacons
 {
-
     self.beaconsArray = beacons;
 //    NSLog(@"Array of beacons: %@", self.beaconsArray);
     
     if (beacons.count == 0) {
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
         NSDictionary *parameters = @{
-                                     @"full_name": @"Peter Alserda",
-                                     @"email": @"p.alserda@peperzaken.nl",
+                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
+                                     @"email": self.googlePlusUserInfo[@"email"],
                                      @"address": @"None"};
         
         [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -207,21 +211,21 @@
         id beacon = [beacons objectAtIndex:0];
         ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
         
-        NSMutableString *string1 = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
+         // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
+        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
+        [macAddress insertString: @":" atIndex: 2];
+        [macAddress insertString: @":" atIndex: 5];
+        [macAddress insertString: @":" atIndex: 8];
+        [macAddress insertString: @":" atIndex: 11];
+        [macAddress insertString: @":" atIndex: 14];
         
-        [string1 insertString: @":" atIndex: 2];
-        [string1 insertString: @":" atIndex: 5];
-        [string1 insertString: @":" atIndex: 8];
-        [string1 insertString: @":" atIndex: 11];
-        [string1 insertString: @":" atIndex: 14];
-        
-        NSLog(@"Mac Address: %@", string1);
         
         AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
+        
         NSDictionary *parameters = @{
-                                     @"full_name": @"Peter Alserda",
-                                     @"email": @"p.alserda@peperzaken.nl",
-                                     @"address": string1};
+                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
+                                     @"email": self.googlePlusUserInfo[@"email"],
+                                     @"address": macAddress};
         
         [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
@@ -264,18 +268,18 @@
     {
         ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
         
-        NSMutableString *string1 = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
+        // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
+        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
+        [macAddress insertString: @":" atIndex: 2];
+        [macAddress insertString: @":" atIndex: 5];
+        [macAddress insertString: @":" atIndex: 8];
+        [macAddress insertString: @":" atIndex: 11];
+        [macAddress insertString: @":" atIndex: 14];
         
-        [string1 insertString: @":" atIndex: 2];
-        [string1 insertString: @":" atIndex: 5];
-        [string1 insertString: @":" atIndex: 8];
-        [string1 insertString: @":" atIndex: 11];
-        [string1 insertString: @":" atIndex: 14];
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", string1];
+        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", macAddress];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
         
-//        NSLog(@"Mac Address: %@", string1);
+//        NSLog(@"Mac Address: %@", macAddress);
     }
     return cell;
 //    return nil;
@@ -307,6 +311,77 @@
     return [self.beaconsArray count];
 }
 
+- (void)makeColleagueLocationRequest {
+    
+    NSURL *url = [NSURL URLWithString:@"http://presentiemeter.peperzaken.nl:8000/api/employees/"];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    //AFNetworking asynchronous url request
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        self.colleagueArray = responseObject;
+        
+        NSLog(@"The Array: %@",self.colleagueArray);
+        
+        [self.tableView reloadData];
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"Request Failed: %@, %@", error, error.userInfo);
+        
+    }];
+    
+    [operation start];
+}
+
+- (void)fetchGooglePlusUserData {
+    // 1. Create a |GTLServicePlus| instance to send a request to Google+.
+    GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
+    plusService.retryEnabled = YES;
+    
+    // 2. Set a valid |GTMOAuth2Authentication| object as the authorizer.
+    [plusService setAuthorizer:[GPPSignIn sharedInstance].authentication];
+    
+    
+    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
+    
+    // *4. Use the "v1" version of the Google+ API.*
+    plusService.apiVersion = @"v1";
+    
+    [plusService executeQuery:query
+            completionHandler:^(GTLServiceTicket *ticket,
+                                GTLPlusPerson *person,
+                                NSError *error) {
+                if (error) {
+                    
+                    
+                    
+                    //Handle Error
+                    
+                } else
+                {
+                    self.googlePlusUserInfo = @{
+                                                @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
+                                                @"full_name" : [person.name.givenName stringByAppendingFormat:@" %@",person.name.familyName]
+                                                };
+                    
+                    
+                    // It's possible to retrieve:
+                    // GoogleID with "person.identifier".
+                    // Gender with "person.gender".
+
+                    
+                    NSLog(@"User information: %@", self.googlePlusUserInfo);
+                    
+                    
+                }
+                
+            }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
