@@ -50,11 +50,13 @@ NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";
                                                               if (success) {
                                                                   // Convert the response object to JSON object (NSArray or NSDictionary)
                                                                   success(responseObject);
+                                                                  NSLog(@"Success: %@", responseObject);
                                                               }
                                                           }
                                                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                               if (failure) {
                                                                   failure(error);
+                                                                  NSLog(@"Failed: %@", error);
                                                               }
                                                           }];
 }

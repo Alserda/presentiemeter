@@ -211,30 +211,24 @@
                                      @"email": self.googlePlusUserInfo[@"email"],
                                      @"address": macAddress};
         
-        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:kPresentiemeterUpdateLocationPath
+           parameters:parameters
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
         
         [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-    withLocation:macAddress forUsername:self.googlePlusUserInfo[@"full_name"] andEmail:self.googlePlusUserInfo[@"email"] success:^(id json) {
-        NSLog(@"POST succesful");
-    } failure:^(NSError *error) {
-        NSLog(@"POST failed");
-    }];
-        
-        
-        [[PMBackend sharedInstance] retrievePath:kPresentiemeterEmployeeLocationPath
-                                         success:^(id json) {
-                                             self.colleagueArray = json;
-                                             
-                                             NSLog(@"The Array: %@",self.colleagueArray);
-                                             
-                                             [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-                                         } failure:^(NSError *error) {
-                                             NSLog(@"Failure: %@", error);
-                                         }];
+                                          withLocation:macAddress
+                                           forUsername:self.googlePlusUserInfo[@"full_name"]
+                                              andEmail:self.googlePlusUserInfo[@"email"]
+                                               success:^(id json) {
+                                                   NSLog(@"POST succesful");
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"POST failed: %@", error);
+                                               }];
 }
 
     
@@ -299,29 +293,6 @@
                                      } failure:^(NSError *error) {
                                          NSLog(@"Failure: %@", error);
                                      }];
-//    NSURL *url = [NSURL URLWithString:@"http://presentiemeter.peperzaken.nl:8000/api/employees/"];
-//    
-//    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-//    //AFNetworking asynchronous url request
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    
-//    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        self.colleagueArray = responseObject;
-//        
-//        NSLog(@"The Array: %@",self.colleagueArray);
-//        
-//        [self.tableView reloadData];
-//        
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//        NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-//        
-//    }];
-//    
-//    [operation start];
 }
 
 - (void)didReceiveMemoryWarning {

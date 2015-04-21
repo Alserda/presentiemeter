@@ -16,7 +16,7 @@
 
 @end
 
-static NSString * const kClientId = @"710333786173-vhcthsh1ikv57m8k1419uko2uv9snaf8.apps.googleusercontent.com";
+static NSString * const kClientId = @"710333786173-t904e7mn0u7dqgv53lh4cqbpgo8nfcpe.apps.googleusercontent.com";
 
 @class GPPSignInButton;
 
