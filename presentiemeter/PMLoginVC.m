@@ -71,14 +71,17 @@
 -(void) setGooglePlusButtons {
     
     _googlePlusSignInButton = [GPPSignInButton buttonWithType:UIButtonTypeCustom];
+    _googlePlusSignInButton.backgroundColor = [UIColor blueColor];
     
+//    UIImage *backgroundButtonImage = [UIImage imageNamed:@"bt_search_cancel.png"];
     
-    UIImage *backgroundButtonImage = [UIImage imageNamed:@"bt_search_cancel.png"];
+//    _googlePlusSignInButton.frame = CGRectMake(0,
+//                                               0,
+//                                               backgroundButtonImage.size.width,
+//                                               backgroundButtonImage.size.height);
     
-    _googlePlusSignInButton.frame = CGRectMake(100.0f,
-                                               100.0f,
-                                               backgroundButtonImage.size.width,
-                                               backgroundButtonImage.size.height);
+//    _googlePlusSignInButton.center = CGPointMake(self.view.frame.size.height, self.view.frame.size.width);
+    [_googlePlusSignInButton setCenter:self.view.center];
     _googlePlusSignInButton.backgroundColor = [UIColor whiteColor];
     
     _googlePlusSignInButton.titleLabel.textColor = [UIColor whiteColor];

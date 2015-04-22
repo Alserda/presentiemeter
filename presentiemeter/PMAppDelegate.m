@@ -13,6 +13,8 @@
 #import <EstimoteSDK/EstimoteSDK.h>
 #import <GooglePlus.h>
 
+#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+
 @interface PMAppDelegate ()
 
 @end
@@ -40,6 +42,23 @@
     [ESTCloudManager setupAppID:@"app_2f865fbwyx" andAppToken:@"e05409fc493936dd3c279b9563b72e75"];
     [ESTCloudManager enableAnalytics:YES];
 
+    
+    // Register for remote notificatons related to Estimote Remote Beacon Management.
+    if (IS_OS_8_OR_LATER)
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        
+        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeNone);
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                                 categories:nil];
+        
+        [application registerUserNotificationSettings:settings];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeNone];
+    }
+    
     return YES;
 }
 

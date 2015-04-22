@@ -25,6 +25,6 @@ static NSString * const kClientId = @"710333786173-t904e7mn0u7dqgv53lh4cqbpgo8nf
 /** Delegate handling the login success situation */
 @property (nonatomic, weak) id<PMLoginViewControllerDelegate> delegate;
 
-@property(weak, nonatomic) GPPSignInButton *googlePlusSignInButton;
+@property(strong, nonatomic) GPPSignInButton *googlePlusSignInButton;
 
 @end

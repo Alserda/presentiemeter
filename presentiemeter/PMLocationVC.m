@@ -86,7 +86,7 @@
     }
     else
     {
-        [self.utilityManager startEstimoteBeaconDiscoveryWithUpdateInterval:1];
+        [self.utilityManager startEstimoteBeaconDiscoveryWithUpdateInterval:2];
     }
 }
 
@@ -101,6 +101,7 @@
 
             [self.beaconManager startMonitoringForRegion:self.region];
             [self.beaconManager startRangingBeaconsInRegion:self.region];
+            [self.beaconManager requestStateForRegion:self.region];
         } else {
             /*
              * Request permission to use Location Services. (new in iOS 8)
@@ -186,7 +187,8 @@
                                      @"address": @"None"};
         
         [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
+//            NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
+            NSLog(@"Found: %i", beacons.count);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
@@ -214,33 +216,54 @@
         [manager POST:kPresentiemeterUpdateLocationPath
            parameters:parameters
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"JSON: %@", responseObject);
+//            NSLog(@"JSON: %@", responseObject);
+                  NSLog(@"Found: %i", beacons.count);
         }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
         
-        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-                                          withLocation:macAddress
-                                           forUsername:self.googlePlusUserInfo[@"full_name"]
-                                              andEmail:self.googlePlusUserInfo[@"email"]
-                                               success:^(id json) {
-                                                   NSLog(@"POST succesful");
-                                               } failure:^(NSError *error) {
-                                                   NSLog(@"POST failed: %@", error);
-                                               }];
+//        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+//                                          withLocation:macAddress
+//                                           forUsername:self.googlePlusUserInfo[@"full_name"]
+//                                              andEmail:self.googlePlusUserInfo[@"email"]
+//                                               success:^(id json) {
+//                                                   NSLog(@"POST succesful");
+//                                               } failure:^(NSError *error) {
+//                                                   NSLog(@"POST failed: %@", error);
+//                                               }];
 }
 
     
     [self.tableView reloadData];
 }
 
+- (void)beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLBeaconRegion *)region {
+    if(state == CLRegionStateInside) {
+        NSLog(@"Currently inside region: %@", region);
+    }
+    else {
+        NSLog(@"Not inside any region");
+    }
+}
+
+
 - (void)beaconManager:(id)manager didEnterRegion:(CLBeaconRegion *)region {
     NSLog(@"didEnterRegion:%@", region);
+    
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"Enter region notification";
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 - (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
     NSLog(@"didExitRegion:%@", region);
+    
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"Exit region notification";
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 
