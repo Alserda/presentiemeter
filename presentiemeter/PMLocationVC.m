@@ -45,6 +45,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"0 Present";
     
     [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
         NSLog(@"received userinfo: %@", googleUserInfo);
@@ -86,7 +87,7 @@
     }
     else
     {
-        [self.utilityManager startEstimoteBeaconDiscoveryWithUpdateInterval:2];
+        [self.utilityManager startEstimoteBeaconDiscoveryWithUpdateInterval:1];
     }
 }
 
@@ -144,6 +145,11 @@
 
 #pragma mark - ESTBeaconManager delegate
 
+- (void)beaconManager:(id)manager didStartMonitoringForRegion:(CLBeaconRegion *)region {
+    NSLog(@"didStartMonitoringForRegion");
+}
+
+
 - (void)beaconManager:(id)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error
 {
     UIAlertView* errorView = [[UIAlertView alloc] initWithTitle:@"Ranging error"
@@ -180,18 +186,8 @@
 //    NSLog(@"Array of beacons: %@", self.beaconsArray);
     
     if (beacons.count == 0) {
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
-        NSDictionary *parameters = @{
-                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
-                                     @"email": self.googlePlusUserInfo[@"email"],
-                                     @"address": @"None"};
-        
-        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
-            NSLog(@"Found: %i", beacons.count);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
+        NSLog(@"No beacons found");
+        [self makeColleagueLocationRequest];
     }
     else {
         id beacon = [beacons objectAtIndex:0];
@@ -217,7 +213,17 @@
            parameters:parameters
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //            NSLog(@"JSON: %@", responseObject);
-                  NSLog(@"Found: %i", beacons.count);
+                  NSLog(@"Found: %i" @"with Mac Address: %@", beacons.count, macAddress);
+                  
+                  
+                  
+//                  UILocalNotification *notification = [UILocalNotification new];
+//                  notification.alertBody = @"Posted a location to the API";
+//                  
+//                  [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+                  
+                  
+                  
         }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
@@ -232,9 +238,10 @@
 //                                               } failure:^(NSError *error) {
 //                                                   NSLog(@"POST failed: %@", error);
 //                                               }];
+
 }
 
-    
+    [self makeColleagueLocationRequest];
     [self.tableView reloadData];
 }
 
@@ -248,7 +255,7 @@
 }
 
 
-- (void)beaconManager:(id)manager didEnterRegion:(CLBeaconRegion *)region {
+- (void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(CLBeaconRegion *)region {
     NSLog(@"didEnterRegion:%@", region);
     
     UILocalNotification *notification = [UILocalNotification new];
@@ -257,8 +264,24 @@
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
-- (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
+- (void)beaconManager:(ESTBeaconManager *)manager didExitRegion:(CLBeaconRegion *)region {
     NSLog(@"didExitRegion:%@", region);
+    
+    
+    
+    AFHTTPRequestOperationManager *operationmanager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
+    NSDictionary *parameters = @{
+                                 @"full_name": self.googlePlusUserInfo[@"full_name"],
+                                 @"email": self.googlePlusUserInfo[@"email"],
+                                 @"address": @"None"};
+    
+    [operationmanager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    
+    
     
     UILocalNotification *notification = [UILocalNotification new];
     notification.alertBody = @"Exit region notification";
@@ -280,7 +303,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 40;
 }
 
 #pragma mark - Table view delegate
@@ -310,7 +333,9 @@
                                      success:^(id json) {
                                          self.colleagueArray = json;
                                          
-                                         NSLog(@"The Array: %@",self.colleagueArray);
+//                                         NSMutableDictionary *userdata=[[NSMutableDictionary dictionarywithobjec
+                                         
+//                                         NSLog(@"The Array: %@",self.colleagueArray);
                                          
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {
