@@ -202,42 +202,42 @@
         [macAddress insertString: @":" atIndex: 14];
         
         
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
-        
-        NSDictionary *parameters = @{
-                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
-                                     @"email": self.googlePlusUserInfo[@"email"],
-                                     @"address": macAddress};
-        
-        [manager POST:kPresentiemeterUpdateLocationPath
-           parameters:parameters
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            NSLog(@"JSON: %@", responseObject);
-                  NSLog(@"Found: %i" @"with Mac Address: %@", beacons.count, macAddress);
-                  
-                  
-                  
-//                  UILocalNotification *notification = [UILocalNotification new];
-//                  notification.alertBody = @"Posted a location to the API";
+//        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
+//        
+//        NSDictionary *parameters = @{
+//                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
+//                                     @"email": self.googlePlusUserInfo[@"email"],
+//                                     @"address": macAddress};
+//        
+//        [manager POST:kPresentiemeterUpdateLocationPath
+//           parameters:parameters
+//              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+////            NSLog(@"JSON: %@", responseObject);
+//                  NSLog(@"Found: %i" @"with Mac Address: %@", beacons.count, macAddress);
 //                  
-//                  [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+//                  
+//                  
+                  UILocalNotification *notification = [UILocalNotification new];
+                  notification.alertBody = @"Posted a location to the API";
                   
-                  
-                  
-        }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
+                  [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+//
+//                  
+//                  
+//        }
+//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"Error: %@", error);
+//        }];
         
-//        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-//                                          withLocation:macAddress
-//                                           forUsername:self.googlePlusUserInfo[@"full_name"]
-//                                              andEmail:self.googlePlusUserInfo[@"email"]
-//                                               success:^(id json) {
-//                                                   NSLog(@"POST succesful");
-//                                               } failure:^(NSError *error) {
-//                                                   NSLog(@"POST failed: %@", error);
-//                                               }];
+        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                          withLocation:macAddress
+                                           forUsername:self.googlePlusUserInfo[@"full_name"]
+                                              andEmail:self.googlePlusUserInfo[@"email"]
+                                               success:^(id json) {
+                                                   NSLog(@"POST succesful");
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"POST failed");
+                                               }];
 
 }
 
@@ -333,7 +333,6 @@
                                      success:^(id json) {
                                          self.colleagueArray = json;
                                          
-//                                         NSMutableDictionary *userdata=[[NSMutableDictionary dictionarywithobjec
                                          
 //                                         NSLog(@"The Array: %@",self.colleagueArray);
                                          

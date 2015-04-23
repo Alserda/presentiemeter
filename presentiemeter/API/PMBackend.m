@@ -44,8 +44,12 @@ NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";
 
 - (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure {
     
+    NSDictionary *params = @{@"full_name": username,
+                             @"email": email,
+                             @"address": location};
+
     AFHTTPRequestOperation *operation = [self.manager POST:path
-                                                       parameters:nil
+                                                       parameters:params
                                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                               if (success) {
                                                                   // Convert the response object to JSON object (NSArray or NSDictionary)
