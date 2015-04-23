@@ -202,32 +202,12 @@
         [macAddress insertString: @":" atIndex: 14];
         
         
-//        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
-//        
-//        NSDictionary *parameters = @{
-//                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
-//                                     @"email": self.googlePlusUserInfo[@"email"],
-//                                     @"address": macAddress};
-//        
-//        [manager POST:kPresentiemeterUpdateLocationPath
-//           parameters:parameters
-//              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-////            NSLog(@"JSON: %@", responseObject);
-//                  NSLog(@"Found: %i" @"with Mac Address: %@", beacons.count, macAddress);
-//                  
-//                  
-//                  
-                  UILocalNotification *notification = [UILocalNotification new];
-                  notification.alertBody = @"Posted a location to the API";
+    
+        UILocalNotification *notification = [UILocalNotification new];
+        notification.alertBody = @"Posted a location to the API";
                   
-                  [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-//
-//                  
-//                  
-//        }
-//              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"Error: %@", error);
-//        }];
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+
         
         [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
                                           withLocation:macAddress
@@ -268,18 +248,15 @@
     NSLog(@"didExitRegion:%@", region);
     
     
-    
-    AFHTTPRequestOperationManager *operationmanager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
-    NSDictionary *parameters = @{
-                                 @"full_name": self.googlePlusUserInfo[@"full_name"],
-                                 @"email": self.googlePlusUserInfo[@"email"],
-                                 @"address": @"None"};
-    
-    [operationmanager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+    [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                      withLocation: @"None"
+                                       forUsername:self.googlePlusUserInfo[@"full_name"]
+                                          andEmail:self.googlePlusUserInfo[@"email"]
+                                           success:^(id json) {
+                                               NSLog(@"POST succesful");
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"POST failed");
+                                           }];
     
     
     
