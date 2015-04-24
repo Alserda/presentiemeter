@@ -40,6 +40,7 @@
 		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
 		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
 		A88943821AE4F27200130D64 /* PMBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = A88943811AE4F27200130D64 /* PMBeacon.m */; };
+		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,8 @@
 		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTableViewCell.m; sourceTree = "<group>"; };
 		A88943801AE4F27200130D64 /* PMBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBeacon.h; sourceTree = "<group>"; };
 		A88943811AE4F27200130D64 /* PMBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBeacon.m; sourceTree = "<group>"; };
+		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMHelper.h; sourceTree = "<group>"; };
+		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMHelper.m; sourceTree = "<group>"; };
 		AA35D4F29181A5A0F3807124 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C915DD42CF6AC237E4CBBD72 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -264,6 +267,8 @@
 			children = (
 				A88943801AE4F27200130D64 /* PMBeacon.h */,
 				A88943811AE4F27200130D64 /* PMBeacon.m */,
+				A8D75B1D1AE92E1000B1879F /* PMHelper.h */,
+				A8D75B1E1AE92E1000B1879F /* PMHelper.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -339,7 +344,7 @@
 				TargetAttributes = {
 					A86D33FC1ADD49E80074A5FC = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = EBSX6CSZNX;
+						DevelopmentTeam = W5T37KB9MP;
 					};
 					A86D34151ADD49E90074A5FC = {
 						CreatedOnToolsVersion = 6.3;
@@ -433,6 +438,7 @@
 				A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */,
 				A86D34031ADD49E80074A5FC /* main.m in Sources */,
 				A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */,
+				A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,7 +565,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -579,7 +585,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

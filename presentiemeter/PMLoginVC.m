@@ -14,7 +14,7 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor redColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     GPPSignIn *signIn = [GPPSignIn sharedInstance];
     signIn.shouldFetchGooglePlusUser = YES;
@@ -24,13 +24,56 @@
     
     signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     signIn.scopes = @[ @"profile" ];
-    
-    
     signIn.delegate = self;
-    
-    [self setGooglePlusButtons];
 
-//    [[GPPSignIn sharedInstance] trySilentAuthentication];
+    
+    UIImageView *peperzakenLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PZLogo"]];
+    peperzakenLogo.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 - 100);
+    
+    UIImageView *peperzakenText = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PZText"]];
+    peperzakenText.frame = CGRectMake(0, 0, 240, 42);
+    peperzakenText.center = CGPointMake(self.view.frame.size.width / 2, peperzakenLogo.center.y + 60);
+    NSLog(@"%@", NSStringFromCGSize(peperzakenLogo.image.size));
+    
+    UILabel *productName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetMaxX(peperzakenText.frame), 50)];
+    productName.center = CGPointMake(self.view.frame.size.width / 2, peperzakenText.center.y + 40);
+    productName.text = @"Presentie";
+    productName.textColor = [UIColor whiteColor];
+    productName.textAlignment = UIBaselineAdjustmentAlignCenters;
+    productName.numberOfLines = 1;
+    productName.font = [UIFont fontWithName:@"Helvetica" size:20];
+
+    /** This is a customized Google+ button, as used in Danny's design. But the linking does not work properly. */
+//    UIButton *googlePlusButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    googlePlusButton.frame = CGRectMake(0, 0, 244, 40);
+//    [googlePlusButton setTitle:@"Login with Google+" forState:UIControlStateNormal];
+//    [googlePlusButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:16]];
+//    [googlePlusButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [googlePlusButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+//    [googlePlusButton setBackgroundImage:[UIImage imageNamed:@"gpbuttonactive"] forState:UIControlStateNormal];
+//    [googlePlusButton setBackgroundImage:[UIImage imageNamed:@"gpbuttonpressed"] forState:UIControlStateHighlighted];
+//    [googlePlusButton addTarget:self action:@selector(signInGoogle) forControlEvents:UIControlEventTouchUpInside];
+//    googlePlusButton.center = CGPointMake(self.view.frame.size.width / 2, productName.center.y + 75);
+//    [self.view addSubview:googlePlusButton];
+    
+    _googlePlusSignInButton = [GPPSignInButton buttonWithType:UIButtonTypeCustom];
+    _googlePlusSignInButton.style = kGPPSignInButtonStyleWide;
+    _googlePlusSignInButton.colorScheme = kGPPSignInButtonColorSchemeDark;
+    _googlePlusSignInButton.center = CGPointMake(self.view.frame.size.width / 2, productName.center.y + 75);
+    [_googlePlusSignInButton addTarget:self action:@selector(signInGoogle) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:peperzakenLogo];
+    [self.view addSubview:peperzakenText];
+    [self.view addSubview:productName];
+
+    [self.view addSubview:_googlePlusSignInButton];
+
+}
+
+- (void)paddingTextField:(UITextField *)textField {
+    UIView*leftPadding = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    textField.leftView = leftPadding;
+    textField.leftViewMode = UITextFieldViewModeAlways;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -70,37 +113,8 @@
 
 -(void) setGooglePlusButtons {
     
-    _googlePlusSignInButton = [GPPSignInButton buttonWithType:UIButtonTypeCustom];
-    _googlePlusSignInButton.backgroundColor = [UIColor blueColor];
     
-//    UIImage *backgroundButtonImage = [UIImage imageNamed:@"bt_search_cancel.png"];
     
-//    _googlePlusSignInButton.frame = CGRectMake(0,
-//                                               0,
-//                                               backgroundButtonImage.size.width,
-//                                               backgroundButtonImage.size.height);
-    
-//    _googlePlusSignInButton.center = CGPointMake(self.view.frame.size.height, self.view.frame.size.width);
-    [_googlePlusSignInButton setCenter:self.view.center];
-    _googlePlusSignInButton.backgroundColor = [UIColor whiteColor];
-    
-    _googlePlusSignInButton.titleLabel.textColor = [UIColor whiteColor];
-    _googlePlusSignInButton.titleLabel.font = [UIFont boldSystemFontOfSize:11.0f];
-    _googlePlusSignInButton.titleLabel.numberOfLines = 2;
-    
-    _googlePlusSignInButton.titleLabel.shadowColor = [UIColor darkGrayColor];
-    _googlePlusSignInButton.titleLabel.shadowOffset = CGSizeMake(0.0f,
-                                                                 -1.0f);
-    
-    [_googlePlusSignInButton setTitle:NSLocalizedString(@"UI_BUTTONS_LOGIN", @"")
-                             forState:UIControlStateNormal];
-    
-    //    [_googlePlusSignInButton setBackgroundImage:backgroundButtonImage
-    //                                       forState:UIControlStateNormal];
-    
-    [_googlePlusSignInButton addTarget:self action:@selector(signInGoogle) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:_googlePlusSignInButton];
 }
 
 - (void)signInGoogle {

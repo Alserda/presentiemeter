@@ -10,4 +10,6 @@
 
 @interface PMTableViewCell : UITableViewCell
 
+@property (strong, nonatomic) UILabel *userName;
+@property (strong, nonatomic) UILabel *userLocation;
 @end

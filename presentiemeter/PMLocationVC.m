@@ -13,6 +13,7 @@
 #import "PMBackend.h"
 #import "PMUserLogin.h"
 #import "PMTableViewCell.h"
+#import "PMHelper.h"
 
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
@@ -25,6 +26,7 @@
 @property (nonatomic, strong) CLBeaconRegion *region;
 @property (nonatomic, strong) NSArray *beaconsArray;
 @property (nonatomic, strong) NSArray *colleagueArray;
+@property (nonatomic, strong) NSArray *colleaguePresentArray;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
 @end
@@ -194,19 +196,15 @@
         ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
         
          // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
-        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
-        [macAddress insertString: @":" atIndex: 2];
-        [macAddress insertString: @":" atIndex: 5];
-        [macAddress insertString: @":" atIndex: 8];
-        [macAddress insertString: @":" atIndex: 11];
-        [macAddress insertString: @":" atIndex: 14];
+        NSMutableString *macAddress = [PMHelper formatMacAddress:cBeacon.macAddress];
         
         
+//        NSLog(@"Mac Address: %@", macAddress);
     
-        UILocalNotification *notification = [UILocalNotification new];
-        notification.alertBody = @"Posted a location to the API";
-                  
-        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+//        UILocalNotification *notification = [UILocalNotification new];
+//        notification.alertBody = @"Posted a location to the API";
+//                  
+//        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 
         
         [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
@@ -253,7 +251,7 @@
                                        forUsername:self.googlePlusUserInfo[@"full_name"]
                                           andEmail:self.googlePlusUserInfo[@"email"]
                                            success:^(id json) {
-                                               NSLog(@"POST succesful");
+//                                               NSLog(@"POST succesful");
                                            } failure:^(NSError *error) {
                                                NSLog(@"POST failed");
                                            }];
@@ -310,8 +308,10 @@
                                      success:^(id json) {
                                          self.colleagueArray = json;
                                          
-                                         
-//                                         NSLog(@"The Array: %@",self.colleagueArray);
+                                         NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.location_name in %@)", @"Unavailable"];
+                                         self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
+                                         self.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
+                                         NSLog(@"The Array: %@",self.colleaguePresentArray);
                                          
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {
