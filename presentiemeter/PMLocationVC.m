@@ -54,7 +54,11 @@
         self.googlePlusUserInfo = googleUserInfo;
     }];
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
-    
+    self.tableView.backgroundColor=[UIColor clearColor];
+//    self.tableView.separatorColor=[UIColor orangeColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
+
     self.beaconManager = [[ESTBeaconManager alloc] init];
     self.beaconManager.delegate = self;
     
@@ -267,18 +271,30 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+//    PMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+//
+//    NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
+//    cell.textLabel.text = [userinfo objectForKey:@"full_name"];
+//    cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+//    return cell;
 
+    PMTableViewCell *cell = (PMTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+    
     NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
+//    cell.userName.text = [userinfo objectForKey:@"full_name"];
     cell.textLabel.text = [userinfo objectForKey:@"full_name"];
     cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+    cell.imageView.image = [UIImage imageNamed:@"PZLogo"];
+    cell.accessoryType = UITableViewCellStyleValue1;
+    
+//    NSLog(@"Username text: %@", cell.userName.text);
+    
     return cell;
-
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40;
+    return 50;
 }
 
 #pragma mark - Table view delegate
@@ -311,7 +327,7 @@
                                          NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.location_name in %@)", @"Unavailable"];
                                          self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
                                          self.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
-                                         NSLog(@"The Array: %@",self.colleaguePresentArray);
+//                                         NSLog(@"The Array: %@",self.colleaguePresentArray);
                                          
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {
