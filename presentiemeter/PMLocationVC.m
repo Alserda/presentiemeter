@@ -49,12 +49,15 @@
     [super viewDidLoad];
     self.title = @"0 Present";
     
-    [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
-        NSLog(@"received userinfo: %@", googleUserInfo);
-        self.googlePlusUserInfo = googleUserInfo;
-    }];
+    self.googlePlusUserInfo = [PMUserLogin authenticatedUserInfo];
+    if (self.googlePlusUserInfo == nil) {
+        [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
+            NSLog(@"received userinfo: %@", googleUserInfo);
+            self.googlePlusUserInfo = googleUserInfo;
+        }];
+    }
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
-    self.tableView.backgroundColor=[UIColor clearColor];
+    self.tableView.backgroundColor=[UIColor blackColor];
 //    self.tableView.separatorColor=[UIColor orangeColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
@@ -283,9 +286,11 @@
     NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
 //    cell.userName.text = [userinfo objectForKey:@"full_name"];
     cell.textLabel.text = [userinfo objectForKey:@"full_name"];
-    cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+//    cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+    cell.userLocation.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
     cell.imageView.image = [UIImage imageNamed:@"PZLogo"];
-    cell.accessoryType = UITableViewCellStyleValue1;
+    NSLog(@"Cell: %@", NSStringFromCGSize(cell.detailTextLabel.frame.size));
+//    cell.accessoryType = UITableViewCellStyleValue1;
     
 //    NSLog(@"Username text: %@", cell.userName.text);
     

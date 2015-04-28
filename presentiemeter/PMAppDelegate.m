@@ -28,8 +28,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     if ([PMUserLogin isAuthenticated]) {
-        // Should we start checking for beacons?
-        self.window.rootViewController = [[PMLocationVC alloc] init];
+        [self didLogin];
     } else {
         PMLoginVC *loginvc = [[PMLoginVC alloc] init];
         loginvc.delegate = self;

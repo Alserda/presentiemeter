@@ -17,14 +17,19 @@
 
 + (NSDictionary *)authenticatedUserInfo {
     // Get the details of the user and return the info
-
+    NSString *useremail = [[NSUserDefaults standardUserDefaults] objectForKey:@"user-email"];
+    NSString *userfullname = [[NSUserDefaults standardUserDefaults] objectForKey:@"user-fullname"];
+    if (useremail && userfullname) {
+        return @{ @"email" : useremail,
+                  @"full_name" : userfullname };
+    }
     // Didn't find anything.
     return nil;
 }
 
 + (BOOL)isAuthenticated {
     // Check if we have any login info
-    return NO;
+    return [PMUserLogin authenticatedUserInfo] != nil;
 }
 
 + (void)fetchGooglePlusUserData:(void (^)(NSDictionary *))completed {
@@ -51,6 +56,9 @@
                     if (person.displayName) {
                         fullname = person.displayName;
                     }
+                    [[NSUserDefaults standardUserDefaults] setObject:[GPPSignIn sharedInstance].authentication.userEmail forKey:@"user-email"];
+                    [[NSUserDefaults standardUserDefaults] setObject:fullname forKey:@"user-fullname"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
                     completed(@{ @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
                                  @"full_name" : fullname });
                 }
