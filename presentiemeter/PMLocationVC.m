@@ -57,7 +57,7 @@
         }];
     }
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
-    self.tableView.backgroundColor=[UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.11 alpha:1];
 //    self.tableView.separatorColor=[UIColor orangeColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
@@ -284,15 +284,19 @@
     PMTableViewCell *cell = (PMTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     
     NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
-//    cell.userName.text = [userinfo objectForKey:@"full_name"];
-    cell.textLabel.text = [userinfo objectForKey:@"full_name"];
-//    cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+    cell.userName.text = [userinfo objectForKey:@"full_name"];
     cell.userLocation.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
-    cell.imageView.image = [UIImage imageNamed:@"PZLogo"];
-    NSLog(@"Cell: %@", NSStringFromCGSize(cell.detailTextLabel.frame.size));
-//    cell.accessoryType = UITableViewCellStyleValue1;
+    cell.userPhoto.image = [UIImage imageNamed:@"PZLogo"];
     
-//    NSLog(@"Username text: %@", cell.userName.text);
+    if ([[[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"] isEqualToString:@"Unavailable"]) {
+        cell.userLocation.backgroundColor = [UIColor colorWithRed:0.922 green:0.165 blue:0.216 alpha:1];
+    }
+    else {
+        cell.userLocation.backgroundColor = [UIColor colorWithRed:0.196 green:0.749 blue:0.184 alpha:1];
+    }
+    cell.userLocation.textColor = [UIColor whiteColor];
+    
+    NSLog(@"Username text: %@", cell.userName.text);
     
     return cell;
 }

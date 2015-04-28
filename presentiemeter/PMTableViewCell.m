@@ -8,14 +8,12 @@
 
 #import "PMTableViewCell.h"
 
-static const CGFloat kSideSpacing = 16.0;
-
 @implementation PMTableViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.11 alpha:1];
         [self addUserPhoto];
         [self addUsenameLabel];
         [self addUserLocation];
@@ -25,30 +23,28 @@ static const CGFloat kSideSpacing = 16.0;
 
 
 - (void)addUserPhoto {
-
-//    self.imageView.frame = CGRectMake(16, 0, 0, self.contentView.bounds.size.height);
-    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.imageView.backgroundColor = [UIColor redColor];
+    self.userPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(16, 5, 40, 40)];
+    self.userPhoto.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.userPhoto.clipsToBounds = YES;
+    [self addSubview:self.userPhoto];
+    NSLog(@"size userPhoto: %@", NSStringFromCGSize(self.userPhoto.frame.size));
 }
 
 - (void)addUsenameLabel {
-    self.textLabel.frame = CGRectMake(CGRectGetMaxX(self.imageView.frame) + 12, 0, 100, self.contentView.bounds.size.height);
-    self.textLabel.backgroundColor = [UIColor blueColor];
-    self.textLabel.textColor = [UIColor whiteColor];
-    self.textLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
-    self.textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.userName = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.userPhoto.frame) + 11, 1.5, 100, self.contentView.bounds.size.height)];
+    self.userName.textColor = [UIColor whiteColor];
+    self.userName.font = [UIFont fontWithName:@"Helvetica" size:12];
+    self.userName.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:self.userName];
+    NSLog(@"size userName: %@", NSStringFromCGSize(self.userName.frame.size));
 }
 
 - (void)addUserLocation {
-//    self.detailTextLabel.frame = CGRectMake(kSideSpacing, 25, 5, self.contentView.bounds.size.height);
-//    self.detailTextLabel.frame = CGRectMake(0, 0, 300, 300);
-//    self.detailTextLabel.backgroundColor = [UIColor brownColor];
-//    NSLog(@"%@", NSStringFromCGSize(self.detailTextLabel.frame.size));
-    self.userLocation = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 120.0, 40.0)];
-    self.userLocation.layer.cornerRadius = 5.0;
+    self.userLocation = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 90.0, 30.0)];
+    self.userLocation.layer.cornerRadius = 2.5;
     self.userLocation.textAlignment = NSTextAlignmentCenter;
+    self.userLocation.font = [UIFont fontWithName:@"Helvetica" size:12];
     self.userLocation.clipsToBounds = YES;
-    self.userLocation.backgroundColor = [UIColor brownColor];
     
     self.accessoryView = self.userLocation;
     
