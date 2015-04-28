@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <EstimoteSDK/EstimoteSDK.h>
 
-@interface PMAppDelegate : UIResponder <UIApplicationDelegate>
+#import "PMLoginVC.h"
+
+@interface PMAppDelegate : UIResponder <UIApplicationDelegate, PMLoginViewControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

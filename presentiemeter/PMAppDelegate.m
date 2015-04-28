@@ -8,8 +8,12 @@
 
 #import "PMAppDelegate.h"
 #import "PMLoginVC.h"
+#import "PMLocationVC.h"
+#import "PMUserLogin.h"
 #import <EstimoteSDK/EstimoteSDK.h>
 #import <GooglePlus.h>
+
+#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 @interface PMAppDelegate ()
 
@@ -22,14 +26,38 @@
     [GPPSignIn sharedInstance].clientID = kClientId;
     [[GPPSignIn sharedInstance] trySilentAuthentication];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [[PMLoginVC alloc] init];
+    
+    if ([PMUserLogin isAuthenticated]) {
+        [self didLogin];
+    } else {
+        PMLoginVC *loginvc = [[PMLoginVC alloc] init];
+        loginvc.delegate = self;
+        self.window.rootViewController = loginvc;
+    }
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
 
     [ESTCloudManager setupAppID:@"app_2f865fbwyx" andAppToken:@"e05409fc493936dd3c279b9563b72e75"];
     [ESTCloudManager enableAnalytics:YES];
-    
 
+    
+    // Register for remote notificatons related to Estimote Remote Beacon Management.
+    if (IS_OS_8_OR_LATER)
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        
+        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeNone);
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                                 categories:nil];
+        
+        [application registerUserNotificationSettings:settings];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeNone];
+    }
+    
     return YES;
 }
 
@@ -75,6 +103,19 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
 //    NSLog(@"applicationWillTerminate");
+}
+
+#pragma mark - PMLoginViewControllerDelegate methods
+
+- (void)didLogin {
+    // Alright we successfully logged in, lets get to action
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Show the right view controller
+        PMLocationVC *locationvc = [[PMLocationVC alloc] init];
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:locationvc];
+    });
+        // Start scanning the beacons
+//    [locationvc startScanningOrSomething];
 }
 
 @end

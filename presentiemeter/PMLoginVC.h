@@ -9,12 +9,22 @@
 #import <UIKit/UIKit.h>
 #import <GooglePlus/GooglePlus.h>
 
-static NSString * const kClientId = @"710333786173-vhcthsh1ikv57m8k1419uko2uv9snaf8.apps.googleusercontent.com";
+@protocol PMLoginViewControllerDelegate <NSObject>
+
+/** Called on the delegate when user login was successfull */
+- (void)didLogin;
+
+@end
+
+static NSString * const kClientId = @"710333786173-t904e7mn0u7dqgv53lh4cqbpgo8nfcpe.apps.googleusercontent.com";
 
 @class GPPSignInButton;
 
 @interface PMLoginVC : UIViewController <GPPSignInDelegate>
 
-@property(weak, nonatomic) GPPSignInButton *googlePlusSignInButton;
+/** Delegate handling the login success situation */
+@property (nonatomic, weak) id<PMLoginViewControllerDelegate> delegate;
+
+@property(strong, nonatomic) GPPSignInButton *googlePlusSignInButton;
 
 @end

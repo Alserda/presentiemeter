@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		9E4236889FCDA16632A08631 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA35D4F29181A5A0F3807124 /* libPods.a */; };
 		A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */; };
+		A82832E61AE7CFF8006CE878 /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */; };
 		A83E462E1ADFA0170096F029 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A83E462D1ADFA0170096F029 /* Podfile */; };
+		A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A84944F91AE51646003BC1C3 /* PMUserLogin.m */; };
 		A858ED901AE12F8900A788D3 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED8F1AE12F8900A788D3 /* AddressBook.framework */; };
 		A858ED921AE12F9000A788D3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED911AE12F9000A788D3 /* AssetsLibrary.framework */; };
 		A858ED941AE12F9900A788D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED931AE12F9900A788D3 /* Foundation.framework */; };
@@ -30,13 +32,15 @@
 		A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A86D340D1ADD49E80074A5FC /* Images.xcassets */; };
 		A86D34111ADD49E90074A5FC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */; };
 		A86D341D1ADD49E90074A5FC /* presentiemeterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */; };
-		A86D342B1ADD55C10074A5FC /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34271ADD55C10074A5FC /* EstimoteSDK.framework */; };
 		A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */; };
 		A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A86D34291ADD55C10074A5FC /* GooglePlus.bundle */; };
 		A86D342E1ADD55C10074A5FC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342A1ADD55C10074A5FC /* GooglePlus.framework */; };
 		A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */; };
 		A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342F1ADD575D0074A5FC /* CoreLocation.framework */; };
 		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
+		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
+		A88943821AE4F27200130D64 /* PMBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = A88943811AE4F27200130D64 /* PMBeacon.m */; };
+		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,9 +55,12 @@
 
 /* Begin PBXFileReference section */
 		104EFFA87FD923A1B4E8BF6B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBackend.h; sourceTree = "<group>"; };
-		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBackend.m; sourceTree = "<group>"; };
+		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBackend.h; path = API/PMBackend.h; sourceTree = "<group>"; };
+		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBackend.m; path = API/PMBackend.m; sourceTree = "<group>"; };
+		A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EstimoteSDK.framework; path = Frameworks/EstimoteSDK.framework; sourceTree = SOURCE_ROOT; };
 		A83E462D1ADFA0170096F029 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A84944F81AE51646003BC1C3 /* PMUserLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUserLogin.h; path = API/PMUserLogin.h; sourceTree = "<group>"; };
+		A84944F91AE51646003BC1C3 /* PMUserLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMUserLogin.m; path = API/PMUserLogin.m; sourceTree = "<group>"; };
 		A858ED8F1AE12F8900A788D3 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A858ED911AE12F9000A788D3 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		A858ED931AE12F9900A788D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -81,13 +88,18 @@
 		A86D34161ADD49E90074A5FC /* presentiemeterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = presentiemeterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A86D341B1ADD49E90074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = presentiemeterTests.m; sourceTree = "<group>"; };
-		A86D34271ADD55C10074A5FC /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteSDK.framework; sourceTree = "<group>"; };
 		A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		A86D34291ADD55C10074A5FC /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
 		A86D342A1ADD55C10074A5FC /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		A86D342F1ADD575D0074A5FC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A86D34311ADD57630074A5FC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A889437C1AE4F17E00130D64 /* PMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTableViewCell.h; sourceTree = "<group>"; };
+		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTableViewCell.m; sourceTree = "<group>"; };
+		A88943801AE4F27200130D64 /* PMBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBeacon.h; sourceTree = "<group>"; };
+		A88943811AE4F27200130D64 /* PMBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBeacon.m; sourceTree = "<group>"; };
+		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMHelper.h; sourceTree = "<group>"; };
+		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMHelper.m; sourceTree = "<group>"; };
 		AA35D4F29181A5A0F3807124 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C915DD42CF6AC237E4CBBD72 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A858EDA01AE12FCE00A788D3 /* UIKit.framework in Frameworks */,
+				A82832E61AE7CFF8006CE878 /* EstimoteSDK.framework in Frameworks */,
 				A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */,
 				A858ED9E1AE12FC100A788D3 /* Security.framework in Frameworks */,
 				A858ED9C1AE12FBC00A788D3 /* MediaPlayer.framework in Frameworks */,
@@ -115,7 +128,6 @@
 				A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */,
 				A858EDAD1AE1305800A788D3 /* GooglePlus.framework in Frameworks */,
 				A86D342E1ADD55C10074A5FC /* GooglePlus.framework in Frameworks */,
-				A86D342B1ADD55C10074A5FC /* EstimoteSDK.framework in Frameworks */,
 				9E4236889FCDA16632A08631 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,6 +156,8 @@
 			children = (
 				A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */,
 				A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */,
+				A84944F81AE51646003BC1C3 /* PMUserLogin.h */,
+				A84944F91AE51646003BC1C3 /* PMUserLogin.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -172,13 +186,11 @@
 		A86D33FF1ADD49E80074A5FC /* presentiemeter */ = {
 			isa = PBXGroup;
 			children = (
-				A80A1EB01AE0F8BF00D36F5D /* API */,
 				A86D34041ADD49E80074A5FC /* PMAppDelegate.h */,
 				A86D34051ADD49E80074A5FC /* PMAppDelegate.m */,
-				A858EDAE1AE1317900A788D3 /* PMLoginVC.h */,
-				A858EDAF1AE1317900A788D3 /* PMLoginVC.m */,
-				A86D34071ADD49E80074A5FC /* PMLocationVC.h */,
-				A86D34081ADD49E80074A5FC /* PMLocationVC.m */,
+				A80A1EB01AE0F8BF00D36F5D /* API */,
+				A889437F1AE4F25900130D64 /* Models */,
+				A88943791AE4F09800130D64 /* UserInterface */,
 				A86D340D1ADD49E80074A5FC /* Images.xcassets */,
 				A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */,
 				A86D34001ADD49E80074A5FC /* Supporting Files */,
@@ -216,17 +228,49 @@
 		A86D34261ADD55C10074A5FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */,
 				A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */,
 				A858EDA91AE1305800A788D3 /* GooglePlus.framework */,
 				A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */,
 				A86D34311ADD57630074A5FC /* CoreBluetooth.framework */,
 				A86D342F1ADD575D0074A5FC /* CoreLocation.framework */,
-				A86D34271ADD55C10074A5FC /* EstimoteSDK.framework */,
 				A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */,
 				A86D34291ADD55C10074A5FC /* GooglePlus.bundle */,
 				A86D342A1ADD55C10074A5FC /* GooglePlus.framework */,
 			);
 			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		A88943791AE4F09800130D64 /* UserInterface */ = {
+			isa = PBXGroup;
+			children = (
+				A889437B1AE4F11300130D64 /* TableView */,
+				A858EDAE1AE1317900A788D3 /* PMLoginVC.h */,
+				A858EDAF1AE1317900A788D3 /* PMLoginVC.m */,
+				A86D34071ADD49E80074A5FC /* PMLocationVC.h */,
+				A86D34081ADD49E80074A5FC /* PMLocationVC.m */,
+			);
+			name = UserInterface;
+			sourceTree = "<group>";
+		};
+		A889437B1AE4F11300130D64 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				A889437C1AE4F17E00130D64 /* PMTableViewCell.h */,
+				A889437D1AE4F17E00130D64 /* PMTableViewCell.m */,
+			);
+			name = TableView;
+			sourceTree = "<group>";
+		};
+		A889437F1AE4F25900130D64 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A88943801AE4F27200130D64 /* PMBeacon.h */,
+				A88943811AE4F27200130D64 /* PMBeacon.m */,
+				A8D75B1D1AE92E1000B1879F /* PMHelper.h */,
+				A8D75B1E1AE92E1000B1879F /* PMHelper.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		AE2AB77D61AD31F934802D55 /* Frameworks */ = {
@@ -388,9 +432,13 @@
 			files = (
 				A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */,
 				A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */,
+				A88943821AE4F27200130D64 /* PMBeacon.m in Sources */,
+				A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */,
 				A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */,
+				A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */,
 				A86D34031ADD49E80074A5FC /* main.m in Sources */,
 				A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */,
+				A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,7 +565,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -537,7 +585,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

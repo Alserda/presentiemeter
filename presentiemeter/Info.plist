@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>peter.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>nl.peperzaken.beta.$(PRODUCT_NAME:rfc1034identifier)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -24,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>peter.presentiemeter</string>
+			<string>nl.peperzaken.beta.presentiemeter</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>peter.presentiemeter</string>
+				<string>nl.peperzaken.beta.presentiemeter</string>
 			</array>
 		</dict>
 	</array>
@@ -37,10 +37,10 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>bluetooth-central</string>
 		<string>bluetooth-peripheral</string>
 		<string>external-accessory</string>
-		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

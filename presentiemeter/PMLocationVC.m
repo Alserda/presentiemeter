@@ -6,10 +6,15 @@
 //  Copyright (c) 2015 Peter Alserda. All rights reserved.
 //
 
-#import "PMLocationVC.h"
-#import "AFNetworking.h"
-#import "PMBackend.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
+#import "AFNetworking.h"
+
+#import "PMLocationVC.h"
+#import "PMBackend.h"
+#import "PMUserLogin.h"
+#import "PMTableViewCell.h"
+#import "PMHelper.h"
+
 
 @interface PMLocationVC () <ESTBeaconManagerDelegate, ESTUtilityManagerDelegate>
 
@@ -21,27 +26,10 @@
 @property (nonatomic, strong) CLBeaconRegion *region;
 @property (nonatomic, strong) NSArray *beaconsArray;
 @property (nonatomic, strong) NSArray *colleagueArray;
+@property (nonatomic, strong) NSArray *colleaguePresentArray;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
 @end
-
-@interface PMTableViewCell : UITableViewCell
-
-@end
-
-@implementation PMTableViewCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
-    if (self)
-    {
-        
-    }
-    return self;
-}
-@end
-
 
 @implementation PMLocationVC
 
@@ -59,16 +47,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"0 Present";
     
-    [self fetchGooglePlusUserData];
+    self.googlePlusUserInfo = [PMUserLogin authenticatedUserInfo];
+    if (self.googlePlusUserInfo == nil) {
+        [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
+            NSLog(@"received userinfo: %@", googleUserInfo);
+            self.googlePlusUserInfo = googleUserInfo;
+        }];
+    }
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
-    
+    self.tableView.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.11 alpha:1];
+//    self.tableView.separatorColor=[UIColor orangeColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
+
     self.beaconManager = [[ESTBeaconManager alloc] init];
     self.beaconManager.delegate = self;
     
     self.utilityManager = [[ESTUtilityManager alloc] init];
     self.utilityManager.delegate = self;
-//    [self makeColleagueLocationRequest];
+    [self makeColleagueLocationRequest];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -112,6 +111,7 @@
 
             [self.beaconManager startMonitoringForRegion:self.region];
             [self.beaconManager startRangingBeaconsInRegion:self.region];
+            [self.beaconManager requestStateForRegion:self.region];
         } else {
             /*
              * Request permission to use Location Services. (new in iOS 8)
@@ -152,12 +152,12 @@
     }
 }
 
-- (void)dismiss
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+#pragma mark - ESTBeaconManager delegate
+
+- (void)beaconManager:(id)manager didStartMonitoringForRegion:(CLBeaconRegion *)region {
+    NSLog(@"didStartMonitoringForRegion");
 }
 
-#pragma mark - ESTBeaconManager delegate
 
 - (void)beaconManager:(id)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error
 {
@@ -195,108 +195,124 @@
 //    NSLog(@"Array of beacons: %@", self.beaconsArray);
     
     if (beacons.count == 0) {
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
-        NSDictionary *parameters = @{
-                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
-                                     @"email": self.googlePlusUserInfo[@"email"],
-                                     @"address": @"None"};
-        
-        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"No beacons found. Obtained JSON: %@", responseObject);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
+        NSLog(@"No beacons found");
+        [self makeColleagueLocationRequest];
     }
     else {
         id beacon = [beacons objectAtIndex:0];
         ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
         
          // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
-        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
-        [macAddress insertString: @":" atIndex: 2];
-        [macAddress insertString: @":" atIndex: 5];
-        [macAddress insertString: @":" atIndex: 8];
-        [macAddress insertString: @":" atIndex: 11];
-        [macAddress insertString: @":" atIndex: 14];
+        NSMutableString *macAddress = [PMHelper formatMacAddress:cBeacon.macAddress];
         
         
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:kPresentiemeterBaseURL]];
+//        NSLog(@"Mac Address: %@", macAddress);
+    
+//        UILocalNotification *notification = [UILocalNotification new];
+//        notification.alertBody = @"Posted a location to the API";
+//                  
+//        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+
         
-        NSDictionary *parameters = @{
-                                     @"full_name": self.googlePlusUserInfo[@"full_name"],
-                                     @"email": self.googlePlusUserInfo[@"email"],
-                                     @"address": macAddress};
-        
-        [manager POST:kPresentiemeterUpdateLocationPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"JSON: %@", responseObject);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
+        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                          withLocation:macAddress
+                                           forUsername:self.googlePlusUserInfo[@"full_name"]
+                                              andEmail:self.googlePlusUserInfo[@"email"]
+                                               success:^(id json) {
+                                                   NSLog(@"POST succesful");
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"POST failed");
+                                               }];
+
 }
 
-    
+    [self makeColleagueLocationRequest];
     [self.tableView reloadData];
 }
 
-- (void)beaconManager:(id)manager didEnterRegion:(CLBeaconRegion *)region {
-    NSLog(@"didEnterRegion:%@", region);
+- (void)beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLBeaconRegion *)region {
+    if(state == CLRegionStateInside) {
+        NSLog(@"Currently inside region: %@", region);
+    }
+    else {
+        NSLog(@"Not inside any region");
+    }
 }
 
-- (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
+
+- (void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(CLBeaconRegion *)region {
+    NSLog(@"didEnterRegion:%@", region);
+    
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"Enter region notification";
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+}
+
+- (void)beaconManager:(ESTBeaconManager *)manager didExitRegion:(CLBeaconRegion *)region {
     NSLog(@"didExitRegion:%@", region);
+    
+    
+    [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                      withLocation: @"None"
+                                       forUsername:self.googlePlusUserInfo[@"full_name"]
+                                          andEmail:self.googlePlusUserInfo[@"email"]
+                                           success:^(id json) {
+//                                               NSLog(@"POST succesful");
+                                           } failure:^(NSError *error) {
+                                               NSLog(@"POST failed");
+                                           }];
+    
+    
+    
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"Exit region notification";
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+//    PMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+//
+//    NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
+//    cell.textLabel.text = [userinfo objectForKey:@"full_name"];
+//    cell.detailTextLabel.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+//    return cell;
+
+    PMTableViewCell *cell = (PMTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     
-    /*
-     * Fill the table with beacon data.
-     */
+    NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
+    cell.userName.text = [userinfo objectForKey:@"full_name"];
+    cell.userLocation.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
+    cell.userPhoto.image = [UIImage imageNamed:@"PZLogo"];
     
-    id beacon = [self.beaconsArray objectAtIndex:indexPath.row];
-    
-    if ([beacon isKindOfClass:[CLBeacon class]])
-    {
-        CLBeacon *cBeacon = (CLBeacon *)beacon;
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"Major: %@, Minor: %@", cBeacon.major, cBeacon.minor];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Distance: %.2f", cBeacon.accuracy];
+    if ([[[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"] isEqualToString:@"Unavailable"]) {
+        cell.userLocation.backgroundColor = [UIColor colorWithRed:0.922 green:0.165 blue:0.216 alpha:1];
     }
-    else if([beacon isKindOfClass:[ESTBluetoothBeacon class]])
-    {
-        ESTBluetoothBeacon *cBeacon = (ESTBluetoothBeacon *)beacon;
-        
-        // Used to upcase the macAddress and add colons, so they match the API's registered macAddress.
-        NSMutableString *macAddress = [NSMutableString stringWithString:[cBeacon.macAddress uppercaseString]];
-        [macAddress insertString: @":" atIndex: 2];
-        [macAddress insertString: @":" atIndex: 5];
-        [macAddress insertString: @":" atIndex: 8];
-        [macAddress insertString: @":" atIndex: 11];
-        [macAddress insertString: @":" atIndex: 14];
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"Mac Address: %@", macAddress];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI: %zd", cBeacon.rssi];
-        
-//        NSLog(@"Mac Address: %@", macAddress);
+    else {
+        cell.userLocation.backgroundColor = [UIColor colorWithRed:0.196 green:0.749 blue:0.184 alpha:1];
     }
+    cell.userLocation.textColor = [UIColor whiteColor];
+    
+    NSLog(@"Username text: %@", cell.userName.text);
+    
     return cell;
-//    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 50;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CLBeacon *selectedBeacon = [self.beaconsArray objectAtIndex:indexPath.row];
+//    CLBeacon *selectedBeacon = [self.beaconsArray objectAtIndex:indexPath.row];
     
-    self.completion(selectedBeacon);
+//    self.completion(selectedBeacon);
 }
 
 #pragma mark - Table view data source
@@ -308,79 +324,24 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.beaconsArray count];
+    return [self.colleagueArray count];
 }
 
 - (void)makeColleagueLocationRequest {
     
-    NSURL *url = [NSURL URLWithString:@"http://presentiemeter.peperzaken.nl:8000/api/employees/"];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    //AFNetworking asynchronous url request
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        self.colleagueArray = responseObject;
-        
-        NSLog(@"The Array: %@",self.colleagueArray);
-        
-        [self.tableView reloadData];
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-        
-    }];
-    
-    [operation start];
-}
-
-- (void)fetchGooglePlusUserData {
-    // 1. Create a |GTLServicePlus| instance to send a request to Google+.
-    GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
-    plusService.retryEnabled = YES;
-    
-    // 2. Set a valid |GTMOAuth2Authentication| object as the authorizer.
-    [plusService setAuthorizer:[GPPSignIn sharedInstance].authentication];
-    
-    
-    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
-    
-    // *4. Use the "v1" version of the Google+ API.*
-    plusService.apiVersion = @"v1";
-    
-    [plusService executeQuery:query
-            completionHandler:^(GTLServiceTicket *ticket,
-                                GTLPlusPerson *person,
-                                NSError *error) {
-                if (error) {
-                    
-                    
-                    
-                    //Handle Error
-                    
-                } else
-                {
-                    self.googlePlusUserInfo = @{
-                                                @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
-                                                @"full_name" : [person.name.givenName stringByAppendingFormat:@" %@",person.name.familyName]
-                                                };
-                    
-                    
-                    // It's possible to retrieve:
-                    // GoogleID with "person.identifier".
-                    // Gender with "person.gender".
-
-                    
-                    NSLog(@"User information: %@", self.googlePlusUserInfo);
-                    
-                    
-                }
-                
-            }];
+    [[PMBackend sharedInstance] retrievePath:kPresentiemeterEmployeeLocationPath
+                                     success:^(id json) {
+                                         self.colleagueArray = json;
+                                         
+                                         NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.location_name in %@)", @"Unavailable"];
+                                         self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
+                                         self.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
+//                                         NSLog(@"The Array: %@",self.colleaguePresentArray);
+                                         
+                                         [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+                                     } failure:^(NSError *error) {
+                                         NSLog(@"Failure: %@", error);
+                                     }];
 }
 
 - (void)didReceiveMemoryWarning {
