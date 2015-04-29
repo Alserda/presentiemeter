@@ -24,6 +24,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+## NSData+MD5Digest
+
+## NSData+MD5
+
+NSData category to add MD5 digest and hex digest.
+
+### Author
+
+Francis Chong francis@ignition.hk
+
+### License
+
+MIT license
+
 ## google-plus-ios-sdk
 
 Copyright 2013 Google Inc.

@@ -41,6 +41,24 @@ THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>## NSData+MD5
+
+NSData category to add MD5 digest and hex digest.
+
+### Author
+
+Francis Chong francis@ignition.hk
+
+### License
+
+MIT license</string>
+			<key>Title</key>
+			<string>NSData+MD5Digest</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>Copyright 2013 Google Inc.</string>
 			<key>Title</key>
 			<string>google-plus-ios-sdk</string>

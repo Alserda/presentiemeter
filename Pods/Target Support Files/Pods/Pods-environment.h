@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 2
 
+// NSData+MD5Digest
+#define COCOAPODS_POD_AVAILABLE_NSData_MD5Digest
+#define COCOAPODS_VERSION_MAJOR_NSData_MD5Digest 1
+#define COCOAPODS_VERSION_MINOR_NSData_MD5Digest 0
+#define COCOAPODS_VERSION_PATCH_NSData_MD5Digest 0
+
 // google-plus-ios-sdk
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1

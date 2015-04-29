@@ -21,13 +21,16 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - google-plus-ios-sdk (1.7.1)
+  - NSData+MD5Digest (1.0.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - google-plus-ios-sdk (= 1.7.1)
+  - NSData+MD5Digest (~> 1.0)
 
 SPEC CHECKSUMS:
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
+  NSData+MD5Digest: 0743d53874455e2bdf49f70e7f815b0b963a355f
 
 COCOAPODS: 0.36.1

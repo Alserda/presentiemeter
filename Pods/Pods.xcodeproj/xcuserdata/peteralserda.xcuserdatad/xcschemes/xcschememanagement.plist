@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-NSData+MD5Digest.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-google-plus-ios-sdk.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>42F5521826A6E10F88500521</key>
+		<key>53A05F535758886DB1A6902E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AB2EDD652AE2A5B72FD9B404</key>
+		<key>9FBC907E68F08C384AEB78FB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EC143FB35341C706DD827C14</key>
+		<key>C26A02EAC46D5EAA4CB87270</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CDE2CEECBAD74FFDE1ED1AA2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
