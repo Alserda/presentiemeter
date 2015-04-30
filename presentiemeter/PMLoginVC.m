@@ -95,7 +95,9 @@
         // The user is signed in.
 //        [self performSelectorOnMainThread:@selector(displayViewController) withObject:nil waitUntilDone:YES];
         if ([self.delegate respondsToSelector:@selector(didLogin)]) {
-            [self.delegate performSelector:@selector(didLogin)];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate performSelector:@selector(didLogin)];
+            });
         }
     } else {
         self.googlePlusSignInButton.hidden = NO;
