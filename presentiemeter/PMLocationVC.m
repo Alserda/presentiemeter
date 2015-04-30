@@ -296,7 +296,10 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.userName.text = [userinfo objectForKey:@"full_name"];
     cell.userLocation.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
-    cell.userPhoto.image = [UIImage imageNamed:@"PZLogo"];
+    cell.userPhoto.email = [userinfo objectForKey:@"email"];
+    
+    [cell.userPhoto load];
+
     
     if ([[[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"] isEqualToString:@"Unavailable"]) {
         cell.userLocation.backgroundColor = [UIColor colorWithRed:0.922 green:0.165 blue:0.216 alpha:1];
@@ -344,7 +347,7 @@
                                          NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.location_name in %@)", @"Unavailable"];
                                          self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
                                          self.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
-//                                         NSLog(@"The Array: %@",self.colleaguePresentArray);
+                                         NSLog(@"The Array: %@",self.colleagueArray);
                                          
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {

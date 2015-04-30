@@ -23,8 +23,14 @@
 
 
 - (void)addUserPhoto {
-    self.userPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(16, 5, 40, 40)];
+    self.userPhoto = [[RFGravatarImageView alloc] initWithFrame:CGRectMake(16, 5, 40, 40)];
+    self.userPhoto.backgroundColor = [UIColor whiteColor];
+    self.userPhoto.forceDefault = NO;
+    self.userPhoto.defaultGravatar = RFDefaultGravatarMysteryMan;
+    self.userPhoto.layer.masksToBounds = YES;
+    self.userPhoto.layer.cornerRadius = 20;
     [self addSubview:self.userPhoto];
+
 }
 
 

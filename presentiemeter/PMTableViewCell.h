@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RFGravatarImageView.h"
 
 @interface PMTableViewCell : UITableViewCell
 
-@property (strong, nonatomic) UIImageView *userPhoto;
+@property (strong, nonatomic) RFGravatarImageView *userPhoto;
 @property (strong, nonatomic) UILabel *userName;
 @property (strong, nonatomic) UILabel *userLocation;
 

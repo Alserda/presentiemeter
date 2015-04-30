@@ -14,6 +14,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-RFGravatarImageView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-SDWebImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-google-plus-ios-sdk.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>53A05F535758886DB1A6902E</key>
+		<key>03C0CF34D18EB95CBA81693A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9FBC907E68F08C384AEB78FB</key>
+		<key>49D1218D017854FF7E992CCE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C26A02EAC46D5EAA4CB87270</key>
+		<key>A9FB7156980B0F5C972542CE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CDE2CEECBAD74FFDE1ED1AA2</key>
+		<key>BD6D2BAED3C79A553BCA4848</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BD84D85A0CB9FB188D1B0610</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB35DA1DE07256686B037A8C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
