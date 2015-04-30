@@ -59,7 +59,6 @@
     _googlePlusSignInButton.style = kGPPSignInButtonStyleWide;
     _googlePlusSignInButton.colorScheme = kGPPSignInButtonColorSchemeDark;
     _googlePlusSignInButton.center = CGPointMake(self.view.frame.size.width / 2, productName.center.y + 75);
-    [_googlePlusSignInButton addTarget:self action:@selector(signInGoogle) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:peperzakenLogo];
     [self.view addSubview:peperzakenText];
@@ -95,7 +94,9 @@
         // The user is signed in.
 //        [self performSelectorOnMainThread:@selector(displayViewController) withObject:nil waitUntilDone:YES];
         if ([self.delegate respondsToSelector:@selector(didLogin)]) {
-            [self.delegate performSelector:@selector(didLogin)];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate performSelector:@selector(didLogin)];
+            });
         }
     } else {
         self.googlePlusSignInButton.hidden = NO;
@@ -108,22 +109,6 @@
     PMLocationVC *vc = [[PMLocationVC alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
--(void) setGooglePlusButtons {
-    
-    
-    
-}
-
-- (void)signInGoogle {
-    GPPSignIn *signIn = [GPPSignIn sharedInstance];
-    signIn.delegate = self;
-    signIn.shouldFetchGoogleUserEmail = YES;
-    signIn.clientID = kClientId;
-    signIn.scopes = [NSArray arrayWithObjects:kGTLAuthScopePlusLogin,nil];
-    signIn.actions = [NSArray arrayWithObjects:@"http://schemas.google.com/ListenActivity",nil];
-//    [signIn authenticate];
 }
 
 @end

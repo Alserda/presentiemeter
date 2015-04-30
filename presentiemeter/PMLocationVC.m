@@ -47,16 +47,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"0 Present";
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavigationBar"] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"ShadowImage"]];
+//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
     [self.navigationController.navigationBar
      setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    self.navigationController.navigationBar.translucent = YES;
+//    self.navigationController.navigationBar.translucent = YES;
     
     // View to add a border under the navigationBar.
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 1)];
     [navBorder setBackgroundColor:[UIColor colorWithRed:0.243 green:0.243 blue:0.243 alpha:1]];
-    [navBorder setOpaque:YES];
+//    [navBorder setOpaque:NO];
     [self.navigationController.navigationBar addSubview:navBorder];
     
     
@@ -347,7 +348,7 @@
                                          NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.location_name in %@)", @"Unavailable"];
                                          self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
                                          self.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
-                                         NSLog(@"The Array: %@",self.colleagueArray);
+//                                         NSLog(@"The Array: %@",self.colleagueArray);
                                          
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {

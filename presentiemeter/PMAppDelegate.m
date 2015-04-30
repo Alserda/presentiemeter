@@ -110,11 +110,11 @@
 
 - (void)didLogin {
     // Alright we successfully logged in, lets get to action
-    dispatch_async(dispatch_get_main_queue(), ^{
+//    dispatch_sync(dispatch_get_main_queue(), ^{
         // Show the right view controller
         PMLocationVC *locationvc = [[PMLocationVC alloc] init];
         self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:locationvc];
-    });
+//    });
         // Start scanning the beacons
 //    [locationvc startScanningOrSomething];
 }
