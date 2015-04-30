@@ -30,7 +30,6 @@
 		A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34051ADD49E80074A5FC /* PMAppDelegate.m */; };
 		A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34081ADD49E80074A5FC /* PMLocationVC.m */; };
 		A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A86D340D1ADD49E80074A5FC /* Images.xcassets */; };
-		A86D34111ADD49E90074A5FC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */; };
 		A86D341D1ADD49E90074A5FC /* presentiemeterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */; };
 		A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */; };
 		A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A86D34291ADD55C10074A5FC /* GooglePlus.bundle */; };
@@ -84,7 +83,6 @@
 		A86D34071ADD49E80074A5FC /* PMLocationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLocationVC.h; sourceTree = "<group>"; };
 		A86D34081ADD49E80074A5FC /* PMLocationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMLocationVC.m; sourceTree = "<group>"; };
 		A86D340D1ADD49E80074A5FC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A86D34101ADD49E90074A5FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A86D34161ADD49E90074A5FC /* presentiemeterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = presentiemeterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A86D341B1ADD49E90074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = presentiemeterTests.m; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 				A889437F1AE4F25900130D64 /* Models */,
 				A88943791AE4F09800130D64 /* UserInterface */,
 				A86D340D1ADD49E80074A5FC /* Images.xcassets */,
-				A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */,
 				A86D34001ADD49E80074A5FC /* Supporting Files */,
 			);
 			path = presentiemeter;
@@ -376,7 +373,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A86D34111ADD49E90074A5FC /* LaunchScreen.xib in Resources */,
 				A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */,
 				A83E462E1ADFA0170096F029 /* Podfile in Resources */,
 				A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */,
@@ -459,17 +455,6 @@
 			targetProxy = A86D34171ADD49E90074A5FC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		A86D340F1ADD49E90074A5FC /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A86D34101ADD49E90074A5FC /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A86D341E1ADD49E90074A5FC /* Debug */ = {
