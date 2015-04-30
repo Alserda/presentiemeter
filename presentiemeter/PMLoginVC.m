@@ -26,7 +26,6 @@
     signIn.scopes = @[ @"profile" ];
     signIn.delegate = self;
 
-    
     UIImageView *peperzakenLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PZLogo"]];
     peperzakenLogo.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 - 100);
     

@@ -48,6 +48,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"0 Present";
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    [self.navigationController.navigationBar
+     setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.translucent = YES;
+    
+    // View to add a border under the navigationBar.
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 1)];
+    [navBorder setBackgroundColor:[UIColor colorWithRed:0.243 green:0.243 blue:0.243 alpha:1]];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
     
     self.googlePlusUserInfo = [PMUserLogin authenticatedUserInfo];
     if (self.googlePlusUserInfo == nil) {
@@ -58,9 +69,7 @@
     }
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
     self.tableView.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.11 alpha:1];
-//    self.tableView.separatorColor=[UIColor orangeColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)];
 
     self.beaconManager = [[ESTBeaconManager alloc] init];
     self.beaconManager.delegate = self;
@@ -284,9 +293,13 @@
     PMTableViewCell *cell = (PMTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     
     NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.userName.text = [userinfo objectForKey:@"full_name"];
     cell.userLocation.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"];
-    cell.userPhoto.image = [UIImage imageNamed:@"PZLogo"];
+    cell.userPhoto.email = [userinfo objectForKey:@"email"];
+    
+    [cell.userPhoto load];
+
     
     if ([[[userinfo objectForKey:@"beacon"] objectForKey:@"location_name"] isEqualToString:@"Unavailable"]) {
         cell.userLocation.backgroundColor = [UIColor colorWithRed:0.922 green:0.165 blue:0.216 alpha:1];
@@ -296,7 +309,7 @@
     }
     cell.userLocation.textColor = [UIColor whiteColor];
     
-    NSLog(@"Username text: %@", cell.userName.text);
+
     
     return cell;
 }
@@ -310,9 +323,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    CLBeacon *selectedBeacon = [self.beaconsArray objectAtIndex:indexPath.row];
-    
-//    self.completion(selectedBeacon);
+
 }
 
 #pragma mark - Table view data source
@@ -336,7 +347,7 @@
                                          NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.location_name in %@)", @"Unavailable"];
                                          self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
                                          self.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
-//                                         NSLog(@"The Array: %@",self.colleaguePresentArray);
+                                         NSLog(@"The Array: %@",self.colleagueArray);
                                          
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {
