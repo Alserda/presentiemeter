@@ -23,6 +23,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSLog(@"Background refresh: %d", [application backgroundRefreshStatus]);
     [GPPSignIn sharedInstance].clientID = kClientId;
     [[GPPSignIn sharedInstance] trySilentAuthentication];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9E4236889FCDA16632A08631 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA35D4F29181A5A0F3807124 /* libPods.a */; };
 		A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */; };
+		A81AB2331AF3A4730039FE2D /* PMBeaconDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */; };
 		A82832E61AE7CFF8006CE878 /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */; };
 		A83E462E1ADFA0170096F029 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A83E462D1ADFA0170096F029 /* Podfile */; };
 		A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A84944F91AE51646003BC1C3 /* PMUserLogin.m */; };
@@ -38,7 +39,6 @@
 		A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342F1ADD575D0074A5FC /* CoreLocation.framework */; };
 		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
 		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
-		A88943821AE4F27200130D64 /* PMBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = A88943811AE4F27200130D64 /* PMBeacon.m */; };
 		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +56,8 @@
 		104EFFA87FD923A1B4E8BF6B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBackend.h; path = API/PMBackend.h; sourceTree = "<group>"; };
 		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBackend.m; path = API/PMBackend.m; sourceTree = "<group>"; };
+		A81AB2311AF3A4730039FE2D /* PMBeaconDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBeaconDetector.h; path = ../PMBeaconDetector.h; sourceTree = "<group>"; };
+		A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconDetector.m; path = ../PMBeaconDetector.m; sourceTree = "<group>"; };
 		A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EstimoteSDK.framework; path = Frameworks/EstimoteSDK.framework; sourceTree = SOURCE_ROOT; };
 		A83E462D1ADFA0170096F029 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A84944F81AE51646003BC1C3 /* PMUserLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUserLogin.h; path = API/PMUserLogin.h; sourceTree = "<group>"; };
@@ -94,8 +96,6 @@
 		A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A889437C1AE4F17E00130D64 /* PMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTableViewCell.h; sourceTree = "<group>"; };
 		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTableViewCell.m; sourceTree = "<group>"; };
-		A88943801AE4F27200130D64 /* PMBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBeacon.h; sourceTree = "<group>"; };
-		A88943811AE4F27200130D64 /* PMBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBeacon.m; sourceTree = "<group>"; };
 		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMHelper.h; sourceTree = "<group>"; };
 		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMHelper.m; sourceTree = "<group>"; };
 		AA35D4F29181A5A0F3807124 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -262,8 +262,8 @@
 		A889437F1AE4F25900130D64 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A88943801AE4F27200130D64 /* PMBeacon.h */,
-				A88943811AE4F27200130D64 /* PMBeacon.m */,
+				A81AB2311AF3A4730039FE2D /* PMBeaconDetector.h */,
+				A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */,
 				A8D75B1D1AE92E1000B1879F /* PMHelper.h */,
 				A8D75B1E1AE92E1000B1879F /* PMHelper.m */,
 			);
@@ -427,8 +427,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */,
+				A81AB2331AF3A4730039FE2D /* PMBeaconDetector.m in Sources */,
 				A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */,
-				A88943821AE4F27200130D64 /* PMBeacon.m in Sources */,
 				A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */,
 				A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */,
 				A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */,
