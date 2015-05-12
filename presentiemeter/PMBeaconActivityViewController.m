@@ -17,12 +17,25 @@
 
 @implementation PMBeaconActivityViewController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        
+        self.title = @"Activity";
+        self.beaconfinder = [PMBeaconDetector new];
+        [self.beaconfinder start];
+        NSLog(@"BEACON DETECTOR LOADED");
+    }
+    
+    
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Activity";
     // Do any additional setup after loading the view, typically from a nib.
-    self.beaconfinder = [PMBeaconDetector new];
-    [self.beaconfinder start];
+
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:YES];

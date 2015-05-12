@@ -14,11 +14,9 @@
 #import "PMUserLogin.h"
 #import "PMTableViewCell.h"
 #import "PMHelper.h"
-#import "PMBeaconDetector.h"
 
 @interface PMLocationVC ()
 
-@property (nonatomic, strong) PMBeaconDetector *beaconDetector;
 @property (nonatomic, strong) NSArray *colleagueArray;
 @property (nonatomic, strong) NSArray *colleaguePresentArray;
 
@@ -40,10 +38,6 @@
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
     self.tableView.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.11 alpha:1];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    
-    self.beaconDetector = [PMBeaconDetector new];
-    [self.beaconDetector start];
 
     [self makeColleagueLocationRequest];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(refreshTable) userInfo:nil repeats:YES];
