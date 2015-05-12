@@ -9,18 +9,21 @@
 #import "PMAppDelegate.h"
 #import "PMLoginVC.h"
 #import "PMLocationVC.h"
+#import "PMBeaconActivityViewController.h"
 #import "PMUserLogin.h"
 #import <EstimoteSDK/EstimoteSDK.h>
 #import <GooglePlus.h>
+#import "PMBeaconDetector.h"
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 @interface PMAppDelegate ()
 
+@property (nonatomic, strong) PMBeaconDetector *beaconDetector;
+
 @end
 
 @implementation PMAppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSLog(@"Background refresh: %d", [application backgroundRefreshStatus]);
@@ -113,11 +116,33 @@
     // Alright we successfully logged in, lets get to action
 //    dispatch_sync(dispatch_get_main_queue(), ^{
         // Show the right view controller
-        PMLocationVC *locationvc = [[PMLocationVC alloc] init];
-        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:locationvc];
-//    });
-        // Start scanning the beacons
-//    [locationvc startScanningOrSomething];
+    
+    self.tabBarController = [[UITabBarController alloc] init];
+    
+    PMLocationVC *locationvc = [[PMLocationVC alloc] initWithNibName:nil bundle:nil];
+    PMBeaconActivityViewController *beaconactivityvc = [[PMBeaconActivityViewController alloc] initWithNibName:nil bundle:nil];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:locationvc];
+    UINavigationController *navController1 = [[UINavigationController alloc] initWithRootViewController:beaconactivityvc];
+    
+    
+    self.tabBarController.viewControllers = @[navController, navController1];
+    self.tabBarController.selectedIndex = 0;
+//    self.tabBarController.edgesForExtendedLayout = UIRectEdgeNone;
+    [self configureNavigationBar];
+//    self.window.rootViewController = self.tabBarController;
+    
+    self.window.rootViewController = self.tabBarController;
+
+    self.beaconDetector = [PMBeaconDetector new];
+    [self.beaconDetector start];
+}
+
+- (void)configureNavigationBar {
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"NavigationBar"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"ShadowImage"]];
 }
 
 @end

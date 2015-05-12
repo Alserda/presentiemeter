@@ -14,6 +14,7 @@ extern NSString * const kPresentiemeterBaseURL;
 // API paths
 extern NSString * const kPresentiemeterUpdateLocationPath;
 extern NSString * const kPresentiemeterEmployeeLocationPath;
+extern NSString * const kPresentiemeterUpdateUnavailablePath;
 
 @class AFHTTPRequestOperationManager;
 
@@ -30,7 +31,11 @@ extern NSString * const kPresentiemeterEmployeeLocationPath;
  @param username Full user name
  @param email User identifier email
  */
+
 - (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
+
+- (void)updateUnavailableLocation:(NSString *)path  withEmail:(NSString *)email forUsername:(NSString *)username success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
+
 
 - (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
 

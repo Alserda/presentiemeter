@@ -11,12 +11,14 @@
 #import <AFNetworking/AFNetworking.h>
 
 // Base URL
-NSString * const kPresentiemeterBaseURL = @"http://presentiemeter.peperzaken.nl:8000/api/";
+NSString * const kPresentiemeterBaseURL = @"http://presentiemeter.peperzaken.nl:8123/api/";
 
 // URL's for updating locations
-NSString * const kPresentiemeterUpdateLocationPath = @"employees/1/update_location/";
+NSString * const kPresentiemeterUpdateLocationPath = @"employees/1/update_beacon_location/";
 
 NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";
+
+NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_range/";
 
 
 @implementation PMBackend
@@ -46,24 +48,46 @@ NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";
     
     NSDictionary *params = @{@"full_name": username,
                              @"email": email,
-                             @"address": location};
-
+                             @"macaddress": location};
+    
     AFHTTPRequestOperation *operation = [self.manager POST:path
-                                                       parameters:params
-                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                              if (success) {
-                                                                  // Convert the response object to JSON object (NSArray or NSDictionary)
-                                                                  success(responseObject);
-                                                                  NSLog(@"Success: %@", responseObject);
-                                                              }
-                                                          }
-                                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                              if (failure) {
-                                                                  failure(error);
-                                                                  NSLog(@"Failed: %@", error);
-                                                              }
-                                                          }];
+                                                parameters:params
+                                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                       if (success) {
+                                                           // Convert the response object to JSON object (NSArray or NSDictionary)
+                                                           success(responseObject);
+                                                           NSLog(@"Success: %@", responseObject);
+                                                       }
+                                                   }
+                                                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                       if (failure) {
+                                                           failure(error);
+                                                           NSLog(@"Failed: %@", error);
+                                                       }
+                                                   }];
 }
+
+- (void)updateUnavailableLocation:(NSString *)path withEmail:(NSString *)email forUsername:(NSString *)username success:(void (^)(id))success failure:(void (^)(NSError *))failure {
+    
+    NSDictionary *params = @{@"full_name": username,
+                             @"email": email};
+    
+    AFHTTPRequestOperation *operation = [self.manager POST:path
+                                         parameters:params
+                                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                       if (success) {
+                                                           success(responseObject);
+                                                           NSLog(@"Unavailable success: %@", responseObject);
+                                                       }
+                                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                       if (failure) {
+                                                           failure(error);
+                                                           NSLog(@"Unavailable failed: %@", error);
+                                                       }
+                                                   }];
+}
+
+
 
 
 - (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure {

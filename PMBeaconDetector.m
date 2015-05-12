@@ -7,10 +7,13 @@
 //
 
 #import "PMBeaconDetector.h"
+#import "PMBackend.h"
+#import "PMUserLogin.h"
 
 @interface PMBeaconDetector ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
 @end
 
@@ -25,22 +28,32 @@
         self.locationManager.delegate = self;
         
         self.locations = [NSMutableArray array];
+        
+        self.googlePlusUserInfo = [PMUserLogin authenticatedUserInfo];
+        if (self.googlePlusUserInfo == nil) {
+            [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
+                NSLog(@"received userinfo: %@", googleUserInfo);
+                self.googlePlusUserInfo = googleUserInfo;
+            }];
+        }
     }
     return self;
 }
 
 - (void)start {
+    [self.locationManager requestAlwaysAuthorization];
+    
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
     {
         if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
             /*
              * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
              //             */
-            CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"Vergaderbar"];
+            CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"C2:E9:12:49:CB:60"];
             beaconRegion.notifyEntryStateOnDisplay = YES;
             [self.locationManager startMonitoringForRegion:beaconRegion];
             
-            beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"Hoofdkantoor"];
+            beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"C2:4C:32:2D:3D:47"];
             beaconRegion.notifyEntryStateOnDisplay = YES;
             [self.locationManager startMonitoringForRegion:beaconRegion];
         } else {
@@ -59,11 +72,11 @@
     }
     else if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways)
     {
-        CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"Vergaderbar"];
+        CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"C2:E9:12:49:CB:60"];
         beaconRegion.notifyEntryStateOnDisplay = YES;
         [self.locationManager startMonitoringForRegion:beaconRegion];
         
-        beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"Hoofdkantoor"];
+        beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"C2:4C:32:2D:3D:47"];
         beaconRegion.notifyEntryStateOnDisplay = YES;
         [self.locationManager startMonitoringForRegion:beaconRegion];
     }
@@ -78,17 +91,32 @@
     
 }
 
+
 #pragma mark - CLLocationManagerDelegate methods
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
-    NSLog(@"%s, state: %d, region: %@", __PRETTY_FUNCTION__, state, region);
-    if ([region.identifier isEqualToString:@"PeperzakenHQ"]) {
-        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+    NSLog(@"Monitored Regions: %@", self.locationManager.monitoredRegions);
+//    NSLog(@"%s, state: %d, region: %@", __PRETTY_FUNCTION__, state, region);
+
+
+    if (state == CLRegionStateInside) {
+//        [self.locations addObject:[NSString stringWithFormat:@"Inside region: %@", region.identifier]];
+        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                                   withLocation:region.identifier
+                                                    forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                       andEmail:self.googlePlusUserInfo[@"email"]
+                                                        success:^(id json) {
+                                                                [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", region.identifier]];
+                                                            } failure:^(NSError *error) {
+                                                                   [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
+                                                                }];
     }
-    [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state: %d", region.identifier, state]];
-    if ([region isKindOfClass:[CLBeaconRegion class]]) {
-        [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+    else {
+        [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state5: %d", region.identifier, state]];
     }
+//    if ([region isKindOfClass:[CLBeaconRegion class]]) {
+//                [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+//    }
 }
 
 /*
@@ -136,6 +164,14 @@
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.locations addObject:[NSString stringWithFormat:@"Left region: %@", region.identifier]];
+    [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
+                                                withEmail:self.googlePlusUserInfo[@"email"]
+                                              forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                  success:^(id json) {
+                                                      [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST successfull %@", region.identifier]];
+                                                  } failure:^(NSError *error) {
+                                                      [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
+                                                  }];
 }
 
 /*
@@ -167,7 +203,6 @@
  */
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     NSLog(@"%s, status: %d", __PRETTY_FUNCTION__, status);
-    [self start];
 }
 
 /*

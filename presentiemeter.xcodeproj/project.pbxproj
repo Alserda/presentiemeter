@@ -39,6 +39,7 @@
 		A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342F1ADD575D0074A5FC /* CoreLocation.framework */; };
 		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
 		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
+		A89083081B00D4700036F11F /* PMBeaconActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */; };
 		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +97,8 @@
 		A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A889437C1AE4F17E00130D64 /* PMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTableViewCell.h; sourceTree = "<group>"; };
 		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTableViewCell.m; sourceTree = "<group>"; };
+		A89083061B00D4700036F11F /* PMBeaconActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBeaconActivityViewController.h; sourceTree = "<group>"; };
+		A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBeaconActivityViewController.m; sourceTree = "<group>"; };
 		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMHelper.h; sourceTree = "<group>"; };
 		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMHelper.m; sourceTree = "<group>"; };
 		AA35D4F29181A5A0F3807124 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,6 +249,8 @@
 				A858EDAF1AE1317900A788D3 /* PMLoginVC.m */,
 				A86D34071ADD49E80074A5FC /* PMLocationVC.h */,
 				A86D34081ADD49E80074A5FC /* PMLocationVC.m */,
+				A89083061B00D4700036F11F /* PMBeaconActivityViewController.h */,
+				A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */,
 			);
 			name = UserInterface;
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 				A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */,
 				A81AB2331AF3A4730039FE2D /* PMBeaconDetector.m in Sources */,
 				A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */,
+				A89083081B00D4700036F11F /* PMBeaconActivityViewController.m in Sources */,
 				A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */,
 				A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */,
 				A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */,
