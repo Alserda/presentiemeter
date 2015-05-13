@@ -15,6 +15,7 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 @property (nonatomic, strong) NSMutableArray *activeRegions;
+@property (nonatomic, strong) NSMutableArray *closestBeacon;
 
 @end
 
@@ -26,6 +27,7 @@
         NSLog(@"Ranging Available: %@", [CLLocationManager isRangingAvailable] ? @"YES":@"NO");
         NSLog(@"Monitoring available: %@", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]] ? @"YES":@"NO");
         self.activeRegions = [[NSMutableArray alloc] init];
+        self.closestBeacon = [[NSMutableArray alloc] init];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
         
@@ -176,9 +178,26 @@
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
 //    NSLog(@"%s, beacons: %@, region: %@", __PRETTY_FUNCTION__, beacons, region);
+
+
+//    NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:<#(id), ...#>, nil]
     NSLog(@"Region %@'s RSSI: %@", region.identifier, [beacons valueForKey:@"rssi"]);
+    [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier],
+                                     @"rssi": [NSString stringWithFormat:@"%@", [beacons valueForKey:@"rssi"]]
+                                     }];
     
-//    NSLog(@"Ranged beacon: %@", beacons);
+    if (self.closestBeacon.count == 5) {
+        NSLog(@"true");
+    }
+    
+    
+    for (NSDictionary *dict in self.closestBeacon) {
+        int rssi = (int)[dict objectForKey:@"rssi"];
+        NSLog(@"rssi:%d", rssi);
+    }
+    NSLog(@"MyArray: %@", self.closestBeacon);
+    
+
 }
 
 /*
