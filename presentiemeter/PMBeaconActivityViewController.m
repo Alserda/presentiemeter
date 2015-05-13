@@ -61,7 +61,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     cell.textLabel.text = [self.beaconfinder.locations objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:8];
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:9];
     return cell;
 }
 

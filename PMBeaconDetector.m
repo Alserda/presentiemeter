@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
+@property (nonatomic, strong) NSMutableArray *activeRegions;
 
 @end
 
@@ -24,6 +25,7 @@
     if (self) {
         NSLog(@"Ranging Available: %@", [CLLocationManager isRangingAvailable] ? @"YES":@"NO");
         NSLog(@"Monitoring available: %@", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]] ? @"YES":@"NO");
+        self.activeRegions = [[NSMutableArray alloc] init];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
         
@@ -95,28 +97,71 @@
 #pragma mark - CLLocationManagerDelegate methods
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
-    NSLog(@"Monitored Regions: %@", self.locationManager.monitoredRegions);
 //    NSLog(@"%s, state: %d, region: %@", __PRETTY_FUNCTION__, state, region);
 
-
+    // If the device is inside a monitored region..
     if (state == CLRegionStateInside) {
-//        [self.locations addObject:[NSString stringWithFormat:@"Inside region: %@", region.identifier]];
-        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-                                                   withLocation:region.identifier
-                                                    forUsername:self.googlePlusUserInfo[@"full_name"]
-                                                       andEmail:self.googlePlusUserInfo[@"email"]
-                                                        success:^(id json) {
-                                                                [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", region.identifier]];
-                                                            } failure:^(NSError *error) {
-                                                                   [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
-                                                                }];
+        [self.locations addObject:[NSString stringWithFormat:@"Inside region: %@", region.identifier]];
+        NSLog(@"Inside region identifier: %@", region.identifier);
+        
+        // Checks if the identifier of the inside-region is equal to one of the monitored regions
+        NSSet *identifiers = [self.locationManager.monitoredRegions valueForKey:@"identifier"];
+        BOOL containsIdentifier = [identifiers containsObject:region.identifier];
+        NSLog(@"containsIdentifier:%d", containsIdentifier);
+        
+
+
+        // If the monitored regions do contain an identifier equal to the inside-region's identifier...
+        if(containsIdentifier) {
+            NSLog(@"Contains identifier: %@", region.identifier);
+            
+            // Checks if the identifier of the region already exists in the array of registered regions.
+            BOOL containsRegion = [self.activeRegions containsObject:region.identifier];
+            NSLog(@"ContainsRegion:%d", containsRegion);
+            
+            // If it does exist. Do nothing.
+            if (containsRegion) {
+
+            }
+            // If it does not exist, add the identifier.
+            else {
+                [self.activeRegions addObject:region.identifier];
+                [self.locations addObject:[NSString stringWithFormat:@"%@ added to array", region.identifier]];
+                
+            }
+
+            [self.locations addObjectsFromArray:self.activeRegions];
+            NSLog(@"Active regions: %@", self.activeRegions);
+            NSLog(@"self.activeRegions.firstObject: %@", self.activeRegions.firstObject);
+            
+            // Start scanning, so closest beacons can be placed first in the array
+            if ([region isKindOfClass:[CLBeaconRegion class]]) {
+                [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+            }
+            
+            // Post the identifier to the back-end to update your current location.
+            
+            [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                              withLocation:self.activeRegions.firstObject
+                                               forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                  andEmail:self.googlePlusUserInfo[@"email"]
+                                                   success:^(id json) {
+                                                       [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
+                                                   } failure:^(NSError *error) {
+                                                       [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
+                                                   }];
+            
+        }
+        // The monitored regions don't contain this identifier.
+        else {
+            NSLog(@"Does not contain identifier: %@", region.identifier);
+        }
     }
+    
+    // The region is either Outside the current location, or Unknown.
     else {
-        [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state5: %d", region.identifier, state]];
+        [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state: %d", region.identifier, state]];
     }
-//    if ([region isKindOfClass:[CLBeaconRegion class]]) {
-//                [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
-//    }
 }
 
 /*
@@ -130,7 +175,10 @@
  *    by the device.
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
-    NSLog(@"%s, beacons: %@", __PRETTY_FUNCTION__, beacons);
+//    NSLog(@"%s, beacons: %@, region: %@", __PRETTY_FUNCTION__, beacons, region);
+    NSLog(@"Region %@'s RSSI: %@", region.identifier, [beacons valueForKey:@"rssi"]);
+    
+//    NSLog(@"Ranged beacon: %@", beacons);
 }
 
 /*
@@ -168,7 +216,7 @@
                                                 withEmail:self.googlePlusUserInfo[@"email"]
                                               forUsername:self.googlePlusUserInfo[@"full_name"]
                                                   success:^(id json) {
-                                                      [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST successfull %@", region.identifier]];
+                                                      [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST successful %@", region.identifier]];
                                                   } failure:^(NSError *error) {
                                                       [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
                                                   }];

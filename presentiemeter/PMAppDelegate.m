@@ -134,8 +134,8 @@
     
     self.window.rootViewController = self.tabBarController;
 
-    self.beaconDetector = [PMBeaconDetector new];
-    [self.beaconDetector start];
+//    self.beaconDetector = [PMBeaconDetector new];
+//    [self.beaconDetector start];
 }
 
 - (void)configureNavigationBar {
