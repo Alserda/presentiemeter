@@ -137,9 +137,15 @@
             NSLog(@"self.activeRegions.firstObject: %@", self.activeRegions.firstObject);
             
             // Start scanning, so closest beacons can be placed first in the array
-            if ([region isKindOfClass:[CLBeaconRegion class]]) {
-                [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+            NSLog(@"ActiveRegions count: %i", self.activeRegions.count);
+            NSLog(@"MonitoredRegions count: %i", self.locationManager.monitoredRegions.count);
+            if (self.activeRegions.count >= 2) {
+                if ([region isKindOfClass:[CLBeaconRegion class]]) {
+                    [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+                    [self.locations addObject:[NSString stringWithFormat:@"Started ranging the closest"]];
+                }
             }
+            
             
             // Post the identifier to the back-end to update your current location.
             
@@ -177,26 +183,71 @@
  *    by the device.
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
-//    NSLog(@"%s, beacons: %@, region: %@", __PRETTY_FUNCTION__, beacons, region);
-
-
-//    NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:<#(id), ...#>, nil]
-    NSLog(@"Region %@'s RSSI: %@", region.identifier, [beacons valueForKey:@"rssi"]);
-    [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier],
-                                     @"rssi": [NSString stringWithFormat:@"%@", [beacons valueForKey:@"rssi"]]
-                                     }];
-    
-    if (self.closestBeacon.count == 5) {
-        NSLog(@"true");
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    for (CLBeacon *beacon in beacons) {
+        NSMutableArray *array = [dict objectForKey:region.identifier];
+        if (array == nil) {
+            array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
+            [dict setObject:array forKey:region.identifier];
+        } else {
+            [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
+        }
+        
+        NSLog(@"dict: %@", dict);
+        
+//        NSArray *filtered = [self.closestBeacon filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(identifier LIKE[cd] %@)", region.identifier]];
+//        
+//        BOOL containsBeacon = filtered.count > 0;
+//        NSLog(@"ContainsBeacon:%d", containsBeacon);
+//
+//        if (containsBeacon) {
+//            NSLog(@"Region %@ exists in array closestBeacon", region.identifier);
+//        }
+//
+//        else {
+//            NSLog(@"Adding region %@ to closestBeacon", region.identifier);
+//            [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier] }];
+//        }
     }
     
-    
-    for (NSDictionary *dict in self.closestBeacon) {
-        int rssi = (int)[dict objectForKey:@"rssi"];
-        NSLog(@"rssi:%d", rssi);
-    }
+
     NSLog(@"MyArray: %@", self.closestBeacon);
     
+//    [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier]}];
+//    NSLog(@"MyArray: %@", self.closestBeacon);
+//        for (CLBeacon *beacon in beacons) {
+//            NSLog(@"Region Identifier: %@", region.identifier);
+//            NSString *beaconAccuracy1 = [[NSNumber numberWithFloat:beacon.accuracy] stringValue];
+//            NSMutableString *beaconAccuracy2 = [NSMutableString stringWithString:beaconAccuracy1];
+//            
+//            if ([beaconAccuracy2 isEqualToString: @"-1"]) {
+//                [beaconAccuracy2 setString:@"Can't find region"];
+//            }
+//        
+//            NSLog(@"beaconAccuracy: %@", beaconAccuracy2);
+//        }
+
+    
+    
+    
+    
+    
+//    NSLog(@"Region %@'s RSSI: %@", region.identifier, [beacons valueForKey:@"rssi"]);
+//    [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier],
+//                                     @"rssi": [NSString stringWithFormat:@"%@", [beacons valueForKey:@"rssi"]]
+//                                     }];
+//
+//    if (self.closestBeacon.count == 5) {
+//        NSLog(@"true");
+//    }
+//    
+//    
+//    for (NSDictionary *dict in self.closestBeacon) {
+//        int rssi = (int)[dict objectForKey:@"rssi"];
+//        NSLog(@"rssi:%d", rssi);
+//    }
+    
+//
 
 }
 
