@@ -16,6 +16,8 @@
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 @property (nonatomic, strong) NSMutableArray *activeRegions;
 @property (nonatomic, strong) NSMutableArray *closestBeacon;
+@property (nonatomic, strong) NSMutableDictionary *rangedRegions;
+@property (nonatomic, strong) NSDate *timeStarter;
 
 @end
 
@@ -28,6 +30,7 @@
         NSLog(@"Monitoring available: %@", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]] ? @"YES":@"NO");
         self.activeRegions = [[NSMutableArray alloc] init];
         self.closestBeacon = [[NSMutableArray alloc] init];
+        self.rangedRegions = [NSMutableDictionary dictionary];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
         
@@ -52,14 +55,10 @@
         if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
             /*
              * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
-             //             */
-            CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"C2:E9:12:49:CB:60"];
-            beaconRegion.notifyEntryStateOnDisplay = YES;
-            [self.locationManager startMonitoringForRegion:beaconRegion];
+            */
             
-            beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"C2:4C:32:2D:3D:47"];
-            beaconRegion.notifyEntryStateOnDisplay = YES;
-            [self.locationManager startMonitoringForRegion:beaconRegion];
+            [self startMonitoringRegions];
+            
         } else {
             /*
              * Request permission to use Location Services. (new in iOS 8)
@@ -76,13 +75,7 @@
     }
     else if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways)
     {
-        CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"C2:E9:12:49:CB:60"];
-        beaconRegion.notifyEntryStateOnDisplay = YES;
-        [self.locationManager startMonitoringForRegion:beaconRegion];
-        
-        beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"C2:4C:32:2D:3D:47"];
-        beaconRegion.notifyEntryStateOnDisplay = YES;
-        [self.locationManager startMonitoringForRegion:beaconRegion];
+        [self startMonitoringRegions];
     }
     else if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied)
     {
@@ -99,9 +92,7 @@
 #pragma mark - CLLocationManagerDelegate methods
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
-//    NSLog(@"%s, state: %d, region: %@", __PRETTY_FUNCTION__, state, region);
-
-    // If the device is inside a monitored region..
+    
     if (state == CLRegionStateInside) {
         [self.locations addObject:[NSString stringWithFormat:@"Inside region: %@", region.identifier]];
         NSLog(@"Inside region identifier: %@", region.identifier);
@@ -109,43 +100,31 @@
         // Checks if the identifier of the inside-region is equal to one of the monitored regions
         NSSet *identifiers = [self.locationManager.monitoredRegions valueForKey:@"identifier"];
         BOOL containsIdentifier = [identifiers containsObject:region.identifier];
-        NSLog(@"containsIdentifier:%d", containsIdentifier);
-        
-
 
         // If the monitored regions do contain an identifier equal to the inside-region's identifier...
         if(containsIdentifier) {
-            NSLog(@"Contains identifier: %@", region.identifier);
-            
             // Checks if the identifier of the region already exists in the array of registered regions.
             BOOL containsRegion = [self.activeRegions containsObject:region.identifier];
-            NSLog(@"ContainsRegion:%d", containsRegion);
-            
-            // If it does exist. Do nothing.
-            if (containsRegion) {
 
+            if (containsRegion) {
+                NSLog(@"ContainsRegion: %@", self.activeRegions);
             }
             // If it does not exist, add the identifier.
             else {
                 [self.activeRegions addObject:region.identifier];
                 [self.locations addObject:[NSString stringWithFormat:@"%@ added to array", region.identifier]];
+                NSLog(@"%@ added to array", region.identifier);
+                
+                NSLog(@"activeRegions array: %@", self.activeRegions);
+                
+                if (self.activeRegions.count >= 2) {
+                    [self startMonitoringRegions];
+                }
+                
                 
             }
 
             [self.locations addObjectsFromArray:self.activeRegions];
-            NSLog(@"Active regions: %@", self.activeRegions);
-            NSLog(@"self.activeRegions.firstObject: %@", self.activeRegions.firstObject);
-            
-            // Start scanning, so closest beacons can be placed first in the array
-            NSLog(@"ActiveRegions count: %i", self.activeRegions.count);
-            NSLog(@"MonitoredRegions count: %i", self.locationManager.monitoredRegions.count);
-            if (self.activeRegions.count >= 2) {
-                if ([region isKindOfClass:[CLBeaconRegion class]]) {
-                    [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
-                    [self.locations addObject:[NSString stringWithFormat:@"Started ranging the closest"]];
-                }
-            }
-            
             
             // Post the identifier to the back-end to update your current location.
             
@@ -172,6 +151,42 @@
     }
 }
 
+- (void)startMonitoringRegions {
+    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"C2:E9:12:49:CB:60"];
+    beaconRegion.notifyEntryStateOnDisplay = YES;
+    [self.locationManager startMonitoringForRegion:beaconRegion];
+    
+    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"C2:4C:32:2D:3D:47"];
+    beaconRegion.notifyEntryStateOnDisplay = YES;
+    [self.locationManager startMonitoringForRegion:beaconRegion];
+}
+
+- (void)temporaryRangeBeacons:(CLRegion *)region {
+    if (self.activeRegions.count >= 2) {
+        if ([region isKindOfClass:[CLBeaconRegion class]]) {
+            NSLog(@"Started ranging for beacons in region: %@", region.identifier);
+            [self.locations addObject:[NSString stringWithFormat:@"RangingBeacons in: %@", region.identifier]];
+            
+            self.timeStarter = [NSDate date];
+    //        [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(startRanging:) userInfo:nil repeats:NO];
+            [self startRanging:region];
+            
+        }
+    }
+}
+
+- (void)startRanging:(CLRegion *)region {
+    [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+//    [self.locations addObject:[NSString stringWithFormat:@"Time: %@", self.timeStarter]];
+    NSLog(@"Time: %@", self.timeStarter);
+    
+    // NSDate, start date, tijd vergelijken, stoppen in startranging
+}
+
+- (void)stopRanging:(CLRegion *)region {
+    
+}
+
 /*
  *  locationManager:didRangeBeacons:inRegion:
  *
@@ -183,72 +198,24 @@
  *    by the device.
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     for (CLBeacon *beacon in beacons) {
-        NSMutableArray *array = [dict objectForKey:region.identifier];
+        NSMutableArray *array = [self.rangedRegions objectForKey:region.identifier];
+//        NSLog(@"Dict after creating array: %@", array);
         if (array == nil) {
+            NSLog(@"Array is nil, adding region: %@", region.identifier);
             array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
-            [dict setObject:array forKey:region.identifier];
+            [self.rangedRegions setObject:array forKey:region.identifier];
         } else {
             [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
         }
         
-        NSLog(@"dict: %@", dict);
         
-//        NSArray *filtered = [self.closestBeacon filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(identifier LIKE[cd] %@)", region.identifier]];
-//        
-//        BOOL containsBeacon = filtered.count > 0;
-//        NSLog(@"ContainsBeacon:%d", containsBeacon);
-//
-//        if (containsBeacon) {
-//            NSLog(@"Region %@ exists in array closestBeacon", region.identifier);
-//        }
-//
-//        else {
-//            NSLog(@"Adding region %@ to closestBeacon", region.identifier);
-//            [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier] }];
-//        }
+//        NSLog(@"Array for %@: %@", region.identifier, array);
+        
+        self.closestBeacon = [NSMutableArray arrayWithArray:self.rangedRegions.allKeys];
+        NSLog(@"dict: %@", self.rangedRegions);
+//        NSLog(@"closestBeacon: %@", self.closestBeacon);
     }
-    
-
-    NSLog(@"MyArray: %@", self.closestBeacon);
-    
-//    [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier]}];
-//    NSLog(@"MyArray: %@", self.closestBeacon);
-//        for (CLBeacon *beacon in beacons) {
-//            NSLog(@"Region Identifier: %@", region.identifier);
-//            NSString *beaconAccuracy1 = [[NSNumber numberWithFloat:beacon.accuracy] stringValue];
-//            NSMutableString *beaconAccuracy2 = [NSMutableString stringWithString:beaconAccuracy1];
-//            
-//            if ([beaconAccuracy2 isEqualToString: @"-1"]) {
-//                [beaconAccuracy2 setString:@"Can't find region"];
-//            }
-//        
-//            NSLog(@"beaconAccuracy: %@", beaconAccuracy2);
-//        }
-
-    
-    
-    
-    
-    
-//    NSLog(@"Region %@'s RSSI: %@", region.identifier, [beacons valueForKey:@"rssi"]);
-//    [self.closestBeacon addObject:@{ @"identifier": [NSString stringWithFormat:@"%@", region.identifier],
-//                                     @"rssi": [NSString stringWithFormat:@"%@", [beacons valueForKey:@"rssi"]]
-//                                     }];
-//
-//    if (self.closestBeacon.count == 5) {
-//        NSLog(@"true");
-//    }
-//    
-//    
-//    for (NSDictionary *dict in self.closestBeacon) {
-//        int rssi = (int)[dict objectForKey:@"rssi"];
-//        NSLog(@"rssi:%d", rssi);
-//    }
-    
-//
-
 }
 
 /*
@@ -282,6 +249,15 @@
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.locations addObject:[NSString stringWithFormat:@"Left region: %@", region.identifier]];
+    NSLog(@"Exited region: %@", region.identifier);
+    
+    if ([self.activeRegions containsObject:region.identifier]) {
+        [self.activeRegions removeObject:region.identifier];
+        [self.locations addObject:[NSString stringWithFormat:@"Removed %@ from activeRegions", region.identifier]];
+        NSLog(@"Removed %@ from activeRegions", region.identifier);
+    }
+    
+    if (self.activeRegions.count == 0) {
     [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
                                                 withEmail:self.googlePlusUserInfo[@"email"]
                                               forUsername:self.googlePlusUserInfo[@"full_name"]
@@ -290,6 +266,11 @@
                                                   } failure:^(NSError *error) {
                                                       [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
                                                   }];
+    }
+    else {
+        // Post first object
+        NSLog(@"Post first object");
+    }
 }
 
 /*
@@ -332,6 +313,8 @@
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region  {
     NSLog(@"%s, region: %@", __PRETTY_FUNCTION__, region);
     [self.locations addObject:[NSString stringWithFormat:@"didStartMonitoring: %@", region.identifier]];
+    
+    [self temporaryRangeBeacons:region];
 }
 
 /*
@@ -344,6 +327,30 @@
  */
 - (void)locationManager:(CLLocationManager *)manager didVisit:(CLVisit *)visit {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_6, __MAC_NA, __IPHONE_2_0, __IPHONE_6_0); {
+    NSLog(@"%s, newLocation %@, oldLocation %@", __PRETTY_FUNCTION__, newLocation, oldLocation);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+     didUpdateLocations:(NSArray *)locations __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_6_0); {
+    NSLog(@"%s, didUpdateLocations: %@", __PRETTY_FUNCTION__, locations);
+}
+
+- (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_6_0); {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)locationManagerDidResumeLocationUpdates:(CLLocationManager *)manager __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_6_0); {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+didFinishDeferredUpdatesWithError:(NSError *)error __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_6_0); {
+    NSLog(@"%s, error: %@", __PRETTY_FUNCTION__, error);
 }
 
 @end
