@@ -107,7 +107,11 @@
             BOOL containsRegion = [self.activeRegions containsObject:region.identifier];
 
             if (containsRegion) {
-                NSLog(@"ContainsRegion: %@", self.activeRegions);
+                NSLog(@"%@ already contains %@", self.activeRegions, region.identifier);
+                
+                if (self.activeRegions.count >= 2) {
+                    [self temporaryRangeBeacons:region];
+                }
             }
             // If it does not exist, add the identifier.
             else {
@@ -167,8 +171,6 @@
             NSLog(@"Started ranging for beacons in region: %@", region.identifier);
             [self.locations addObject:[NSString stringWithFormat:@"RangingBeacons in: %@", region.identifier]];
             
-            self.timeStarter = [NSDate date];
-    //        [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(startRanging:) userInfo:nil repeats:NO];
             [self startRanging:region];
             
         }
@@ -176,9 +178,10 @@
 }
 
 - (void)startRanging:(CLRegion *)region {
+     self.timeStarter = [NSDate date];
+    
     [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
-//    [self.locations addObject:[NSString stringWithFormat:@"Time: %@", self.timeStarter]];
-    NSLog(@"Time: %@", self.timeStarter);
+    
     
     // NSDate, start date, tijd vergelijken, stoppen in startranging
 }
@@ -198,6 +201,19 @@
  *    by the device.
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    
+   
+    [self.locations addObject:[NSString stringWithFormat:@"Time: %@", self.timeStarter]];
+    NSDate *stopTime = [NSDate date];
+
+    NSTimeInterval elapsedTime = [stopTime timeIntervalSinceDate:self.timeStarter];
+    NSLog(@"elapsedTime: %g", elapsedTime);
+    
+    if (elapsedTime > 5) {
+        NSLog(@"DIFFERENCE BIGGER THAN 5 SECONDS STOP");
+        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+    }
+
     for (CLBeacon *beacon in beacons) {
         NSMutableArray *array = [self.rangedRegions objectForKey:region.identifier];
 //        NSLog(@"Dict after creating array: %@", array);
@@ -213,7 +229,7 @@
 //        NSLog(@"Array for %@: %@", region.identifier, array);
         
         self.closestBeacon = [NSMutableArray arrayWithArray:self.rangedRegions.allKeys];
-        NSLog(@"dict: %@", self.rangedRegions);
+//        NSLog(@"dict: %@", self.rangedRegions);
 //        NSLog(@"closestBeacon: %@", self.closestBeacon);
     }
 }
