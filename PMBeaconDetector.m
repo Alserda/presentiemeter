@@ -109,6 +109,20 @@
             if (containsRegion) {
                 NSLog(@"%@ already contains %@", self.activeRegions, region.identifier);
                 
+                if (self.activeRegions.count == 1) {
+                    // Post the identifier to the back-end to update your current location.
+                    [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                                      withLocation:self.activeRegions.firstObject
+                                                       forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                          andEmail:self.googlePlusUserInfo[@"email"]
+                                                           success:^(id json) {
+                                                               [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
+                                                           } failure:^(NSError *error) {
+                                                               [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
+                                                           }];
+                    
+                }
+                
                 if (self.activeRegions.count >= 2) {
                     [self temporaryRangeBeacons:region];
                 }
@@ -121,26 +135,30 @@
                 
                 NSLog(@"activeRegions array: %@", self.activeRegions);
                 
+                if (self.activeRegions.count == 1) {
+                    // Post the identifier to the back-end to update your current location.
+                    [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                                      withLocation:self.activeRegions.firstObject
+                                                       forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                          andEmail:self.googlePlusUserInfo[@"email"]
+                                                           success:^(id json) {
+                                                               [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
+                                                           } failure:^(NSError *error) {
+                                                               [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
+                                                           }];
+
+                }
+                
                 if (self.activeRegions.count >= 2) {
                     [self startMonitoringRegions];
                 }
                 
                 
             }
-
             [self.locations addObjectsFromArray:self.activeRegions];
             
-            // Post the identifier to the back-end to update your current location.
             
-            [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-                                              withLocation:self.activeRegions.firstObject
-                                               forUsername:self.googlePlusUserInfo[@"full_name"]
-                                                  andEmail:self.googlePlusUserInfo[@"email"]
-                                                   success:^(id json) {
-                                                       [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
-                                                   } failure:^(NSError *error) {
-                                                       [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
-                                                   }];
+            
             
         }
         // The monitored regions don't contain this identifier.
@@ -201,20 +219,22 @@
  *    by the device.
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
-    
-   
-    [self.locations addObject:[NSString stringWithFormat:@"Time: %@", self.timeStarter]];
-    NSDate *stopTime = [NSDate date];
-
-    NSTimeInterval elapsedTime = [stopTime timeIntervalSinceDate:self.timeStarter];
-    NSLog(@"elapsedTime: %g", elapsedTime);
-    
-    if (elapsedTime > 5) {
-        NSLog(@"DIFFERENCE BIGGER THAN 5 SECONDS STOP");
-        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
-    }
-
     for (CLBeacon *beacon in beacons) {
+        
+        NSDate *stopTime = [NSDate date];
+        
+        NSTimeInterval elapsedTime = [stopTime timeIntervalSinceDate:self.timeStarter];
+        NSLog(@"elapsedTime: %g for id: %@", elapsedTime, region.identifier);
+        
+        if (elapsedTime > 5) {
+            NSLog(@"DIFFERENCE BIGGER THAN 5 SECONDS STOP");
+            [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+        }
+        else {
+            //REST, ARRAY ETC VAN HIERONDER
+        }
+        
+        
         NSMutableArray *array = [self.rangedRegions objectForKey:region.identifier];
 //        NSLog(@"Dict after creating array: %@", array);
         if (array == nil) {
@@ -227,10 +247,10 @@
         
         
 //        NSLog(@"Array for %@: %@", region.identifier, array);
-        
+        NSLog(@"dict: %@", self.rangedRegions);
         self.closestBeacon = [NSMutableArray arrayWithArray:self.rangedRegions.allKeys];
-//        NSLog(@"dict: %@", self.rangedRegions);
-//        NSLog(@"closestBeacon: %@", self.closestBeacon);
+
+        NSLog(@"closestBeacon: %@", self.closestBeacon);
     }
 }
 
