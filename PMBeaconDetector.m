@@ -15,7 +15,6 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 @property (nonatomic, strong) NSMutableArray *activeRegions;
-@property (nonatomic, strong) NSMutableArray *closestBeacon;
 @property (nonatomic, strong) NSMutableDictionary *rangedRegions;
 @property (nonatomic, strong) NSTimer *timeoutTimer;
 
@@ -29,7 +28,6 @@
         NSLog(@"Ranging Available: %@", [CLLocationManager isRangingAvailable] ? @"YES":@"NO");
         NSLog(@"Monitoring available: %@", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]] ? @"YES":@"NO");
         self.activeRegions = [[NSMutableArray alloc] init];
-        self.closestBeacon = [[NSMutableArray alloc] init];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
         
@@ -108,7 +106,11 @@
             if (containsRegion) {
                 NSLog(@"%@ already contains %@", self.activeRegions, region.identifier);
                 
-                if (self.activeRegions.count == 1) {
+                if (self.activeRegions.count >= 2) {
+                    [self temporaryRangeBeacons];
+                }
+                
+                else if (self.activeRegions.count == 1) {
                     // Post the identifier to the back-end to update your current location.
                     [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
                                                       withLocation:self.activeRegions.firstObject
@@ -120,12 +122,14 @@
                                                                [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
                                                            }];
                     
+                    
+                    
                 }
             }
             // If it does not exist, add the identifier.
             else {
                 [self.activeRegions addObject:region.identifier];
-                [self.locations addObject:[NSString stringWithFormat:@"%@ added to array", region.identifier]];
+//                [self.locations addObject:[NSString stringWithFormat:@"%@ added to array", region.identifier]];
                 NSLog(@"%@ added to array", region.identifier);
                 
                 NSLog(@"activeRegions array: %@", self.activeRegions);
@@ -150,7 +154,7 @@
                 
                 
             }
-            [self.locations addObjectsFromArray:self.activeRegions];
+//            [self.locations addObjectsFromArray:self.activeRegions];
             
         }
         // The monitored regions don't contain this identifier.
@@ -161,16 +165,20 @@
     
     // The region is either Outside the current location, or Unknown.
     else {
-        [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state: %d", region.identifier, state]];
+        [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state: %ld", region.identifier, (long)state]];
     }
 }
 
 - (void)startMonitoringRegions {
-    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:52064 minor:11111 identifier:@"C2:E9:12:49:CB:60"];
+    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] identifier:@"C2:E9:12:49:CB:60"];
+    beaconRegion.notifyEntryStateOnDisplay = YES;
+    [self.locationManager startMonitoringForRegion:beaconRegion];
+
+    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"A6B765FA-052C-4F13-B13C-C681E2B27AA6"] identifier:@"C2:4C:32:2D:3D:47"];
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
     
-    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] major:15687 minor:12845 identifier:@"C2:4C:32:2D:3D:47"];
+    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"e092725e-726a-4e2f-a0ac-f5f9e10b006f"] identifier:@"KontactBeacon"];
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
 }
@@ -184,6 +192,7 @@
                 NSLog(@"Already scanning this region: %@", region.identifier);
             } else {
                 NSLog(@"Ranging beacons in region: %@", region.identifier);
+                [self.locations addObject:[NSString stringWithFormat:@"Ranging beacons in region: %@", region.identifier]];
                 [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
                 didStartRanging = YES;
             }
@@ -223,14 +232,15 @@
         
         NSLog(@"average: %f", average);
         
-        [self.rangedRegions removeObjectForKey:regionIdentifier];
         [self.rangedRegions setObject:[NSNumber numberWithFloat:average] forKey:regionIdentifier];
-
-        //            [self.rangedRegions removeObjectForKey:region.identifier];
-        //            NSLog(@"closestBeacon: %@", self.closestBeacon);
     }
     //
     NSLog(@"rangedRegions with average: %@", self.rangedRegions);
+    
+    
+    
+    
+    self.rangedRegions = nil;
 }
 
 /*
@@ -248,10 +258,21 @@
         NSMutableArray *array = [self.rangedRegions objectForKey:region.identifier];
         if (array == nil) {
             NSLog(@"Array is nil, adding region: %@", region.identifier);
-            array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
-            [self.rangedRegions setObject:array forKey:region.identifier];
+            if (beacon.accuracy < 0) {
+                NSLog(@"beacon.accuracy %f is under 0, don't add", beacon.accuracy);
+            }
+            else {
+                array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
+                [self.rangedRegions setObject:array forKey:region.identifier];
+            }
+            
         } else {
-            [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
+            if (beacon.accuracy < 0) {
+                NSLog(@"beacon.accuracy %f is under 0, don't add", beacon.accuracy);
+            }
+            else {
+                [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
+            }
         }
 //        NSLog(@"Dict after creating array: %@", array);
     }
@@ -295,31 +316,34 @@
         [self.activeRegions removeObject:region.identifier];
         [self.locations addObject:[NSString stringWithFormat:@"Removed %@ from activeRegions", region.identifier]];
         NSLog(@"Removed %@ from activeRegions", region.identifier);
-//        [self.locations addObjectsFromArray:self.activeRegions];
+        NSLog(@"activeRegions after removal: %@", self.activeRegions);
     }
     
-    if (self.activeRegions) {
-        // Post first object
-        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-                                          withLocation:self.activeRegions.firstObject
-                                           forUsername:self.googlePlusUserInfo[@"full_name"]
-                                              andEmail:self.googlePlusUserInfo[@"email"]
-                                               success:^(id json) {
-                                                   [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
-                                               } failure:^(NSError *error) {
-                                                   [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
-                                               }];
-    }
-    else {
-        
+    // Decide whether to post unavailability or the remaining object
+    
+    if (!self.activeRegions || !self.activeRegions.count) {
         [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
                                                     withEmail:self.googlePlusUserInfo[@"email"]
                                                   forUsername:self.googlePlusUserInfo[@"full_name"]
                                                       success:^(id json) {
                                                           [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST successful %@", region.identifier]];
+                                                          NSLog(@"Unavailable POST successful %@", region.identifier);
                                                       } failure:^(NSError *error) {
                                                           [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
                                                       }];
+    }
+    else {
+        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                          withLocation:self.activeRegions.firstObject
+                                           forUsername:self.googlePlusUserInfo[@"full_name"]
+                                              andEmail:self.googlePlusUserInfo[@"email"]
+                                               success:^(id json) {
+                                                   [self.locations addObject:[NSString stringWithFormat:@"Left Region POST successful to: %@", self.activeRegions.firstObject]];
+                                                   NSLog(@"Left Region POST successful, %@ is new location", self.activeRegions.firstObject);
+                                               } failure:^(NSError *error) {
+                                                   [self.locations addObject:[NSString stringWithFormat:@"Left Region POST failed to %@", self.activeRegions.firstObject]];
+                                                   NSLog(@"Left Region POST failed to %@", self.activeRegions.firstObject);
+                                               }];
     }
 }
 
