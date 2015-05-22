@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *activeRegions;
 @property (nonatomic, strong) NSMutableArray *closestBeacon;
 @property (nonatomic, strong) NSMutableDictionary *rangedRegions;
-@property (nonatomic, strong) NSDate *timeStarter;
+@property (nonatomic, strong) NSTimer *timeoutTimer;
 
 @end
 
@@ -30,7 +30,6 @@
         NSLog(@"Monitoring available: %@", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]] ? @"YES":@"NO");
         self.activeRegions = [[NSMutableArray alloc] init];
         self.closestBeacon = [[NSMutableArray alloc] init];
-        self.rangedRegions = [NSMutableDictionary dictionary];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
         
@@ -146,7 +145,7 @@
                 }
                 
                 if (self.activeRegions.count >= 2) {
-                    [self startMonitoringRegions];
+                    [self temporaryRangeBeacons];
                 }
                 
                 
@@ -176,26 +175,62 @@
     [self.locationManager startMonitoringForRegion:beaconRegion];
 }
 
-- (void)temporaryRangeBeacons:(CLRegion *)region {
-    if (self.activeRegions.count >= 2) {
-        if ([region isKindOfClass:[CLBeaconRegion class]]) {
-            NSLog(@"Started ranging for beacons in region: %@", (CLBeaconRegion *)self.locationManager.monitoredRegions);
-            [self.locations addObject:[NSString stringWithFormat:@"RangingBeacons in: %@", (CLBeaconRegion *)self.locationManager.monitoredRegions]];
-            
-            self.timeStarter = [NSDate date];
-            
-            [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)self.locationManager.monitoredRegions];
-            
+- (void)temporaryRangeBeacons {
+    NSSet *regions = [self.locationManager monitoredRegions];
+    BOOL didStartRanging = NO;
+    for (CLRegion *region in regions) {
+        if ([self.activeRegions containsObject:region.identifier]) {
+            if ([self.locationManager.rangedRegions containsObject:region]) {
+                NSLog(@"Already scanning this region: %@", region.identifier);
+            } else {
+                NSLog(@"Ranging beacons in region: %@", region.identifier);
+                [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+                didStartRanging = YES;
+            }
         }
+    }
+    
+    if (didStartRanging) {
+        self.rangedRegions = [NSMutableDictionary dictionary];
+        [self.timeoutTimer invalidate];
+        // Start a timer to evaluate the ranging
+        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+                                                             target:self
+                                                           selector:@selector(stopRangingTimeout:)
+                                                           userInfo:nil
+                                                            repeats:NO];
     }
 }
 
-- (void)startRanging:(CLRegion *)region {
+- (void)stopRangingTimeout:(NSTimer *)timer {
+    self.timeoutTimer = nil;
+    // First stop all active scanned regions
+    NSSet *rangingBeacons = self.locationManager.rangedRegions;
+    for (CLBeaconRegion *region in rangingBeacons) {
+        [self.locationManager stopRangingBeaconsInRegion:region];
+    }
     
-}
+    // Now determine the average for the ranged regions and determine the best.
+    for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
+        NSArray *array = [self.rangedRegions objectForKey:regionIdentifier];
+        float total;
+        total = 0;
+        for(NSNumber *value in array) {
+            total+=[value floatValue];
+        }
+        
+        float average = total/array.count;
+        
+        NSLog(@"average: %f", average);
+        
+        [self.rangedRegions removeObjectForKey:regionIdentifier];
+        [self.rangedRegions setObject:[NSNumber numberWithFloat:average] forKey:regionIdentifier];
 
-- (void)stopRanging:(CLRegion *)region {
-    
+        //            [self.rangedRegions removeObjectForKey:region.identifier];
+        //            NSLog(@"closestBeacon: %@", self.closestBeacon);
+    }
+    //
+    NSLog(@"rangedRegions with average: %@", self.rangedRegions);
 }
 
 /*
@@ -210,59 +245,17 @@
  */
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
     for (CLBeacon *beacon in beacons) {
-        
-        NSDate *stopTime = [NSDate date];
-        NSTimeInterval elapsedTime = [stopTime timeIntervalSinceDate:self.timeStarter];
         NSMutableArray *array = [self.rangedRegions objectForKey:region.identifier];
-        
-        if (elapsedTime > 5) {
-            NSLog(@"5 seconds elapsed for %@, stopped ranging", region.identifier);
-            [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
-            NSLog(@"Scanned distances %@", array);
-            
-//            self.closestBeacon = [NSMutableArray arrayWithArray:self.rangedRegions.allKeys];
-            
-            // Calculate average between the array of this identifier
-            
-            float total;
-            total = 0;
-            for(NSNumber *value in array) {
-                total+=[value floatValue];
-            }
-            
-            float average = total/array.count;
-            
-            NSLog(@"average: %f", average);
-            
-            [self.rangedRegions removeObjectForKey:region.identifier];
-            [self.rangedRegions setObject:[NSNumber numberWithFloat:average] forKey:region.identifier];
-            
-            
-            NSLog(@"rangedRegions with average: %@", self.rangedRegions);
-//            [self.rangedRegions removeObjectForKey:region.identifier];
-//            NSLog(@"closestBeacon: %@", self.closestBeacon);
+        if (array == nil) {
+            NSLog(@"Array is nil, adding region: %@", region.identifier);
+            array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
+            [self.rangedRegions setObject:array forKey:region.identifier];
+        } else {
+            [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
         }
-        else {
-            if (array == nil) {
-                NSLog(@"Array is nil, adding region: %@", region.identifier);
-                array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
-                [self.rangedRegions setObject:array forKey:region.identifier];
-            } else {
-                [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
-                NSLog(@"rangedRegions: %@", self.rangedRegions);
-            }
-        }
-        
-        
-        
 //        NSLog(@"Dict after creating array: %@", array);
-        
-        
-        
-        
-        
-        
     }
+    NSLog(@"rangedRegions: %@", self.rangedRegions);
 }
 
 /*
