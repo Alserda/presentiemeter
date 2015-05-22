@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *activeRegions;
 @property (nonatomic, strong) NSMutableDictionary *rangedRegions;
 @property (nonatomic, strong) NSTimer *timeoutTimer;
+@property (nonatomic, strong) NSString *closestBeacon;
 
 @end
 
@@ -219,7 +220,7 @@
         [self.locationManager stopRangingBeaconsInRegion:region];
     }
     
-    // Now determine the average for the ranged regions and determine the best.
+    // Now determine the average for the ranged regions
     for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
         NSArray *array = [self.rangedRegions objectForKey:regionIdentifier];
         float total;
@@ -233,11 +234,20 @@
         NSLog(@"average: %f", average);
         
         [self.rangedRegions setObject:[NSNumber numberWithFloat:average] forKey:regionIdentifier];
+        
+//        self.closestBeacon = [NSString stringWithFormat:@"%f", average];
+//        NSLog(@"closest target in loop: %@", self.closestBeacon);
     }
+
     //
     NSLog(@"rangedRegions with average: %@", self.rangedRegions);
     
+//    for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
+//        NSNumber *average = [self.rangedRegions objectForKey:regionIdentifier];
+//        // Compare each number and decide the closest
+//    }
     
+    NSLog(@"closest target after: %@", self.closestBeacon);
     
     
     self.rangedRegions = nil;
@@ -321,7 +331,7 @@
     
     // Decide whether to post unavailability or the remaining object
     
-    if (!self.activeRegions || !self.activeRegions.count) {
+    if (!self.activeRegions || ![self.activeRegions count]) {
         [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
                                                     withEmail:self.googlePlusUserInfo[@"email"]
                                                   forUsername:self.googlePlusUserInfo[@"full_name"]
