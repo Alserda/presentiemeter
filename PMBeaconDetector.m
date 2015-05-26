@@ -179,7 +179,7 @@
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
     
-    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"e092725e-726a-4e2f-a0ac-f5f9e10b006f"] identifier:@"KontactBeacon"];
+    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"e092725e-726a-4e2f-a0ac-f5f9e10b006f"] identifier:@"dr8E"];
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
 }
@@ -231,23 +231,55 @@
         
         float average = total/array.count;
         
-        NSLog(@"average: %f", average);
-        
         [self.rangedRegions setObject:[NSNumber numberWithFloat:average] forKey:regionIdentifier];
-        
-//        self.closestBeacon = [NSString stringWithFormat:@"%f", average];
-//        NSLog(@"closest target in loop: %@", self.closestBeacon);
     }
 
     //
     NSLog(@"rangedRegions with average: %@", self.rangedRegions);
+    NSNumber *closest;
     
-//    for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
-//        NSNumber *average = [self.rangedRegions objectForKey:regionIdentifier];
-//        // Compare each number and decide the closest
-//    }
+    for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
+        NSNumber *average = [self.rangedRegions objectForKey:regionIdentifier];
+        NSLog(@"average: %@ from ID %@", average, regionIdentifier);
+        // Compare each number and decide the closest
+        
+        
+        if (!closest) {
+            NSLog(@"closest is empty, adding %@", average);
+            closest = average;
+            self.closestBeacon = regionIdentifier;
+        }
+        else if ([average compare:closest] == NSOrderedAscending) {
+            NSLog(@"%@ is closer than %@, replacing", average, closest);
+            closest = average;
+            self.closestBeacon = regionIdentifier;
+        }
+        else {
+            NSLog(@"%@ is futher away than %@", average, closest);
+        }
+        
+        
+    }
     
     NSLog(@"closest target after: %@", self.closestBeacon);
+    
+    if (self.closestBeacon) {
+        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
+                                          withLocation:self.closestBeacon
+                                           forUsername:self.googlePlusUserInfo[@"full_name"]
+                                              andEmail:self.googlePlusUserInfo[@"email"]
+                                               success:^(id json) {
+                                                   [self.locations addObject:[NSString stringWithFormat:@"Posted closest region: %@", self.closestBeacon]];
+                                                   NSLog(@"Posted closest region: %@", self.closestBeacon);
+                                               } failure:^(NSError *error) {
+                                                   [self.locations addObject:[NSString stringWithFormat:@"Posted closest region failed: %@", error]];
+                                                   NSLog(@"Posted closest region failed: %@", error);
+                                               }];
+    }
+    else {
+        NSLog(@"No closestbeacon");
+    }
+
     
     
     self.rangedRegions = nil;
@@ -284,9 +316,8 @@
                 [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
             }
         }
-//        NSLog(@"Dict after creating array: %@", array);
+        NSLog(@"rangedRegions: %@", self.rangedRegions);
     }
-    NSLog(@"rangedRegions: %@", self.rangedRegions);
 }
 
 /*
@@ -340,6 +371,7 @@
                                                           NSLog(@"Unavailable POST successful %@", region.identifier);
                                                       } failure:^(NSError *error) {
                                                           [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
+                                                          NSLog(@"Unavailable POST failed: %@", error);
                                                       }];
     }
     else {
