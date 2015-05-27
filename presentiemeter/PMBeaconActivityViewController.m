@@ -41,6 +41,10 @@
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:YES];
 }
 
+- (void)startFindingBeacons:(NSTimer *)timer {
+    self.beaconfinder = [PMBeaconDetector new];
+    [self.beaconfinder start];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

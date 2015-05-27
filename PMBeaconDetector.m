@@ -92,8 +92,8 @@
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
     
     if (state == CLRegionStateInside) {
-        [self.locations addObject:[NSString stringWithFormat:@"Inside region: %@", region.identifier]];
-        NSLog(@"Inside region identifier: %@", region.identifier);
+        [self.locations addObject:[NSString stringWithFormat:@"%@ is inside", region.identifier]];
+        NSLog(@"%@ is inside", region.identifier);
         
         // Checks if the identifier of the inside-region is equal to one of the monitored regions
         NSSet *identifiers = [self.locationManager.monitoredRegions valueForKey:@"identifier"];
@@ -118,9 +118,9 @@
                                                        forUsername:self.googlePlusUserInfo[@"full_name"]
                                                           andEmail:self.googlePlusUserInfo[@"email"]
                                                            success:^(id json) {
-                                                               [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
+                                                               [self.locations addObject:[NSString stringWithFormat:@"Only region %@ is the new location", self.activeRegions.firstObject]];
                                                            } failure:^(NSError *error) {
-                                                               [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
+                                                               [self.locations addObject:[NSString stringWithFormat:@"Only region %@ post failed", region.identifier]];
                                                            }];
                     
                     
@@ -130,7 +130,7 @@
             // If it does not exist, add the identifier.
             else {
                 [self.activeRegions addObject:region.identifier];
-//                [self.locations addObject:[NSString stringWithFormat:@"%@ added to array", region.identifier]];
+                [self.locations addObject:[NSString stringWithFormat:@"%@ is added to activeRegions", region.identifier]];
                 NSLog(@"%@ added to array", region.identifier);
                 
                 NSLog(@"activeRegions array: %@", self.activeRegions);
@@ -142,9 +142,9 @@
                                                        forUsername:self.googlePlusUserInfo[@"full_name"]
                                                           andEmail:self.googlePlusUserInfo[@"email"]
                                                            success:^(id json) {
-                                                               [self.locations addObject:[NSString stringWithFormat:@"POST successful to: %@", self.activeRegions.firstObject]];
+                                                               [self.locations addObject:[NSString stringWithFormat:@"First region added %@ is the new location", self.activeRegions.firstObject]];
                                                            } failure:^(NSError *error) {
-                                                               [self.locations addObject:[NSString stringWithFormat:@"POST failed to %@", region.identifier]];
+                                                               [self.locations addObject:[NSString stringWithFormat:@"First region added %@ post failed", region.identifier]];
                                                            }];
 
                 }
@@ -166,7 +166,22 @@
     
     // The region is either Outside the current location, or Unknown.
     else {
-        [self.locations addObject:[NSString stringWithFormat:@"Region: %@, state: %ld", region.identifier, (long)state]];
+        [self.locations addObject:[NSString stringWithFormat:@"Region: %@ is Unknown or Outside", region.identifier]];
+        
+        // Decide whether to post unavailability or the remaining object
+        
+        if ([self.activeRegions count] == 0) {
+            [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
+                                                        withEmail:self.googlePlusUserInfo[@"email"]
+                                                      forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                          success:^(id json) {
+                                                              [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST successful %@", region.identifier]];
+                                                              NSLog(@"Unavailable POST successful %@", region.identifier);
+                                                          } failure:^(NSError *error) {
+                                                              [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
+                                                              NSLog(@"Unavailable POST failed: %@", error);
+                                                          }];
+        }
     }
 }
 
@@ -261,9 +276,12 @@
         
     }
     
-    NSLog(@"closest target after: %@", self.closestBeacon);
+    NSLog(@"closest target: %@", self.closestBeacon);
     
-    if (self.closestBeacon) {
+    if ([self.activeRegions containsObject:self.closestBeacon]) {
+        NSLog(@"Yes, %@ contains %@", self.activeRegions, self.closestBeacon);
+        [self.locations addObject:[NSString stringWithFormat:@"Yes, activeRegions contains %@", self.closestBeacon]];
+        
         [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
                                           withLocation:self.closestBeacon
                                            forUsername:self.googlePlusUserInfo[@"full_name"]
@@ -277,10 +295,9 @@
                                                }];
     }
     else {
-        NSLog(@"No closestbeacon");
+        NSLog(@"No, %@ does not contain %@", self.activeRegions, self.closestBeacon);
+        [self.locations addObject:[NSString stringWithFormat:@"No, activeRegions does not contain %@", self.closestBeacon]];
     }
-
-    
     
     self.rangedRegions = nil;
 }
@@ -356,36 +373,10 @@
     if ([self.activeRegions containsObject:region.identifier]) {
         [self.activeRegions removeObject:region.identifier];
         [self.locations addObject:[NSString stringWithFormat:@"Removed %@ from activeRegions", region.identifier]];
+        [self.locations addObject:[NSString stringWithFormat:@"activeRegions: "]];
+        [self.locations addObjectsFromArray:self.activeRegions];
         NSLog(@"Removed %@ from activeRegions", region.identifier);
         NSLog(@"activeRegions after removal: %@", self.activeRegions);
-    }
-    
-    // Decide whether to post unavailability or the remaining object
-    
-    if (!self.activeRegions || ![self.activeRegions count]) {
-        [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
-                                                    withEmail:self.googlePlusUserInfo[@"email"]
-                                                  forUsername:self.googlePlusUserInfo[@"full_name"]
-                                                      success:^(id json) {
-                                                          [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST successful %@", region.identifier]];
-                                                          NSLog(@"Unavailable POST successful %@", region.identifier);
-                                                      } failure:^(NSError *error) {
-                                                          [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
-                                                          NSLog(@"Unavailable POST failed: %@", error);
-                                                      }];
-    }
-    else {
-        [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
-                                          withLocation:self.activeRegions.firstObject
-                                           forUsername:self.googlePlusUserInfo[@"full_name"]
-                                              andEmail:self.googlePlusUserInfo[@"email"]
-                                               success:^(id json) {
-                                                   [self.locations addObject:[NSString stringWithFormat:@"Left Region POST successful to: %@", self.activeRegions.firstObject]];
-                                                   NSLog(@"Left Region POST successful, %@ is new location", self.activeRegions.firstObject);
-                                               } failure:^(NSError *error) {
-                                                   [self.locations addObject:[NSString stringWithFormat:@"Left Region POST failed to %@", self.activeRegions.firstObject]];
-                                                   NSLog(@"Left Region POST failed to %@", self.activeRegions.firstObject);
-                                               }];
     }
 }
 
