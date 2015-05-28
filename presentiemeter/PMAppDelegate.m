@@ -11,8 +11,7 @@
 #import "PMLocationViewController.h"
 #import "PMBeaconActivityViewController.h"
 #import "PMUserLogin.h"
-#import <EstimoteSDK/EstimoteSDK.h>
-#import <GooglePlus.h>
+#import <GoogleOpenSource/GoogleOpenSource.h>
 #import "PMBeaconDetector.h"
 
 #define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
@@ -43,10 +42,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
 
-    [ESTCloudManager setupAppID:@"app_2f865fbwyx" andAppToken:@"e05409fc493936dd3c279b9563b72e75"];
-    [ESTCloudManager enableAnalytics:YES];
-
-    
+   
     // Register for remote notificatons related to Estimote Remote Beacon Management.
     if (IS_OS_8_OR_LATER)
     {

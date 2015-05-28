@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <EstimoteSDK/EstimoteSDK.h>
+#import <GooglePlus/GooglePlus.h>
 
 #import "PMLoginViewController.h"
 

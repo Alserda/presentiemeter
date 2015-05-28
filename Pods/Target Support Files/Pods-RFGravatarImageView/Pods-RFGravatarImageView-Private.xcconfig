@@ -1,6 +1,6 @@
 #include "Pods-RFGravatarImageView.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/RFGravatarImageView" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public/RFGravatarImageView" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/google-plus-ios-sdk"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/RFGravatarImageView" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/NSData+MD5Digest" "${PODS_ROOT}/Headers/Public/RFGravatarImageView" "${PODS_ROOT}/Headers/Public/SDWebImage"
 OTHER_LDFLAGS = ${PODS_RFGRAVATARIMAGEVIEW_OTHER_LDFLAGS} -ObjC
 PODS_ROOT = ${SRCROOT}
 SKIP_INSTALL = YES
