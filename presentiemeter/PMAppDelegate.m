@@ -6,30 +6,26 @@
 //  Copyright (c) 2015 Peter Alserda. All rights reserved.
 //
 
-#import "PMAppDelegate.h"
-#import "PMLoginViewController.h"
-#import "PMLocationViewController.h"
-#import "PMBeaconActivityViewController.h"
-#import "PMUserLogin.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
-#import "PMBeaconDetector.h"
 
-#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#import "PMAppDelegate.h"
+#import "PMUserLogin.h"
+
 
 @interface PMAppDelegate ()
-
-@property (nonatomic, strong) PMBeaconDetector *beaconDetector;
 
 @end
 
 @implementation PMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSLog(@"Background refresh: %d", [application backgroundRefreshStatus]);
     [GPPSignIn sharedInstance].clientID = kClientId;
     [[GPPSignIn sharedInstance] trySilentAuthentication];
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
     
     if ([PMUserLogin isAuthenticated]) {
         [self didLogin];
@@ -39,25 +35,7 @@
         self.window.rootViewController = loginvc;
     }
     
-    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-
-   
-    // Register for remote notificatons related to Estimote Remote Beacon Management.
-    if (IS_OS_8_OR_LATER)
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-        
-        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeNone);
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
-                                                                                 categories:nil];
-        
-        [application registerUserNotificationSettings:settings];
-    }
-    else
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeNone];
-    }
     
     return YES;
 }
@@ -72,66 +50,45 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
-//    NSLog(@"applicationWillResignActive");
-
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
-//    NSLog(@"applicationDidEnterBackground");
-
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
-//    NSLog(@"applicationWillEnterForeground");
-    [[GPPSignIn sharedInstance] trySilentAuthentication];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-//    NSLog(@"applicationDidBecomeActive");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
-//    NSLog(@"applicationWillTerminate");
 }
 
 #pragma mark - PMLoginViewControllerDelegate methods
 
 - (void)didLogin {
-    // Alright we successfully logged in, lets get to action
-//    dispatch_sync(dispatch_get_main_queue(), ^{
-        // Show the right view controller
+    // The user is authenticated. Show the right view controller.
     
     self.tabBarController = [[UITabBarController alloc] init];
     
-    PMLocationViewController *locationvc = [[PMLocationViewController alloc] initWithNibName:nil bundle:nil];
-    PMBeaconActivityViewController *beaconactivityvc = [[PMBeaconActivityViewController alloc] initWithNibName:nil bundle:nil];
+    self.locationViewController = [[PMLocationViewController alloc] initWithNibName:nil bundle:nil];
+    self.beaconActivityViewController = [[PMBeaconActivityViewController alloc] initWithNibName:nil bundle:nil];
     
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:locationvc];
-    UINavigationController *navController1 = [[UINavigationController alloc] initWithRootViewController:beaconactivityvc];
+    UINavigationController *locationNavController = [[UINavigationController alloc] initWithRootViewController:self.locationViewController];
+    UINavigationController *beaconActivityNavController = [[UINavigationController alloc] initWithRootViewController:self.beaconActivityViewController];
     
-    
-    self.tabBarController.viewControllers = @[navController, navController1];
+    self.tabBarController.viewControllers = @[locationNavController, beaconActivityNavController];
     self.tabBarController.selectedIndex = 0;
-//    self.tabBarController.edgesForExtendedLayout = UIRectEdgeNone;
+
+    // Change the appearance of the navigationBar.
     [self configureNavigationBar];
-//    self.window.rootViewController = self.tabBarController;
     
     self.window.rootViewController = self.tabBarController;
-
-//    self.beaconDetector = [PMBeaconDetector new];
-//    [self.beaconDetector start];
 }
 
 - (void)configureNavigationBar {

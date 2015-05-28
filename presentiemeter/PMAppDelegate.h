@@ -10,12 +10,22 @@
 #import <GooglePlus/GooglePlus.h>
 
 #import "PMLoginViewController.h"
+#import "PMLocationViewController.h"
+#import "PMBeaconActivityViewController.h"
 
 @interface PMAppDelegate : UIResponder <UIApplicationDelegate, PMLoginViewControllerDelegate>
 
+/** Main UIWindow instance of the application */
 @property (strong, nonatomic) UIWindow *window;
 
+/** Main tabBarController for the application */
 @property (strong, nonatomic) UITabBarController *tabBarController;
+
+/** Reference to the 'Locations' tab view controller */
+@property (strong, nonatomic) PMLocationViewController *locationViewController;
+
+/** Reference to the 'Beacon Activity' tab view controller */
+@property (strong, nonatomic) PMBeaconActivityViewController *beaconActivityViewController;
 
 @end
 
