@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <EstimoteSDK/EstimoteSDK.h>
 
-#import "PMLoginVC.h"
+#import "PMLoginViewController.h"
 
 @interface PMAppDelegate : UIResponder <UIApplicationDelegate, PMLoginViewControllerDelegate>
 

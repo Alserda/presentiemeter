@@ -26,15 +26,13 @@
 		A858EDA41AE12FD700A788D3 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA21AE12FD700A788D3 /* GooglePlus.framework */; };
 		A858EDAB1AE1305800A788D3 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */; };
 		A858EDAD1AE1305800A788D3 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858EDA91AE1305800A788D3 /* GooglePlus.framework */; };
-		A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A858EDAF1AE1317900A788D3 /* PMLoginVC.m */; };
+		A858EDB01AE1317900A788D3 /* PMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A858EDAF1AE1317900A788D3 /* PMLoginViewController.m */; };
 		A86D34031ADD49E80074A5FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34021ADD49E80074A5FC /* main.m */; };
 		A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34051ADD49E80074A5FC /* PMAppDelegate.m */; };
-		A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34081ADD49E80074A5FC /* PMLocationVC.m */; };
+		A86D34091ADD49E80074A5FC /* PMLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D34081ADD49E80074A5FC /* PMLocationViewController.m */; };
 		A86D340E1ADD49E80074A5FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A86D340D1ADD49E80074A5FC /* Images.xcassets */; };
 		A86D341D1ADD49E90074A5FC /* presentiemeterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */; };
-		A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */; };
 		A86D342D1ADD55C10074A5FC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A86D34291ADD55C10074A5FC /* GooglePlus.bundle */; };
-		A86D342E1ADD55C10074A5FC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342A1ADD55C10074A5FC /* GooglePlus.framework */; };
 		A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */; };
 		A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D342F1ADD575D0074A5FC /* CoreLocation.framework */; };
 		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
@@ -57,8 +55,8 @@
 		104EFFA87FD923A1B4E8BF6B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A80A1EAD1AE0F8B400D36F5D /* PMBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBackend.h; path = API/PMBackend.h; sourceTree = "<group>"; };
 		A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBackend.m; path = API/PMBackend.m; sourceTree = "<group>"; };
-		A81AB2311AF3A4730039FE2D /* PMBeaconDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBeaconDetector.h; path = ../PMBeaconDetector.h; sourceTree = "<group>"; };
-		A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconDetector.m; path = ../PMBeaconDetector.m; sourceTree = "<group>"; };
+		A81AB2311AF3A4730039FE2D /* PMBeaconDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBeaconDetector.h; path = Models/PMBeaconDetector.h; sourceTree = "<group>"; };
+		A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconDetector.m; path = Models/PMBeaconDetector.m; sourceTree = "<group>"; };
 		A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EstimoteSDK.framework; path = Frameworks/EstimoteSDK.framework; sourceTree = SOURCE_ROOT; };
 		A83E462D1ADFA0170096F029 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A84944F81AE51646003BC1C3 /* PMUserLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUserLogin.h; path = API/PMUserLogin.h; sourceTree = "<group>"; };
@@ -74,33 +72,31 @@
 		A858ED9F1AE12FCE00A788D3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A858EDA11AE12FD700A788D3 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = Frameworks/GoogleOpenSource.framework; sourceTree = "<group>"; };
 		A858EDA21AE12FD700A788D3 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = Frameworks/GooglePlus.framework; sourceTree = "<group>"; };
-		A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
-		A858EDA91AE1305800A788D3 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
-		A858EDAE1AE1317900A788D3 /* PMLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLoginVC.h; sourceTree = "<group>"; };
-		A858EDAF1AE1317900A788D3 /* PMLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLoginVC.m; sourceTree = "<group>"; };
+		A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "../Supporting Files/Frameworks/GoogleOpenSource.framework"; sourceTree = "<group>"; };
+		A858EDA91AE1305800A788D3 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = "../Supporting Files/Frameworks/GooglePlus.framework"; sourceTree = "<group>"; };
+		A858EDAE1AE1317900A788D3 /* PMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMLoginViewController.h; path = UserInterface/PMLoginViewController.h; sourceTree = "<group>"; };
+		A858EDAF1AE1317900A788D3 /* PMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMLoginViewController.m; path = UserInterface/PMLoginViewController.m; sourceTree = "<group>"; };
 		A86D33FD1ADD49E80074A5FC /* presentiemeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = presentiemeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A86D34011ADD49E80074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A86D34021ADD49E80074A5FC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A86D34041ADD49E80074A5FC /* PMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMAppDelegate.h; sourceTree = "<group>"; };
 		A86D34051ADD49E80074A5FC /* PMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMAppDelegate.m; sourceTree = "<group>"; };
-		A86D34071ADD49E80074A5FC /* PMLocationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLocationVC.h; sourceTree = "<group>"; };
-		A86D34081ADD49E80074A5FC /* PMLocationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMLocationVC.m; sourceTree = "<group>"; };
+		A86D34071ADD49E80074A5FC /* PMLocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PMLocationViewController.h; path = UserInterface/PMLocationViewController.h; sourceTree = "<group>"; };
+		A86D34081ADD49E80074A5FC /* PMLocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PMLocationViewController.m; path = UserInterface/PMLocationViewController.m; sourceTree = "<group>"; };
 		A86D340D1ADD49E80074A5FC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A86D34161ADD49E90074A5FC /* presentiemeterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = presentiemeterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A86D341B1ADD49E90074A5FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A86D341C1ADD49E90074A5FC /* presentiemeterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = presentiemeterTests.m; sourceTree = "<group>"; };
-		A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
-		A86D34291ADD55C10074A5FC /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
-		A86D342A1ADD55C10074A5FC /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
+		A86D34291ADD55C10074A5FC /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = "../Supporting Files/Frameworks/GooglePlus.bundle"; sourceTree = "<group>"; };
 		A86D342F1ADD575D0074A5FC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A86D34311ADD57630074A5FC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		A889437C1AE4F17E00130D64 /* PMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMTableViewCell.h; sourceTree = "<group>"; };
-		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMTableViewCell.m; sourceTree = "<group>"; };
-		A89083061B00D4700036F11F /* PMBeaconActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMBeaconActivityViewController.h; sourceTree = "<group>"; };
-		A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMBeaconActivityViewController.m; sourceTree = "<group>"; };
-		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMHelper.h; sourceTree = "<group>"; };
-		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMHelper.m; sourceTree = "<group>"; };
+		A889437C1AE4F17E00130D64 /* PMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMTableViewCell.h; path = UserInterface/TableView/PMTableViewCell.h; sourceTree = "<group>"; };
+		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMTableViewCell.m; path = UserInterface/TableView/PMTableViewCell.m; sourceTree = "<group>"; };
+		A89083061B00D4700036F11F /* PMBeaconActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBeaconActivityViewController.h; path = UserInterface/PMBeaconActivityViewController.h; sourceTree = "<group>"; };
+		A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconActivityViewController.m; path = UserInterface/PMBeaconActivityViewController.m; sourceTree = "<group>"; };
+		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMHelper.h; path = Models/PMHelper.h; sourceTree = "<group>"; };
+		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMHelper.m; path = Models/PMHelper.m; sourceTree = "<group>"; };
 		AA35D4F29181A5A0F3807124 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C915DD42CF6AC237E4CBBD72 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,9 +122,7 @@
 				A858ED921AE12F9000A788D3 /* AssetsLibrary.framework in Frameworks */,
 				A858ED901AE12F8900A788D3 /* AddressBook.framework in Frameworks */,
 				A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */,
-				A86D342C1ADD55C10074A5FC /* GoogleOpenSource.framework in Frameworks */,
 				A858EDAD1AE1305800A788D3 /* GooglePlus.framework in Frameworks */,
-				A86D342E1ADD55C10074A5FC /* GooglePlus.framework in Frameworks */,
 				9E4236889FCDA16632A08631 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,12 +225,7 @@
 				A82832E51AE7CFF8006CE878 /* EstimoteSDK.framework */,
 				A858EDA71AE1305800A788D3 /* GoogleOpenSource.framework */,
 				A858EDA91AE1305800A788D3 /* GooglePlus.framework */,
-				A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */,
-				A86D34311ADD57630074A5FC /* CoreBluetooth.framework */,
-				A86D342F1ADD575D0074A5FC /* CoreLocation.framework */,
-				A86D34281ADD55C10074A5FC /* GoogleOpenSource.framework */,
 				A86D34291ADD55C10074A5FC /* GooglePlus.bundle */,
-				A86D342A1ADD55C10074A5FC /* GooglePlus.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -245,10 +234,10 @@
 			isa = PBXGroup;
 			children = (
 				A889437B1AE4F11300130D64 /* TableView */,
-				A858EDAE1AE1317900A788D3 /* PMLoginVC.h */,
-				A858EDAF1AE1317900A788D3 /* PMLoginVC.m */,
-				A86D34071ADD49E80074A5FC /* PMLocationVC.h */,
-				A86D34081ADD49E80074A5FC /* PMLocationVC.m */,
+				A858EDAE1AE1317900A788D3 /* PMLoginViewController.h */,
+				A858EDAF1AE1317900A788D3 /* PMLoginViewController.m */,
+				A86D34071ADD49E80074A5FC /* PMLocationViewController.h */,
+				A86D34081ADD49E80074A5FC /* PMLocationViewController.m */,
 				A89083061B00D4700036F11F /* PMBeaconActivityViewController.h */,
 				A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */,
 			);
@@ -278,6 +267,9 @@
 		AE2AB77D61AD31F934802D55 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A86D342F1ADD575D0074A5FC /* CoreLocation.framework */,
+				A86D34311ADD57630074A5FC /* CoreBluetooth.framework */,
+				A86D34331ADD576D0074A5FC /* SystemConfiguration.framework */,
 				A858EDA11AE12FD700A788D3 /* GoogleOpenSource.framework */,
 				A858EDA21AE12FD700A788D3 /* GooglePlus.framework */,
 				A858ED9F1AE12FCE00A788D3 /* UIKit.framework */,
@@ -431,12 +423,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A86D34091ADD49E80074A5FC /* PMLocationVC.m in Sources */,
+				A86D34091ADD49E80074A5FC /* PMLocationViewController.m in Sources */,
 				A81AB2331AF3A4730039FE2D /* PMBeaconDetector.m in Sources */,
 				A86D34061ADD49E80074A5FC /* PMAppDelegate.m in Sources */,
 				A89083081B00D4700036F11F /* PMBeaconActivityViewController.m in Sources */,
 				A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */,
-				A858EDB01AE1317900A788D3 /* PMLoginVC.m in Sources */,
+				A858EDB01AE1317900A788D3 /* PMLoginViewController.m in Sources */,
 				A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */,
 				A86D34031ADD49E80074A5FC /* main.m in Sources */,
 				A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */,

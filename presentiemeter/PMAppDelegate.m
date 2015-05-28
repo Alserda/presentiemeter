@@ -7,8 +7,8 @@
 //
 
 #import "PMAppDelegate.h"
-#import "PMLoginVC.h"
-#import "PMLocationVC.h"
+#import "PMLoginViewController.h"
+#import "PMLocationViewController.h"
 #import "PMBeaconActivityViewController.h"
 #import "PMUserLogin.h"
 #import <EstimoteSDK/EstimoteSDK.h>
@@ -35,7 +35,7 @@
     if ([PMUserLogin isAuthenticated]) {
         [self didLogin];
     } else {
-        PMLoginVC *loginvc = [[PMLoginVC alloc] init];
+        PMLoginViewController *loginvc = [[PMLoginViewController alloc] init];
         loginvc.delegate = self;
         self.window.rootViewController = loginvc;
     }
@@ -119,7 +119,7 @@
     
     self.tabBarController = [[UITabBarController alloc] init];
     
-    PMLocationVC *locationvc = [[PMLocationVC alloc] initWithNibName:nil bundle:nil];
+    PMLocationViewController *locationvc = [[PMLocationViewController alloc] initWithNibName:nil bundle:nil];
     PMBeaconActivityViewController *beaconactivityvc = [[PMBeaconActivityViewController alloc] initWithNibName:nil bundle:nil];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:locationvc];

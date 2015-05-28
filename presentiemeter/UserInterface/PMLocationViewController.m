@@ -9,20 +9,20 @@
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import "AFNetworking.h"
 
-#import "PMLocationVC.h"
+#import "PMLocationViewController.h"
 #import "PMBackend.h"
 #import "PMUserLogin.h"
 #import "PMTableViewCell.h"
 #import "PMHelper.h"
 
-@interface PMLocationVC ()
+@interface PMLocationViewController ()
 
 @property (nonatomic, strong) NSArray *colleagueArray;
 @property (nonatomic, strong) NSArray *colleaguePresentArray;
 
 @end
 
-@implementation PMLocationVC
+@implementation PMLocationViewController
 
 
 - (void)viewDidLoad {

@@ -10,7 +10,7 @@
 #import <GooglePlus/GooglePlus.h>
 
 
-@interface PMLocationVC : UITableViewController
+@interface PMLocationViewController : UITableViewController
 
 @end
 

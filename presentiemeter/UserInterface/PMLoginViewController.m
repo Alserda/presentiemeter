@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Peter Alserda. All rights reserved.
 //
 
-#import "PMLoginVC.h"
-#import "PMLocationVC.h"
+#import "PMLoginViewController.h"
+#import "PMLocationViewController.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
-@implementation PMLoginVC
+@implementation PMLoginViewController
 
 - (void) viewDidLoad {
     [super viewDidLoad];
@@ -106,7 +106,7 @@
 }
 
 -(void) displayViewController {
-    PMLocationVC *vc = [[PMLocationVC alloc] init];
+    PMLocationViewController *vc = [[PMLocationViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:navController animated:YES completion:nil];
 }
