@@ -12,9 +12,13 @@
 
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 
+/** The user info, stored in the user defaults */
 + (NSDictionary *)authenticatedUserInfo;
+
+/** A boolean to check if the user is already authenticated */
 + (BOOL)isAuthenticated;
 
+/** The request to fetch the users google data */
 + (void)fetchGooglePlusUserData:(void(^)(NSDictionary *googleUserInfo))completed;
 
 @end

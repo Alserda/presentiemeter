@@ -107,20 +107,12 @@
     
     [[PMBackend sharedInstance] retrievePath:kPresentiemeterEmployeeLocationPath
                                      success:^(id json) {
-//                                         NSLog(@"Obtained JSON: %@", json);
-//                                         NSLog(@"Json count: %i", [json count]);
-
                                          self.colleagueArray = json;
                                          
-//                                         NSLog(@"The Array: %@",self.colleagueArray);
-                                         
-//                                         NSPredicate * presentPredicateFilter = [NSPredicate predicateWithFormat:@"NOT (beacon.name in %@)", @"Vergaderbar"];
                                          NSPredicate *presentPredicateFilter = [NSPredicate predicateWithFormat:@"beacon.name!=nil AND beacon.name!='' OR geofence.name!=nil AND geofence.name!=''"];
                                          self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
                                          self.navigationController.navigationBar.topItem.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
-//                                         NSLog(@"Formatted array: %@", self.colleaguePresentArray);
-                                         
-                                         
+
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {
                                          NSLog(@"Failure: %@", error);

@@ -15,78 +15,56 @@
  It's used to store the user data */
 @implementation PMUserLogin
 
+
+/** Get the details of the user and return the info */
 + (NSDictionary *)authenticatedUserInfo {
-    // Get the details of the user and return the info
     NSString *useremail = [[NSUserDefaults standardUserDefaults] objectForKey:@"user-email"];
     NSString *userfullname = [[NSUserDefaults standardUserDefaults] objectForKey:@"user-fullname"];
+    
+    /** If an email and username exist, return these in a dictionary */
     if (useremail && userfullname) {
         return @{ @"email" : useremail,
                   @"full_name" : userfullname };
     }
-    // Didn't find anything.
+    
+    /** If nothing is found, return nothing */
     return nil;
 }
 
+/** Check if we have any login info */
 + (BOOL)isAuthenticated {
-    // Check if we have any login info
     return [PMUserLogin authenticatedUserInfo] != nil;
 }
 
+/** Create a service instance to send a request to Google+. */
 + (void)fetchGooglePlusUserData:(void (^)(NSDictionary *))completed {
-    // 1. Create a |GTLServicePlus| instance to send a request to Google+.
-    GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
-    plusService.retryEnabled = YES;
-    
-    // 2. Set a valid |GTMOAuth2Authentication| object as the authorizer.
+    GTLServicePlus *plusService = [[GTLServicePlus alloc] init];
     [plusService setAuthorizer:[GPPSignIn sharedInstance].authentication];
-    
-    
-    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
-    
-    // *4. Use the "v1" version of the Google+ API.*
+    plusService.retryEnabled = YES;
     plusService.apiVersion = @"v1";
     
+    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
     [plusService executeQuery:query
             completionHandler:^(GTLServiceTicket *ticket,
                                 GTLPlusPerson *person,
-                                NSError *error) {
-                NSLog(@"person: %@", person);
-                if (completed) {
-                    NSString *fullname = @"";
-                    if (person.displayName) {
-                        fullname = person.displayName;
-                    }
-                    [[NSUserDefaults standardUserDefaults] setObject:[GPPSignIn sharedInstance].authentication.userEmail forKey:@"user-email"];
-                    [[NSUserDefaults standardUserDefaults] setObject:fullname forKey:@"user-fullname"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    completed(@{ @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
-                                 @"full_name" : fullname });
-                }
-//                if (error) {
-//                    
-//                    
-//                    
-//                    //Handle Error
-//                    
-//                } else
-//                {
-//                    self.googlePlusUserInfo = @{
-//                                                @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
-//                                                @"full_name" : [person.name.givenName stringByAppendingFormat:@" %@",person.name.familyName]
-//                                                };
-//                    
-//                    
-//                    // It's possible to retrieve:
-//                    // GoogleID with "person.identifier".
-//                    // Gender with "person.gender".
-//                    
-//                    
-//                    NSLog(@"User information: %@", self.googlePlusUserInfo);
-//                    
-//                    
-//                }
-                
-            }];
+                                NSError *error)
+    {
+        NSLog(@"person: %@", person);
+
+        if (completed) {
+            NSString *fullname = @"";
+            if (person.displayName) {
+                fullname = person.displayName;
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setObject:[GPPSignIn sharedInstance].authentication.userEmail forKey:@"user-email"];
+            [[NSUserDefaults standardUserDefaults] setObject:fullname forKey:@"user-fullname"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            completed(@{ @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
+                         @"full_name" : fullname });
+        }
+    }];
 }
 
 
