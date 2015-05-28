@@ -10,14 +10,16 @@
 #import "PMUserLogin.h"
 #import <AFNetworking/AFNetworking.h>
 
-// Base URL
+/** Base URL */
 NSString * const kPresentiemeterBaseURL = @"http://presentiemeter.peperzaken.nl:8123/api/";
 
-// URL's for updating locations
-NSString * const kPresentiemeterUpdateLocationPath = @"employees/1/update_beacon_location/";
-
+/** Path to recieve the employee's location */
 NSString * const kPresentiemeterEmployeeLocationPath = @"employees/";
 
+/** Path to updating locations */
+NSString * const kPresentiemeterUpdateLocationPath = @"employees/1/update_beacon_location/";
+
+/** Path to update unavailability */
 NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_range/";
 
 
@@ -26,13 +28,15 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
 + (instancetype)sharedInstance {
     static dispatch_once_t onceToken;
     static PMBackend *sharedBackend;
+    
     dispatch_once(&onceToken, ^{
         sharedBackend = [[PMBackend alloc] init];
     });
+    
     return sharedBackend;
 }
 
-// Override the init method to create the operation manager with the base url
+/** Override the init method to create the operation manager with the base url */
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -44,8 +48,8 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
 
 #pragma mark - Public methods
 
-- (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure {
-    
+- (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure
+{
     NSDictionary *params = @{@"full_name": username,
                              @"email": email,
                              @"macaddress": location};
@@ -67,8 +71,8 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
                                                    }];
 }
 
-- (void)updateUnavailableLocation:(NSString *)path withEmail:(NSString *)email forUsername:(NSString *)username success:(void (^)(id))success failure:(void (^)(NSError *))failure {
-    
+- (void)updateUnavailableLocation:(NSString *)path withEmail:(NSString *)email forUsername:(NSString *)username success:(void (^)(id json))success failure:(void (^)(NSError *))failure
+{
     NSDictionary *params = @{@"full_name": username,
                              @"email": email};
     
@@ -87,10 +91,8 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
                                                    }];
 }
 
-
-
-
-- (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure {
+- (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure
+{
     AFHTTPRequestOperation *operation = [self.manager GET:path
                                                parameters:nil
                                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {

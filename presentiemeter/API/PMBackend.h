@@ -27,16 +27,40 @@ extern NSString * const kPresentiemeterUpdateUnavailablePath;
 + (instancetype)sharedInstance;
 
 /** POST an updated location to the backend for the specific user/mail combination
- @param location MAC Address of the beacon defining the location
- @param username Full user name
- @param email User identifier email
+ @param path     || The path added to the base URL to post to
+ @param location || The identifier of the closest beacon.
+ @param username || The users full name.
+ @param email    || The users e-mail address.
+ @param success  || Block called when the HTTP POST was successfully completed
+ @param failure  || Block called when the HTTP POST failed
  */
+- (void)updateUserLocation:(NSString *)path
+              withLocation:(NSString *)location
+               forUsername:(NSString *)username
+                  andEmail:(NSString *)email
+                   success:(void(^)(id json))success
+                   failure:(void(^)(NSError *error))failure;
 
-- (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
+/** POST the users unavailability to the back-end.
+ @param path     || The path added to the base URL to post to
+ @param username || The users full name.
+ @param email    || The users e-mail address.
+ @param success  || Block called when the HTTP POST was successfully completed
+ @param failure  || Block called when the HTTP POST failed
+ */
+- (void)updateUnavailableLocation:(NSString *)path
+                        withEmail:(NSString *)email
+                      forUsername:(NSString *)username
+                          success:(void(^)(id json))success
+                          failure:(void(^)(NSError *error))failure;
 
-- (void)updateUnavailableLocation:(NSString *)path  withEmail:(NSString *)email forUsername:(NSString *)username success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
-
-
-- (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure;
+/** GET request to recieve data 
+ @param path     || The path added to the base URL to post to
+ @param success  || Block called when the HTTP GET was successfully completed
+ @param failure  || Block called when the HTTP GET failed
+ */
+- (void)retrievePath:(NSString *)path
+             success:(void(^)(id json))success
+             failure:(void(^)(NSError *error))failure;
 
 @end
