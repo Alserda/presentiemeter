@@ -11,7 +11,6 @@
 		A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */; };
 		A81AB2331AF3A4730039FE2D /* PMBeaconDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */; };
 		A81D375B1B16FD070083C272 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A81D375A1B16FD070083C272 /* GooglePlus.bundle */; };
-		A81D375E1B16FD140083C272 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81D375C1B16FD140083C272 /* GoogleOpenSource.framework */; };
 		A81D375F1B16FD140083C272 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81D375D1B16FD140083C272 /* GooglePlus.framework */; };
 		A83E462E1ADFA0170096F029 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A83E462D1ADFA0170096F029 /* Podfile */; };
 		A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A84944F91AE51646003BC1C3 /* PMUserLogin.m */; };
@@ -36,6 +35,7 @@
 		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
 		A89083081B00D4700036F11F /* PMBeaconActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */; };
 		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
+		A8DBCA6D1B170A9E004ABC8A /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81D375C1B16FD140083C272 /* GoogleOpenSource.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +100,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8DBCA6D1B170A9E004ABC8A /* GoogleOpenSource.framework in Frameworks */,
+				A81D375F1B16FD140083C272 /* GooglePlus.framework in Frameworks */,
 				A858EDA01AE12FCE00A788D3 /* UIKit.framework in Frameworks */,
 				A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */,
 				A858ED9E1AE12FC100A788D3 /* Security.framework in Frameworks */,
@@ -108,9 +110,7 @@
 				A858ED981AE12FB000A788D3 /* CoreGraphics.framework in Frameworks */,
 				A858ED961AE12FA800A788D3 /* CoreMotion.framework in Frameworks */,
 				A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */,
-				A81D375E1B16FD140083C272 /* GoogleOpenSource.framework in Frameworks */,
 				A858ED941AE12F9900A788D3 /* Foundation.framework in Frameworks */,
-				A81D375F1B16FD140083C272 /* GooglePlus.framework in Frameworks */,
 				A858ED921AE12F9000A788D3 /* AssetsLibrary.framework in Frameworks */,
 				A858ED901AE12F8900A788D3 /* AddressBook.framework in Frameworks */,
 				A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */,
@@ -529,6 +529,8 @@
 					Files/Frameworks,
 					"$(PROJECT_DIR)/presentiemeter/Supporting",
 					Files/Frameworks,
+					"$(PROJECT_DIR)/presentiemeter/Supporting",
+					Files/Frameworks,
 				);
 				INFOPLIST_FILE = presentiemeter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -547,6 +549,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/presentiemeter/Supporting",
+					Files/Frameworks,
 					"$(PROJECT_DIR)/presentiemeter/Supporting",
 					Files/Frameworks,
 					"$(PROJECT_DIR)/presentiemeter/Supporting",

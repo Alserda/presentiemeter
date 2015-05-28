@@ -168,8 +168,7 @@
     else {
         [self.locations addObject:[NSString stringWithFormat:@"Region: %@ is Unknown or Outside", region.identifier]];
         
-        // Decide whether to post unavailability or the remaining object
-        
+        // Decide whether to post unavailability
         if ([self.activeRegions count] == 0) {
             [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
                                                         withEmail:self.googlePlusUserInfo[@"email"]
@@ -179,6 +178,7 @@
                                                               NSLog(@"Unavailable POST successful %@", region.identifier);
                                                           } failure:^(NSError *error) {
                                                               [self.locations addObject:[NSString stringWithFormat:@"Unavailable POST failed  %@", region.identifier]];
+                                                              [self.locations addObject:[NSString stringWithFormat:@"%@", error]];
                                                               NSLog(@"Unavailable POST failed: %@", error);
                                                           }];
         }
@@ -289,6 +289,20 @@
                                                success:^(id json) {
                                                    [self.locations addObject:[NSString stringWithFormat:@"Posted closest region: %@", self.closestBeacon]];
                                                    NSLog(@"Posted closest region: %@", self.closestBeacon);
+                                                   
+                                                   if ([self.activeRegions count] == 0) {
+                                                       [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
+                                                                                                   withEmail:self.googlePlusUserInfo[@"email"]
+                                                                                                 forUsername:self.googlePlusUserInfo[@"full_name"]
+                                                                                                     success:^(id json) {
+                                                                                                         [self.locations addObject:[NSString stringWithFormat:@"Unavailable closestBeacon POST successful %@", self.closestBeacon]];
+                                                                                                         NSLog(@"Unavailable closestBeacon POST successful %@", self.closestBeacon);
+                                                                                                     } failure:^(NSError *error) {
+                                                                                                         [self.locations addObject:[NSString stringWithFormat:@"Unavailable closestBeacon POST failed  %@", self.closestBeacon]];
+                                                                                                         [self.locations addObject:[NSString stringWithFormat:@"%@", error]];
+                                                                                                         NSLog(@"Unavailable closestBeacon POST failed: %@", error);
+                                                                                                     }];
+                                                   }
                                                } failure:^(NSError *error) {
                                                    [self.locations addObject:[NSString stringWithFormat:@"Posted closest region failed: %@", error]];
                                                    NSLog(@"Posted closest region failed: %@", error);
