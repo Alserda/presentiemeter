@@ -11,7 +11,6 @@
 		A80A1EAF1AE0F8B400D36F5D /* PMBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = A80A1EAE1AE0F8B400D36F5D /* PMBackend.m */; };
 		A81AB2331AF3A4730039FE2D /* PMBeaconDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */; };
 		A81D375B1B16FD070083C272 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A81D375A1B16FD070083C272 /* GooglePlus.bundle */; };
-		A81D375F1B16FD140083C272 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81D375D1B16FD140083C272 /* GooglePlus.framework */; };
 		A83E462E1ADFA0170096F029 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = A83E462D1ADFA0170096F029 /* Podfile */; };
 		A84944FA1AE51646003BC1C3 /* PMUserLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A84944F91AE51646003BC1C3 /* PMUserLogin.m */; };
 		A858ED901AE12F8900A788D3 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A858ED8F1AE12F8900A788D3 /* AddressBook.framework */; };
@@ -35,7 +34,8 @@
 		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
 		A89083081B00D4700036F11F /* PMBeaconActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */; };
 		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
-		A8DBCA6D1B170A9E004ABC8A /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81D375C1B16FD140083C272 /* GoogleOpenSource.framework */; };
+		A8EF3ADA1B170F930063FEB9 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8EF3AD81B170F930063FEB9 /* GoogleOpenSource.framework */; };
+		A8EF3ADB1B170F930063FEB9 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8EF3AD91B170F930063FEB9 /* GooglePlus.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +55,6 @@
 		A81AB2311AF3A4730039FE2D /* PMBeaconDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBeaconDetector.h; path = Models/PMBeaconDetector.h; sourceTree = "<group>"; };
 		A81AB2321AF3A4730039FE2D /* PMBeaconDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconDetector.m; path = Models/PMBeaconDetector.m; sourceTree = "<group>"; };
 		A81D375A1B16FD070083C272 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = "presentiemeter/Supporting Files/Frameworks/GooglePlus.bundle"; sourceTree = "<group>"; };
-		A81D375C1B16FD140083C272 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "presentiemeter/Supporting Files/Frameworks/GoogleOpenSource.framework"; sourceTree = "<group>"; };
-		A81D375D1B16FD140083C272 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = "presentiemeter/Supporting Files/Frameworks/GooglePlus.framework"; sourceTree = "<group>"; };
 		A83E462D1ADFA0170096F029 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A84944F81AE51646003BC1C3 /* PMUserLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMUserLogin.h; path = API/PMUserLogin.h; sourceTree = "<group>"; };
 		A84944F91AE51646003BC1C3 /* PMUserLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMUserLogin.m; path = API/PMUserLogin.m; sourceTree = "<group>"; };
@@ -91,6 +89,8 @@
 		A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconActivityViewController.m; path = UserInterface/PMBeaconActivityViewController.m; sourceTree = "<group>"; };
 		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMHelper.h; path = Models/PMHelper.h; sourceTree = "<group>"; };
 		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMHelper.m; path = Models/PMHelper.m; sourceTree = "<group>"; };
+		A8EF3AD81B170F930063FEB9 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "presentiemeter/Supporting Files/Frameworks/GoogleOpenSource.framework"; sourceTree = "<group>"; };
+		A8EF3AD91B170F930063FEB9 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = "presentiemeter/Supporting Files/Frameworks/GooglePlus.framework"; sourceTree = "<group>"; };
 		AA35D4F29181A5A0F3807124 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C915DD42CF6AC237E4CBBD72 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,8 +100,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8DBCA6D1B170A9E004ABC8A /* GoogleOpenSource.framework in Frameworks */,
-				A81D375F1B16FD140083C272 /* GooglePlus.framework in Frameworks */,
 				A858EDA01AE12FCE00A788D3 /* UIKit.framework in Frameworks */,
 				A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */,
 				A858ED9E1AE12FC100A788D3 /* Security.framework in Frameworks */,
@@ -110,7 +108,9 @@
 				A858ED981AE12FB000A788D3 /* CoreGraphics.framework in Frameworks */,
 				A858ED961AE12FA800A788D3 /* CoreMotion.framework in Frameworks */,
 				A86D34361ADD587F0074A5FC /* CoreLocation.framework in Frameworks */,
+				A8EF3ADA1B170F930063FEB9 /* GoogleOpenSource.framework in Frameworks */,
 				A858ED941AE12F9900A788D3 /* Foundation.framework in Frameworks */,
+				A8EF3ADB1B170F930063FEB9 /* GooglePlus.framework in Frameworks */,
 				A858ED921AE12F9000A788D3 /* AssetsLibrary.framework in Frameworks */,
 				A858ED901AE12F8900A788D3 /* AddressBook.framework in Frameworks */,
 				A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */,
@@ -246,8 +246,8 @@
 		AE2AB77D61AD31F934802D55 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A81D375C1B16FD140083C272 /* GoogleOpenSource.framework */,
-				A81D375D1B16FD140083C272 /* GooglePlus.framework */,
+				A8EF3AD81B170F930063FEB9 /* GoogleOpenSource.framework */,
+				A8EF3AD91B170F930063FEB9 /* GooglePlus.framework */,
 				A81D375A1B16FD070083C272 /* GooglePlus.bundle */,
 				A86D342F1ADD575D0074A5FC /* CoreLocation.framework */,
 				A86D34311ADD57630074A5FC /* CoreBluetooth.framework */,
@@ -524,14 +524,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/presentiemeter/Supporting",
-					Files/Frameworks,
-					"$(PROJECT_DIR)/presentiemeter/Supporting",
-					Files/Frameworks,
-					"$(PROJECT_DIR)/presentiemeter/Supporting",
-					Files/Frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/presentiemeter/Supporting Files/Frameworks";
 				INFOPLIST_FILE = presentiemeter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -548,14 +541,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/presentiemeter/Supporting",
-					Files/Frameworks,
-					"$(PROJECT_DIR)/presentiemeter/Supporting",
-					Files/Frameworks,
-					"$(PROJECT_DIR)/presentiemeter/Supporting",
-					Files/Frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/presentiemeter/Supporting Files/Frameworks";
 				INFOPLIST_FILE = presentiemeter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
