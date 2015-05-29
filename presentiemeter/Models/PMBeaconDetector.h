@@ -11,8 +11,10 @@
 
 @interface PMBeaconDetector : NSObject <CLLocationManagerDelegate>
 
+/** Used for debugging the beacondetector */
 @property (nonatomic, strong) NSMutableArray *locations;
 
+/** Starts running the beacon detector */
 - (void)start;
 
 @end
