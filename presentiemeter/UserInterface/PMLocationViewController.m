@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Colleagues";
+    self.title = @"0 Aanwezig";
     UIButton *logoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
     [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

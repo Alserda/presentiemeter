@@ -76,21 +76,22 @@
 - (void)didLogin {
     // The user is authenticated. Show the right view controller.
     
-    self.tabBarController = [[UITabBarController alloc] init];
+//    self.tabBarController = [[UITabBarController alloc] init];
     
     self.locationViewController = [[PMLocationViewController alloc] initWithNibName:nil bundle:nil];
-    self.beaconActivityViewController = [[PMBeaconActivityViewController alloc] initWithNibName:nil bundle:nil];
+//    self.beaconActivityViewController = [[PMBeaconActivityViewController alloc] initWithNibName:nil bundle:nil];
     
     UINavigationController *locationNavController = [[UINavigationController alloc] initWithRootViewController:self.locationViewController];
-    UINavigationController *beaconActivityNavController = [[UINavigationController alloc] initWithRootViewController:self.beaconActivityViewController];
+//    UINavigationController *beaconActivityNavController = [[UINavigationController alloc] initWithRootViewController:self.beaconActivityViewController];
     
-    self.tabBarController.viewControllers = @[locationNavController, beaconActivityNavController];
-    self.tabBarController.selectedIndex = 0;
+//    self.tabBarController.viewControllers = @[locationNavController, beaconActivityNavController];
+//    self.tabBarController.selectedIndex = 0;
 
     // Change the appearance of the navigationBar.
     [self configureNavigationBar];
     
-    self.window.rootViewController = self.tabBarController;
+//    self.window.rootViewController = self.tabBarController;
+    self.window.rootViewController = locationNavController;
     
     self.beaconfinder = [PMBeaconDetector new];
     [self.beaconfinder start];
