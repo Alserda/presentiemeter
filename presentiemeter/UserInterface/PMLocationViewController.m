@@ -14,11 +14,15 @@
 #import "PMUserLogin.h"
 #import "PMTableViewCell.h"
 #import "PMHelper.h"
+#import "PMLoginViewController.h"
+#import "PMBeaconDetector.h"
+#import "PMAppDelegate.h"
 
 @interface PMLocationViewController ()
 
 @property (nonatomic, strong) NSArray *colleagueArray;
 @property (nonatomic, strong) NSArray *colleaguePresentArray;
+@property (nonatomic, strong) PMBeaconDetector *beaconfinder;
 
 @end
 
@@ -28,6 +32,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Colleagues";
+    UIButton *logoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
+    [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [logoutButton setTitleColor:[UIColor greenColor] forState:UIControlStateHighlighted];
+    [logoutButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
+    [logoutButton sizeToFit];
+    [logoutButton addTarget:self action:@selector(testLogout) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutButton];
 
     
     // View to add a border under the navigationBar.
@@ -41,6 +54,26 @@
 
     [self makeColleagueLocationRequest];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(refreshTable) userInfo:nil repeats:YES];
+}
+
+- (void)testLogout {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout"
+                                                    message:@"Weet je zeker dat je wilt uitloggen?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 1) { // Set buttonIndex == 0 to handel "Ok"/"Yes" button response
+        [PMUserLogin signOut];
+        // Have the app delegate stop the ranging
+        PMAppDelegate *appdelegate = (PMAppDelegate *)[UIApplication sharedApplication].delegate;
+        [appdelegate logOut];
+    }
 }
 
 - (void)refreshTable {
@@ -111,7 +144,7 @@
                                          
                                          NSPredicate *presentPredicateFilter = [NSPredicate predicateWithFormat:@"beacon.name!=nil AND beacon.name!='' OR geofence.name!=nil AND geofence.name!=''"];
                                          self.colleaguePresentArray = [self.colleagueArray filteredArrayUsingPredicate:presentPredicateFilter];
-                                         self.navigationController.navigationBar.topItem.title = [NSString stringWithFormat:@"%ld present", (long)self.colleaguePresentArray.count];
+                                         self.navigationController.navigationBar.topItem.title = [NSString stringWithFormat:@"%ld Aanwezig", (long)self.colleaguePresentArray.count];
 
                                          [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                                      } failure:^(NSError *error) {

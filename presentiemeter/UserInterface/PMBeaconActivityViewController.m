@@ -10,9 +10,6 @@
 #import "PMBeaconDetector.h"
 
 @interface PMBeaconActivityViewController ()
-
-@property (nonatomic, strong) PMBeaconDetector *beaconfinder;
-
 @end
 
 @implementation PMBeaconActivityViewController
@@ -21,11 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
         self.title = @"Activity";
-        self.beaconfinder = [PMBeaconDetector new];
-        [self.beaconfinder start];
-        NSLog(@"BEACON DETECTOR LOADED");
     }
     
     
@@ -39,11 +32,6 @@
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:YES];
-}
-
-- (void)startFindingBeacons:(NSTimer *)timer {
-    self.beaconfinder = [PMBeaconDetector new];
-    [self.beaconfinder start];
 }
 
 - (void)didReceiveMemoryWarning {

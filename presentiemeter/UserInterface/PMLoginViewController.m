@@ -74,25 +74,18 @@
     textField.leftViewMode = UITextFieldViewModeAlways;
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-    
-}
-
-- (void) finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error {
+- (void)finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error {
     NSLog(@"Received error %@ and auth object %@",error, auth);
     if (error) {
         NSLog(@"Error bij finishedWithAuth");
     } else {
-        
         [self refreshInterfaceBasedOnSignIn];
-        
     }
 }
 
 -(void)refreshInterfaceBasedOnSignIn {
     if ([[GPPSignIn sharedInstance] authentication]) {
         // The user is signed in.
-//        [self performSelectorOnMainThread:@selector(displayViewController) withObject:nil waitUntilDone:YES];
         if ([self.delegate respondsToSelector:@selector(didLogin)]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.delegate performSelector:@selector(didLogin)];
@@ -103,12 +96,6 @@
         NSLog(@"Google button hidden = NO");
         // Perform other actions here
     }
-}
-
--(void) displayViewController {
-    PMLocationViewController *vc = [[PMLocationViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end

@@ -10,6 +10,7 @@
 
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleOpenSource/GoogleOpenSource.h>
+#import "PMLoginViewController.h"
 
 /** This class is used to validate a GooglePlus account
  It's used to store the user data */
@@ -29,6 +30,19 @@
     
     /** If nothing is found, return nothing */
     return nil;
+}
+
++ (void)signOut {
+    [[GPPSignIn sharedInstance] signOut];
+    [[GPPSignIn sharedInstance] disconnect];
+    NSLog(@"signed out");
+    
+    NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
+    NSDictionary * dict = [defs dictionaryRepresentation];
+    for (id key in dict) {
+        [defs removeObjectForKey:key];
+    }
+    [defs synchronize];
 }
 
 /** Check if we have any login info */
@@ -61,7 +75,12 @@
             [[NSUserDefaults standardUserDefaults] setObject:fullname forKey:@"user-fullname"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            completed(@{ @"email" : [GPPSignIn sharedInstance].authentication.userEmail,
+            NSString *email = [GPPSignIn sharedInstance].authentication.userEmail;
+            if (email == nil) {
+                email = @"";
+            }
+            
+            completed(@{ @"email" : email,
                          @"full_name" : fullname });
         }
     }];

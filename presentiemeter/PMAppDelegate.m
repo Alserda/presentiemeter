@@ -10,9 +10,11 @@
 
 #import "PMAppDelegate.h"
 #import "PMUserLogin.h"
-
+#import "PMBeaconDetector.h"
 
 @interface PMAppDelegate ()
+
+@property (nonatomic, strong) PMBeaconDetector *beaconfinder;
 
 @end
 
@@ -89,6 +91,24 @@
     [self configureNavigationBar];
     
     self.window.rootViewController = self.tabBarController;
+    
+    self.beaconfinder = [PMBeaconDetector new];
+    [self.beaconfinder start];
+    
+    // Set the beacon detector instance to have logging view
+    self.beaconActivityViewController.beaconfinder = self.beaconfinder;
+}
+
+- (void)logOut {
+    [self.beaconfinder stop];
+    PMLoginViewController *loginvc = [[PMLoginViewController alloc] init];
+    loginvc.delegate = self;
+    self.window.rootViewController = loginvc;
+    
+    self.locationViewController = nil;
+    self.beaconActivityViewController = nil;
+    self.tabBarController = nil;
+    self.beaconfinder = nil;
 }
 
 - (void)configureNavigationBar {

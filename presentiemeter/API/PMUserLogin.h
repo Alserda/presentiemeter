@@ -15,6 +15,8 @@
 /** The user info, stored in the user defaults */
 + (NSDictionary *)authenticatedUserInfo;
 
++ (void)signOut;
+
 /** A boolean to check if the user is already authenticated */
 + (BOOL)isAuthenticated;
 

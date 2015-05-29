@@ -27,5 +27,7 @@
 /** Reference to the 'Beacon Activity' tab view controller */
 @property (strong, nonatomic) PMBeaconActivityViewController *beaconActivityViewController;
 
+- (void)logOut;
+
 @end
 

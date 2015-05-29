@@ -50,6 +50,14 @@
     [self.locationManager requestAlwaysAuthorization];
 }
 
+- (void)stop {
+    for (CLBeaconRegion *region in self.locationManager.monitoredRegions) {
+        [self.locationManager stopRangingBeaconsInRegion:region];
+        [self.locationManager stopMonitoringForRegion:region];
+        NSLog(@"Stopped monitoring: %@", region);
+    }
+}
+
 - (void)startMonitoringRegions {
     CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] identifier:@"C2:E9:12:49:CB:60"];
     beaconRegion.notifyEntryStateOnDisplay = YES;

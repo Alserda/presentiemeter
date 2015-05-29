@@ -17,4 +17,7 @@
 /** Starts running the beacon detector */
 - (void)start;
 
+/** For stopping the monitoring process */
+- (void)stop;
+
 @end

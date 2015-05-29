@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PMBeaconDetector.h"
 
 @interface PMBeaconActivityViewController : UITableViewController
+
+@property (nonatomic, strong) PMBeaconDetector *beaconfinder;
 
 @end
