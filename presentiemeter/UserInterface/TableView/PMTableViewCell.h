@@ -11,8 +11,12 @@
 
 @interface PMTableViewCell : UITableViewCell
 
+@property (strong, nonatomic) UIView *imageContainer;
 @property (strong, nonatomic) RFGravatarImageView *userPhoto;
+@property (strong, nonatomic) UIView *informationContainer;
 @property (strong, nonatomic) UILabel *userName;
 @property (strong, nonatomic) UILabel *userLocation;
+@property (strong, nonatomic) UILabel *userSpecificLocation;
+
 
 @end

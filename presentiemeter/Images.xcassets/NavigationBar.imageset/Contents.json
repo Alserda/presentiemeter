@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "NavigationBar 2x.png"
+      "filename" : "navigationbar.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "NavigationBar 3x.png"
+      "filename" : "navigationbar x3.png"
     }
   ],
   "info" : {

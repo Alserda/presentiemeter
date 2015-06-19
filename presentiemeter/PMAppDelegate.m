@@ -114,9 +114,11 @@
 
 - (void)configureNavigationBar {
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"NavigationBar"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"ShadowImage"]];
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.867 green:0.294 blue:0.224 alpha:1]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
-    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"ShadowImage"]];
+    
 }
 
 @end

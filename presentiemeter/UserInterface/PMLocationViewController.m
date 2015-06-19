@@ -40,17 +40,15 @@
     [logoutButton sizeToFit];
     [logoutButton addTarget:self action:@selector(testLogout) forControlEvents:UIControlEventTouchUpInside];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutButton];
-
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:logoutButton];    
     
-    // View to add a border under the navigationBar.
-    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 1)];
-    [navBorder setBackgroundColor:[UIColor colorWithRed:0.243 green:0.243 blue:0.243 alpha:1]];
     
-//    [self.navigationController.navigationBar addSubview:navBorder];
     [self.tableView registerClass:[PMTableViewCell class] forCellReuseIdentifier:@"CellIdentifier"];
-    self.tableView.backgroundColor = [UIColor colorWithRed:0.11 green:0.11 blue:0.11 alpha:1];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor colorWithRed:0.902 green:0.902 blue:0.902 alpha:1];
+//    self.tableView.layoutMargins = UIEdgeInsetsMake(-20, -20, -20, -20);
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 79, 0, 0);
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self makeColleagueLocationRequest];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(refreshTable) userInfo:nil repeats:YES];
@@ -89,6 +87,7 @@
     NSDictionary *userinfo = [self.colleagueArray objectAtIndex:indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.userName.text = [userinfo objectForKey:@"full_name"];
+    cell.userSpecificLocation.text = @"Peperzaken";
     if ([[userinfo objectForKey:@"beacon"] isKindOfClass:[NSDictionary class]]) {
         cell.userLocation.text = [[userinfo objectForKey:@"beacon"] objectForKey:@"name"];
         cell.userLocation.backgroundColor = [UIColor colorWithRed:0.196 green:0.749 blue:0.184 alpha:1];
@@ -99,13 +98,17 @@
     }
     else {
         cell.userLocation.text = @"Unavailable";
-        cell.userLocation.backgroundColor = [UIColor colorWithRed:0.922 green:0.165 blue:0.216 alpha:1];
+        cell.userLocation.backgroundColor = [UIColor colorWithRed:0.867 green:0.294 blue:0.224 alpha:1];
     }
     cell.userPhoto.email = [userinfo objectForKey:@"email"];
     
     [cell.userPhoto load];
 
     cell.userLocation.textColor = [UIColor whiteColor];
+    
+    if (indexPath.row == self.colleagueArray.count-1) {
+        cell.separatorInset = UIEdgeInsetsMake(0.f, cell.bounds.size.width, 0.f, 0.f);
+    }
     
 
     
@@ -114,7 +117,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return 60;
 }
 
 #pragma mark - Table view delegate
