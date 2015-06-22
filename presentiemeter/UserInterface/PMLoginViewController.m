@@ -38,19 +38,23 @@
     self.mapView.delegate = self;
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-#ifdef __IPHONE_8_0
-    if(IS_OS_8_OR_LATER) {
-        // Use one or the other, not both. Depending on what you put in info.plist
-        [self.locationManager requestAlwaysAuthorization];
-    }
-#endif
+    
+    #ifdef __IPHONE_8_0
+        if(IS_OS_8_OR_LATER) {
+            [self.locationManager requestAlwaysAuthorization];
+        }
+    #endif
+    
     [self.locationManager startUpdatingLocation];
     
+
+    self.mapView.mapType = MKMapTypeSatellite;
+    self.mapView.zoomEnabled = YES;
+    self.mapView.scrollEnabled = YES;
+    self.mapView.pitchEnabled = YES;
+    self.mapView.rotateEnabled = YES;
+    
     self.mapView.showsUserLocation = YES;
-    [self.mapView setMapType:MKMapTypeSatellite];
-    [self.mapView setZoomEnabled:YES];
-    [self.mapView setScrollEnabled:YES];
-    [self.mapView setPitchEnabled:YES];
     
     [self.view addSubview:self.mapView];
 }
@@ -110,9 +114,15 @@
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
-    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
-    NSLog(@"Updated location");
+    CLLocationCoordinate2D userCoordinate = CLLocationCoordinate2DMake(self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude);
+    
+    NSLog(@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude);
+    
+    CLLocationCoordinate2D eyecoordinate = CLLocationCoordinate2DMake(self.locationManager.location.coordinate.latitude - 0.021, self.locationManager.location.coordinate.longitude - 0.05);
+    
+    MKMapCamera *mapCamera = [MKMapCamera cameraLookingAtCenterCoordinate:userCoordinate fromEyeCoordinate:eyecoordinate eyeAltitude:400.0];
+    
+    [self.mapView setCamera:mapCamera animated:YES];
 }
 
 - (NSString *)deviceLocation {
