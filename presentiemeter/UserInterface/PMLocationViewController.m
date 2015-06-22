@@ -35,7 +35,7 @@
     UIButton *logoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
     [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logoutButton setTitleColor:[UIColor colorWithRed:0.62 green:0.62 blue:0.62 alpha:1] forState:UIControlStateHighlighted];
+    [logoutButton setTitleColor:[UIColor colorWithRed:0.663 green:0.663 blue:0.675 alpha:1] forState:UIControlStateHighlighted];
     [logoutButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
     [logoutButton sizeToFit];
     [logoutButton addTarget:self action:@selector(testLogout) forControlEvents:UIControlEventTouchUpInside];

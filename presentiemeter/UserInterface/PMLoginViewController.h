@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <GooglePlus/GooglePlus.h>
+#import <MapKit/MapKit.h>
+#import <MapKit/MKAnnotation.h>
+
+#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 @protocol PMLoginViewControllerDelegate <NSObject>
 
@@ -20,7 +24,7 @@ static NSString * const kClientId = @"710333786173-t904e7mn0u7dqgv53lh4cqbpgo8nf
 
 @class GPPSignInButton;
 
-@interface PMLoginViewController : UIViewController <GPPSignInDelegate>
+@interface PMLoginViewController : UIViewController <GPPSignInDelegate, MKMapViewDelegate,  CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIView *informationContainer;
 @property (strong, nonatomic) UIView *signInContainer;
@@ -28,6 +32,10 @@ static NSString * const kClientId = @"710333786173-t904e7mn0u7dqgv53lh4cqbpgo8nf
 /** Delegate handling the login success situation */
 @property (nonatomic, weak) id<PMLoginViewControllerDelegate> delegate;
 
-@property(strong, nonatomic) GPPSignInButton *googlePlusSignInButton;
+@property (strong, nonatomic) GPPSignInButton *googlePlusSignInButton;
+
+
+@property(nonatomic, strong) MKMapView *mapView;
+@property(nonatomic, strong) CLLocationManager *locationManager;
 
 @end

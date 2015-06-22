@@ -13,7 +13,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-//        [self addContainer];
         [self addImageContainer];
         [self addInformationContainer];
         
@@ -21,9 +20,6 @@
         [self addUserLocation];
         [self addUsernameLabel];
         [self addUserSpecificLocation];
-        
-        NSLog(@"Max X: %f", CGRectGetMaxX(self.accessoryView.bounds));
-
     }
     return self;
 }
@@ -76,7 +72,6 @@
 - (void)addUserSpecificLocation {
     self.userSpecificLocation = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.userName.bounds)
                                                                           + 26, self.informationContainer.bounds.size.width - (CGRectGetMaxX(self.userLocation.bounds) + 30), 1)];
-    NSLog(@"addUserLocation: %@", NSStringFromCGSize(self.userName.bounds.size));
     self.userSpecificLocation.textColor = [UIColor colorWithRed:0.663 green:0.663 blue:0.675 alpha:1];
 //    self.userSpecificLocation.backgroundColor = [UIColor brownColor];
     self.userSpecificLocation.font = [UIFont fontWithName:@"Helvetica" size:12];

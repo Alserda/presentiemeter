@@ -36,7 +36,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Ranging the beacons</string>
+	<string>Current location &amp; beacon detection.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

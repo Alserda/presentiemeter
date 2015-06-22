@@ -26,27 +26,37 @@
     signIn.delegate = self;
     
     
-    [self addInformationContainer];
+    [self addMapView];
     [self addSignInContainer];
     [self addLogo];
     [self addSignInButton];
 }
 
-- (void)addInformationContainer {
-    self.informationContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 115)];
+- (void)addMapView {
+    self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 115)];
     
-    UIGraphicsBeginImageContext(self.view.frame.size);
-    [[UIImage imageNamed:@"loginbackground"] drawInRect:self.view.bounds];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-
-    self.informationContainer.backgroundColor = [UIColor colorWithPatternImage:image];
+    self.mapView.delegate = self;
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+#ifdef __IPHONE_8_0
+    if(IS_OS_8_OR_LATER) {
+        // Use one or the other, not both. Depending on what you put in info.plist
+        [self.locationManager requestAlwaysAuthorization];
+    }
+#endif
+    [self.locationManager startUpdatingLocation];
     
-    [self.view addSubview:self.informationContainer];
+    self.mapView.showsUserLocation = YES;
+    [self.mapView setMapType:MKMapTypeSatellite];
+    [self.mapView setZoomEnabled:YES];
+    [self.mapView setScrollEnabled:YES];
+    [self.mapView setPitchEnabled:YES];
+    
+    [self.view addSubview:self.mapView];
 }
 
 - (void)addSignInContainer {
-    self.signInContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.informationContainer.bounds), self.view.frame.size.width, 115)];
+    self.signInContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.mapView.bounds), self.view.frame.size.width, 115)];
     self.signInContainer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.signInContainer];
 }
@@ -54,9 +64,9 @@
 - (void)addLogo {
     UIImageView *peperzakenLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"peperzaken"]];
     peperzakenLogo.frame = CGRectMake(0, 0, 277, 67);
-    peperzakenLogo.center = CGPointMake(self.informationContainer.frame.size.width / 2, self.informationContainer.frame.size.height / 2);
+    peperzakenLogo.center = CGPointMake(self.mapView.frame.size.width / 2, self.mapView.frame.size.height / 2);
     
-    [self.informationContainer addSubview:peperzakenLogo];
+    [self.mapView addSubview:peperzakenLogo];
 }
 
 - (void)addSignInButton {
@@ -96,6 +106,17 @@
         NSLog(@"Google button hidden = NO");
         // Perform other actions here
     }
+}
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
+    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+    NSLog(@"Updated location");
+}
+
+- (NSString *)deviceLocation {
+    return [NSString stringWithFormat:@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude];
 }
 
 @end

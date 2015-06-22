@@ -33,6 +33,7 @@
 		A86D34371ADD58840074A5FC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86D34311ADD57630074A5FC /* CoreBluetooth.framework */; };
 		A889437E1AE4F17E00130D64 /* PMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A889437D1AE4F17E00130D64 /* PMTableViewCell.m */; };
 		A89083081B00D4700036F11F /* PMBeaconActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */; };
+		A8AA8E281B3829B700CCB7BC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8AA8E271B3829B700CCB7BC /* MapKit.framework */; };
 		A8D75B1F1AE92E1000B1879F /* PMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A8D75B1E1AE92E1000B1879F /* PMHelper.m */; };
 		A8EF3ADA1B170F930063FEB9 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8EF3AD81B170F930063FEB9 /* GoogleOpenSource.framework */; };
 		A8EF3ADB1B170F930063FEB9 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8EF3AD91B170F930063FEB9 /* GooglePlus.framework */; };
@@ -87,6 +88,7 @@
 		A889437D1AE4F17E00130D64 /* PMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMTableViewCell.m; path = UserInterface/TableView/PMTableViewCell.m; sourceTree = "<group>"; };
 		A89083061B00D4700036F11F /* PMBeaconActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMBeaconActivityViewController.h; path = UserInterface/PMBeaconActivityViewController.h; sourceTree = "<group>"; };
 		A89083071B00D4700036F11F /* PMBeaconActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMBeaconActivityViewController.m; path = UserInterface/PMBeaconActivityViewController.m; sourceTree = "<group>"; };
+		A8AA8E271B3829B700CCB7BC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A8D75B1D1AE92E1000B1879F /* PMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PMHelper.h; path = Models/PMHelper.h; sourceTree = "<group>"; };
 		A8D75B1E1AE92E1000B1879F /* PMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PMHelper.m; path = Models/PMHelper.m; sourceTree = "<group>"; };
 		A8EF3AD81B170F930063FEB9 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "presentiemeter/Supporting Files/Frameworks/GoogleOpenSource.framework"; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8AA8E281B3829B700CCB7BC /* MapKit.framework in Frameworks */,
 				A858EDA01AE12FCE00A788D3 /* UIKit.framework in Frameworks */,
 				A86D34351ADD58780074A5FC /* SystemConfiguration.framework in Frameworks */,
 				A858ED9E1AE12FC100A788D3 /* Security.framework in Frameworks */,
@@ -151,6 +154,7 @@
 		A86D33F41ADD49E80074A5FC = {
 			isa = PBXGroup;
 			children = (
+				A8AA8E271B3829B700CCB7BC /* MapKit.framework */,
 				A86D33FF1ADD49E80074A5FC /* presentiemeter */,
 				A86D34191ADD49E90074A5FC /* presentiemeterTests */,
 				A86D33FE1ADD49E80074A5FC /* Products */,
