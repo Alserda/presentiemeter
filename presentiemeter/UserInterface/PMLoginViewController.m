@@ -45,7 +45,7 @@
         }
     #endif
     
-    [self.locationManager startUpdatingLocation];
+    
     
 
     self.mapView.mapType = MKMapTypeSatellite;
@@ -53,8 +53,10 @@
     self.mapView.scrollEnabled = YES;
     self.mapView.pitchEnabled = YES;
     self.mapView.rotateEnabled = YES;
-    
+
     self.mapView.showsUserLocation = YES;
+    
+    [self.locationManager startUpdatingLocation];
     
     [self.view addSubview:self.mapView];
 }
@@ -114,19 +116,29 @@
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    CLLocationCoordinate2D userCoordinate = CLLocationCoordinate2DMake(self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude);
+//    CLLocationCoordinate2D userCoordinate = CLLocationCoordinate2DMake(self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude);
+//    
+//    NSLog(@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude);
+//    
+//    CLLocationCoordinate2D eyecoordinate = CLLocationCoordinate2DMake(self.locationManager.location.coordinate.latitude - 0.021, self.locationManager.location.coordinate.longitude - 0.05);
+//    
+//    MKMapCamera *mapCamera = [MKMapCamera cameraLookingAtCenterCoordinate:userCoordinate fromEyeCoordinate:eyecoordinate eyeAltitude:400.0];
+//    
+//    [self.mapView setCamera:mapCamera animated:YES];
     
-    NSLog(@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude);
-    
-    CLLocationCoordinate2D eyecoordinate = CLLocationCoordinate2DMake(self.locationManager.location.coordinate.latitude - 0.021, self.locationManager.location.coordinate.longitude - 0.05);
-    
-    MKMapCamera *mapCamera = [MKMapCamera cameraLookingAtCenterCoordinate:userCoordinate fromEyeCoordinate:eyecoordinate eyeAltitude:400.0];
-    
-    [self.mapView setCamera:mapCamera animated:YES];
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
+    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+    NSLog(@"Updated location");
 }
 
 - (NSString *)deviceLocation {
     return [NSString stringWithFormat:@"latitude: %f longitude: %f", self.locationManager.location.coordinate.latitude, self.locationManager.location.coordinate.longitude];
+}
+
+-(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+    MKAnnotationView *ulv = [mapView viewForAnnotation:mapView.userLocation];
+    ulv.hidden = YES;
 }
 
 @end

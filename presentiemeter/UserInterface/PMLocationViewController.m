@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSArray *colleagueArray;
 @property (nonatomic, strong) NSArray *colleaguePresentArray;
 @property (nonatomic, strong) PMBeaconDetector *beaconfinder;
+@property (nonatomic, strong) CBCentralManager *bluetoothManager;
 
 @end
 
@@ -49,7 +50,8 @@
 //    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 79, 0, 0);
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
+    [self detectBluetooth];
+    
     [self makeColleagueLocationRequest];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(refreshTable) userInfo:nil repeats:YES];
 }
@@ -154,6 +156,57 @@
                                          NSLog(@"Failure: %@", error);
                                      }];
 }
+
+- (void)detectBluetooth
+{
+    if(!self.bluetoothManager)
+    {
+        // Put on main queue so we can call UIAlertView from delegate callbacks.
+        self.bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self
+                                                                     queue:nil
+                                                                   options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0]
+                                                                                                       forKey:CBCentralManagerOptionShowPowerAlertKey]];
+    }
+    [self centralManagerDidUpdateState:self.bluetoothManager]; // Show initial state
+}
+
+- (void)centralManagerDidUpdateState:(CBCentralManager *)central
+{
+    NSString *stateString = nil;
+    switch(self.bluetoothManager.state)
+    {
+        case CBCentralManagerStateResetting:
+            stateString = @"The connection with the system service was momentarily lost, update imminent.";
+            break;
+        case CBCentralManagerStateUnsupported:
+            stateString = @"The platform doesn't support Bluetooth Low Energy.";
+            break;
+        case CBCentralManagerStateUnauthorized:
+            stateString = @"The app is not authorized to use Bluetooth Low Energy.";
+            break;
+        case CBCentralManagerStatePoweredOff:
+            stateString = @"Bluetooth is currently powered off.";
+            break;
+        case CBCentralManagerStatePoweredOn:
+            stateString = @"Bluetooth is currently powered on and available to use.";
+            break;
+        case CBCentralManagerStateUnknown:
+            stateString = @"Bluetooth state is unknown";
+            break;
+            
+        default: stateString = @"State unknown, update imminent."; break;
+    }
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bluetooth state"
+                                                    message:stateString
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    
+    [alert show];
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

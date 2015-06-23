@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <GooglePlus/GooglePlus.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
 
 @interface PMLocationViewController : UITableViewController
