@@ -25,6 +25,7 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
 
 @implementation PMBackend
 
+/* For being able to access the back-end */
 + (instancetype)sharedInstance {
     static dispatch_once_t onceToken;
     static PMBackend *sharedBackend;
@@ -36,7 +37,7 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
     return sharedBackend;
 }
 
-/** Override the init method to create the operation manager with the base url */
+/* Override the init method to create the operation manager with the base url */
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -48,6 +49,7 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
 
 #pragma mark - Public methods
 
+/* POST request to update a users location to the back-end */
 - (void)updateUserLocation:(NSString *)path withLocation:(NSString *)location forUsername:(NSString *)username andEmail:(NSString *)email success:(void(^)(id json))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *params = @{@"full_name": username,
@@ -71,6 +73,7 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
                                                    }];
 }
 
+/* POST request to update the unavailability of a user to the back-end */
 - (void)updateUnavailableLocation:(NSString *)path withEmail:(NSString *)email forUsername:(NSString *)username success:(void (^)(id json))success failure:(void (^)(NSError *))failure
 {
     NSDictionary *params = @{@"full_name": username,
@@ -91,6 +94,7 @@ NSString * const kPresentiemeterUpdateUnavailablePath = @"employees/1/out_of_ran
                                                    }];
 }
 
+/* GET request to retrieve the location of all users */
 - (void)retrievePath:(NSString *)path success:(void(^)(id json))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperation *operation = [self.manager GET:path

@@ -18,5 +18,4 @@
 @property (strong, nonatomic) UILabel *userLocation;
 @property (strong, nonatomic) UILabel *userSpecificLocation;
 
-
 @end

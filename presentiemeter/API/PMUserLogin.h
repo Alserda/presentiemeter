@@ -15,6 +15,7 @@
 /** The user info, stored in the user defaults */
 + (NSDictionary *)authenticatedUserInfo;
 
+/* Destroys the Google session */
 + (void)signOut;
 
 /** A boolean to check if the user is already authenticated */

@@ -15,7 +15,7 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSDictionary *googlePlusUserInfo;
 @property (nonatomic, strong) NSMutableArray *activeRegions;
-@property (nonatomic, strong) NSMutableDictionary *rangedRegions;
+@property (nonatomic, strong) NSMutableDictionary *distancePerRegion;
 @property (nonatomic, strong) NSTimer *timeoutTimer;
 @property (nonatomic, strong) NSString *closestBeacon;
 
@@ -26,15 +26,15 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        NSLog(@"Ranging Available: %@", [CLLocationManager isRangingAvailable] ? @"YES":@"NO");
-        NSLog(@"Monitoring available: %@", [CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]] ? @"YES":@"NO");
-        
         self.activeRegions = [[NSMutableArray alloc] init];
+        
+        /* Used for debugging the activity in PMBeaconActivityViewController */
+        self.locations = [NSMutableArray array];
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        self.locations = [NSMutableArray array];
         
-        /** Retrieve and store the user data */
+        
+        /** Retrieve and store the user data for later use */
         self.googlePlusUserInfo = [PMUserLogin authenticatedUserInfo];
         if (self.googlePlusUserInfo == nil) {
             [PMUserLogin fetchGooglePlusUserData:^(NSDictionary *googleUserInfo) {
@@ -59,14 +59,27 @@
 }
 
 - (void)startMonitoringRegions {
-    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"] identifier:@"C2:E9:12:49:CB:60"];
+    
+    /*
+     * Kontact.io beacon 'QOeM'
+     * Vergaderbar
+     */
+    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"b5f961a0-1a7a-11e5-b939-0800200c9a66"] identifier:@"QoeM"];
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
     
-    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"A6B765FA-052C-4F13-B13C-C681E2B27AA6"] identifier:@"C2:4C:32:2D:3D:47"];
+    /*
+     * Kontact.io beacon 'vNoE'
+     * Hoofdkantoor
+     */
+    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"f7826da6-4fa2-4e98-8024-bc5b71e0893e"] identifier:@"vNoE"];
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
     
+    /*
+     * Kontact.io beacon 'dr8E'
+     * Management
+     */
     beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:[[NSUUID alloc] initWithUUIDString:@"e092725e-726a-4e2f-a0ac-f5f9e10b006f"] identifier:@"dr8E"];
     beaconRegion.notifyEntryStateOnDisplay = YES;
     [self.locationManager startMonitoringForRegion:beaconRegion];
@@ -75,10 +88,45 @@
 
 #pragma mark - CLLocationManagerDelegate methods
 
+/* Invoked when the authorization status changes for this application. */
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    NSLog(@"%s, status: %d", __PRETTY_FUNCTION__, status);
+    
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+                /* No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging. */
+                
+                [self startMonitoringRegions];
+                
+            } else {
+                /* Request permission to use Location Services. (new in iOS 8) */
+                
+                [self.locationManager requestAlwaysAuthorization];
+                
+            }
+            break;
+        case kCLAuthorizationStatusAuthorizedAlways:
+            [self startMonitoringRegions];
+            break;
+            
+        case kCLAuthorizationStatusDenied:
+            [self.locations addObject: @"Denied access to location services"];
+            break;
+            
+        case kCLAuthorizationStatusRestricted:
+            [self.locations addObject: @"No access to location services"];
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
     
-    /** If the region is currently inside the users location */
+    /* If the region is currently inside the users location */
     if (state == CLRegionStateInside) {
+        
         [self.locations addObject:[NSString stringWithFormat:@"%@ is inside", region.identifier]];
         NSLog(@"%@ is inside", region.identifier);
         
@@ -90,7 +138,7 @@
             NSLog(@"activeRegions array: %@", self.activeRegions);
         }
         
-        /** Range the beacons when more than two regions are active, else just post the only location */
+        /* Range the beacons when more than two regions are active, else just post the only location */
         if (self.activeRegions.count == 0) {
             [self postUnavailability];
         } else if (self.activeRegions.count == 1) {
@@ -100,7 +148,7 @@
         }
     }
 
-    /** If the region is Outside the current location, or Unknown */
+    /** If the user isn't around any regions or beacons, send unavailability. */
     else {
         [self.locations addObject:[NSString stringWithFormat:@"Region: %@ is Unknown or Outside", region.identifier]];
         if ([self.activeRegions count] == 0) {
@@ -110,27 +158,33 @@
 }
 
 
-/** Calls the didRangeBeacons delegate on all active regions for several seconds */
 - (void)temporaryRangeBeacons {
     NSSet *regions = [self.locationManager monitoredRegions];
     BOOL didStartRanging = NO;
     for (CLRegion *region in regions) {
+        /* Check if all monitored regions are active */
         if ([self.activeRegions containsObject:region.identifier]) {
             if ([self.locationManager.rangedRegions containsObject:region]) {
+                /* Do nothing if this region is already being ranged */
                 NSLog(@"Already scanning this region: %@", region.identifier);
             } else {
                 NSLog(@"Ranging beacons in region: %@", region.identifier);
                 [self.locations addObject:[NSString stringWithFormat:@"Ranging beacons in region: %@", region.identifier]];
+                
+                /** Calls the didRangeBeacons delegate on all active regions for several seconds */
                 [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
                 didStartRanging = YES;
             }
         }
     }
     
+    /* If this region is currently being ranged */
     if (didStartRanging) {
-        self.rangedRegions = [NSMutableDictionary dictionary];
+        /* Add a dictionary, in which the distances will be added */
+        self.distancePerRegion = [NSMutableDictionary dictionary];
+        
+        /* Start a timer to evaluate the ranging */
         [self.timeoutTimer invalidate];
-        // Start a timer to evaluate the ranging
         self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
                                                              target:self
                                                            selector:@selector(stopRangingTimeout:)
@@ -139,60 +193,97 @@
     }
 }
 
-/** Called after recieving the data from ranging the beacons
- This is used to calculate the closest region, which will be sent to the back-end*/
+/* Ranging the beacons in regions */
+- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    for (CLBeacon *beacon in beacons) {
+        NSMutableArray *array = [self.distancePerRegion objectForKey:region.identifier];
+        if (array == nil) {
+            /* If the array is empty (first time ranging) */
+            NSLog(@"Array is nil, adding region: %@", region.identifier);
+            if (beacon.accuracy < 0) {
+                /* Don't add the distance to the beacon if it's a negative number (temporary connection lost) */
+                NSLog(@"beacon.accuracy %f is under 0, don't add", beacon.accuracy);
+            }
+            else {
+                /* Add the region's identifier as a key to the array and add it's distance to it. */
+                array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
+                [self.distancePerRegion setObject:array forKey:region.identifier];
+            }
+            
+        } else {
+            if (beacon.accuracy < 0) {
+                /* Don't add the distance to the beacon if it's a negative number (temporary connection lost) */
+                NSLog(@"beacon.accuracy %f is under 0, don't add", beacon.accuracy);
+            }
+            else {
+                /* Add the distance to the beacon to the right key (region identifier) */
+                [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
+            }
+        }
+        NSLog(@"distancePerRegion: %@", self.distancePerRegion);
+    }
+}
+
+/* Called after recieving the data from ranging the beacons
+ This is used to calculate the closest region, which will be sent to the back-end */
 - (void)stopRangingTimeout:(NSTimer *)timer {
+    
+    /* Clear the timeoutTimer for next time */
     self.timeoutTimer = nil;
     
-    // First stop all active scanned regions
+    /* Stop all active scanned regions */
     NSSet *rangingBeacons = self.locationManager.rangedRegions;
     for (CLBeaconRegion *region in rangingBeacons) {
         [self.locationManager stopRangingBeaconsInRegion:region];
     }
     
-    // Now determine the average for the ranged regions
-    for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
-        NSArray *array = [self.rangedRegions objectForKey:regionIdentifier];
+    /* Determine the average for each ranged region */
+    for (NSString *regionIdentifier in self.distancePerRegion.allKeys) {
+        NSArray *array = [self.distancePerRegion objectForKey:regionIdentifier];
         float total;
         total = 0;
         for(NSNumber *value in array) {
             total += [value floatValue];
         }
-        
         float average = total / array.count;
         
-        [self.rangedRegions setObject:[NSNumber numberWithFloat:average] forKey:regionIdentifier];
+        /* Replace all distances with the average for each region identifier. */
+        [self.distancePerRegion setObject:[NSNumber numberWithFloat:average] forKey:regionIdentifier];
     }
 
-    NSLog(@"rangedRegions with average: %@", self.rangedRegions);
+    NSLog(@"distancePerRegion with average: %@", self.distancePerRegion);
     
-    // Now decide which beacon is closest
+    /* Now compare each average and decide the closest region. */
     NSNumber *closest;
-    for (NSString *regionIdentifier in self.rangedRegions.allKeys) {
-        NSNumber *average = [self.rangedRegions objectForKey:regionIdentifier];
+    for (NSString *regionIdentifier in self.distancePerRegion.allKeys) {
+        NSNumber *average = [self.distancePerRegion objectForKey:regionIdentifier];
         NSLog(@"average: %@ from ID %@", average, regionIdentifier);
         
-        // Compare each number and decide the closest
+        /* Add the first average as the closest. */
         if (!closest) {
+            
             NSLog(@"closest is empty, adding %@", average);
             closest = average;
             self.closestBeacon = regionIdentifier;
-        }
-        else if ([average compare:closest] == NSOrderedAscending) {
+        } else if ([average compare:closest] == NSOrderedAscending) {
+            /* If the next average is higher than the first one, replace it. */
             NSLog(@"%@ is closer than %@, replacing", average, closest);
             closest = average;
             self.closestBeacon = regionIdentifier;
         } else {
+            /* If the next average is lower than the first one, do nothing. */
             NSLog(@"%@ is futher away than %@", average, closest);
         }
     }
     
     NSLog(@"closest target: %@", self.closestBeacon);
     
+    /* If the closest beacon is still an active region */
     if ([self.activeRegions containsObject:self.closestBeacon]) {
         NSLog(@"Yes, %@ contains %@", self.activeRegions, self.closestBeacon);
         [self.locations addObject:[NSString stringWithFormat:@"Yes, activeRegions contains %@", self.closestBeacon]];
         
+        /* POST its location to the back-end. */
         [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
                                           withLocation:self.closestBeacon
                                            forUsername:self.googlePlusUserInfo[@"full_name"]
@@ -200,89 +291,53 @@
                                                success:^(id json) {
                                                    [self.locations addObject:[NSString stringWithFormat:@"Posted closest region: %@", self.closestBeacon]];
                                                    NSLog(@"Posted closest region: %@", self.closestBeacon);
+                                                   
+                                                   /* Check again if the user left all regions, if so; post unavailability. */
                                                    if ([self.activeRegions count] == 0) {
                                                        [self postUnavailability];
                                                    }
+                                                   
                                                } failure:^(NSError *error) {
                                                    [self.locations addObject:[NSString stringWithFormat:@"Posted closest region failed:"]];
                                                    [self.locations addObject:[NSString stringWithFormat:@"%@", error]];
                                                    NSLog(@"Posted closest region failed: %@", error);
+                                                   
+                                                   /* Check again if the user left all regions, if so; post unavailability. */
                                                    if ([self.activeRegions count] == 0) {
                                                        [self postUnavailability];
                                                    }
                                                }];
     }
+    /* If the closest beacon isn't active anymore, do nothing. */
     else {
         NSLog(@"No, %@ does not contain %@", self.activeRegions, self.closestBeacon);
         [self.locations addObject:[NSString stringWithFormat:@"No, activeRegions does not contain %@", self.closestBeacon]];
+        
+        /* Check again if the user left all regions, if so; post unavailability. */
         if ([self.activeRegions count] == 0) {
             [self postUnavailability];
         }
     }
     
-    self.rangedRegions = nil;
+    /* Clear the distances for next time. */
+    self.distancePerRegion = nil;
 }
 
-/*
- *  locationManager:didRangeBeacons:inRegion:
- *
- *  Discussion:
- *    Invoked when a new set of beacons are available in the specified region.
- *    beacons is an array of CLBeacon objects.
- *    If beacons is empty, it may be assumed no beacons that match the specified region are nearby.
- *    Similarly if a specific beacon no longer appears in beacons, it may be assumed the beacon is no longer received
- *    by the device.
- */
-- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
-    for (CLBeacon *beacon in beacons) {
-        NSMutableArray *array = [self.rangedRegions objectForKey:region.identifier];
-        if (array == nil) {
-            NSLog(@"Array is nil, adding region: %@", region.identifier);
-            if (beacon.accuracy < 0) {
-                NSLog(@"beacon.accuracy %f is under 0, don't add", beacon.accuracy);
-            }
-            else {
-                array = [NSMutableArray arrayWithObject:[NSNumber numberWithDouble:beacon.accuracy]];
-                [self.rangedRegions setObject:array forKey:region.identifier];
-            }
-            
-        } else {
-            if (beacon.accuracy < 0) {
-                NSLog(@"beacon.accuracy %f is under 0, don't add", beacon.accuracy);
-            }
-            else {
-                [array addObject:[NSNumber numberWithDouble:beacon.accuracy]];
-            }
-        }
-        NSLog(@"rangedRegions: %@", self.rangedRegions);
-    }
-}
-
-
-/*
- *  locationManager:didEnterRegion:
- *
- *  Discussion:
- *    Invoked when the user enters a monitored region.  This callback will be invoked for every allocated
- *    CLLocationManager instance with a non-nil delegate that implements this method.
- */
+/* Invoked when the user enters a monitored region, in which it enters the 'didDetermineState' delegate */
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.locations addObject:[NSString stringWithFormat:@"Entered region: %@", region.identifier]];
 }
-/*
- *  locationManager:didExitRegion:
- *
- *  Discussion:
- *    Invoked when the user exits a monitored region.  This callback will be invoked for every allocated
- *    CLLocationManager instance with a non-nil delegate that implements this method.
- */
+
+/* Invoked when a user leaves a monitored region.  */
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.locations addObject:[NSString stringWithFormat:@"Left region: %@", region.identifier]];
     NSLog(@"Exited region: %@", region.identifier);
     
+    /* Check if region that the user left is part of the active regions. */
     if ([self.activeRegions containsObject:region.identifier]) {
+        /* If so, remove the region from the activeRegions array*/
         [self.activeRegions removeObject:region.identifier];
         [self.locations addObject:[NSString stringWithFormat:@"Removed %@ from activeRegions", region.identifier]];
         [self.locations addObject:[NSString stringWithFormat:@"activeRegions: "]];
@@ -291,7 +346,7 @@
         NSLog(@"activeRegions after removal: %@", self.activeRegions);
     }
 
-    /** Range the beacons when more than two regions are active, else just post the only location */
+    /** POST unavailability if this was the last active region. If there is one region left, post this address. */
     if (self.activeRegions.count == 0) {
         [self postUnavailability];
     } else if (self.activeRegions.count == 1) {
@@ -299,76 +354,14 @@
     }
 }
 
-/*
- *  locationManager:didChangeAuthorizationStatus:
- *
- *  Discussion:
- *    Invoked when the authorization status changes for this application.
- */
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    NSLog(@"%s, status: %d", __PRETTY_FUNCTION__, status);
-    
-    switch (status) {
-        case kCLAuthorizationStatusNotDetermined:
-        {
-            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-                /*
-                 * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
-                 */
-                
-                [self startMonitoringRegions];
-                
-            } else {
-                /*
-                 * Request permission to use Location Services. (new in iOS 8)
-                 * We ask for "always" authorization so that the Notification Demo can benefit as well.
-                 * Also requires NSLocationAlwaysUsageDescription in Info.plist file.
-                 *
-                 * For more details about the new Location Services authorization model refer to:
-                 * https://community.estimote.com/hc/en-us/articles/203393036-Estimote-SDK-and-iOS-8-Location-Services
-                 */
-                
-                [self.locationManager requestAlwaysAuthorization];
-                
-            }
-        }
-            break;
-            
-        case kCLAuthorizationStatusAuthorizedAlways:
-        {
-            [self startMonitoringRegions];
-        }
-            break;
-            
-        case kCLAuthorizationStatusDenied:
-        {
-            [self.locations addObject: @"Denied access to location services"];
-        }
-            break;
-        
-        case kCLAuthorizationStatusRestricted:
-        {
-            [self.locations addObject: @"No access to location services"];
-        }
-            break;
-            
-        default:
-            break;
-    }    
-}
-
-/*
- *  locationManager:didStartMonitoringForRegion:
- *
- *  Discussion:
- *    Invoked when a monitoring for a region started successfully.
- */
+/* Invoked when a monitoring for a region started successfully. */
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region  {
     NSLog(@"%s, region: %@", __PRETTY_FUNCTION__, region);
     [self.locations addObject:[NSString stringWithFormat:@"didStartMonitoring: %@", region.identifier]];
 }
 
 
+/* POST request to the back-end, making the user unavailable. */
 - (void)postUnavailability {
     [[PMBackend sharedInstance] updateUnavailableLocation:kPresentiemeterUpdateUnavailablePath
                                                 withEmail:self.googlePlusUserInfo[@"email"]
@@ -383,6 +376,7 @@
                                                   }];
 }
 
+/* POST request to the back-end, posting the only active region. */
 - (void)postFirstLocation {
         [[PMBackend sharedInstance] updateUserLocation:kPresentiemeterUpdateLocationPath
                                           withLocation:self.activeRegions.firstObject

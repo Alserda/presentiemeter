@@ -15,27 +15,31 @@
 
 @protocol PMLoginViewControllerDelegate <NSObject>
 
-/** Called on the delegate when user login was successfull */
+/** Called on the delegate when user login was successful */
 - (void)didLogin;
 
 @end
 
+/* The client ID to access Google's API */
 static NSString * const kClientId = @"710333786173-t904e7mn0u7dqgv53lh4cqbpgo8nfcpe.apps.googleusercontent.com";
 
 @class GPPSignInButton;
 
 @interface PMLoginViewController : UIViewController <GPPSignInDelegate, MKMapViewDelegate,  CLLocationManagerDelegate>
 
-@property (strong, nonatomic) UIView *informationContainer;
-@property (strong, nonatomic) UIView *signInContainer;
-
-/** Delegate handling the login success situation */
+/* Delegate handling the login success situation */
 @property (nonatomic, weak) id<PMLoginViewControllerDelegate> delegate;
 
-@property (strong, nonatomic) GPPSignInButton *googlePlusSignInButton;
+/* Sign-in button */
+@property (nonatomic, strong) GPPSignInButton *googlePlusSignInButton;
 
+/* The view containing the map. */
+@property (nonatomic, strong) MKMapView *mapView;
 
-@property(nonatomic, strong) MKMapView *mapView;
-@property(nonatomic, strong) CLLocationManager *locationManager;
+/* A locationManager to handle the locations of the user. */
+@property (nonatomic, strong) CLLocationManager *locationManager;
+
+/* The bottom container in which the log-in button is shown. */
+@property (nonatomic, strong) UIView *signInContainer;
 
 @end

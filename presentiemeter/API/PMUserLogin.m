@@ -33,10 +33,11 @@
 }
 
 + (void)signOut {
+    /* Remove the Google session */
     [[GPPSignIn sharedInstance] signOut];
     [[GPPSignIn sharedInstance] disconnect];
-    NSLog(@"signed out");
     
+    /* Clear the user defaults */
     NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
     NSDictionary * dict = [defs dictionaryRepresentation];
     for (id key in dict) {
@@ -61,25 +62,30 @@
     [plusService executeQuery:query
             completionHandler:^(GTLServiceTicket *ticket,
                                 GTLPlusPerson *person,
-                                NSError *error)
-    {
-        NSLog(@"person: %@", person);
+                                NSError *error) {
+                
+                NSLog(@"person: %@", person);
 
         if (completed) {
+            
+            /* Define the users full name */
             NSString *fullname = @"";
             if (person.displayName) {
                 fullname = person.displayName;
             }
             
+            /* Store the user's login-info to the user defaults. */
             [[NSUserDefaults standardUserDefaults] setObject:[GPPSignIn sharedInstance].authentication.userEmail forKey:@"user-email"];
             [[NSUserDefaults standardUserDefaults] setObject:fullname forKey:@"user-fullname"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
+            /* Define the users email */
             NSString *email = [GPPSignIn sharedInstance].authentication.userEmail;
             if (email == nil) {
                 email = @"";
             }
             
+            /* Return the email and full_name */
             completed(@{ @"email" : email,
                          @"full_name" : fullname });
         }
