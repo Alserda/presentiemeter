@@ -46,10 +46,12 @@
     return self;
 }
 
+/* Check for the authorization status. */
 - (void)start {
     [self.locationManager requestAlwaysAuthorization];
 }
 
+/* Stop monitoring all regions. */
 - (void)stop {
     for (CLBeaconRegion *region in self.locationManager.monitoredRegions) {
         [self.locationManager stopRangingBeaconsInRegion:region];
@@ -58,8 +60,8 @@
     }
 }
 
+
 - (void)startMonitoringRegions {
-    
     /*
      * Kontact.io beacon 'QOeM'
      * Vergaderbar
@@ -96,14 +98,10 @@
         case kCLAuthorizationStatusNotDetermined:
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
                 /* No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging. */
-                
                 [self startMonitoringRegions];
-                
             } else {
                 /* Request permission to use Location Services. (new in iOS 8) */
-                
                 [self.locationManager requestAlwaysAuthorization];
-                
             }
             break;
         case kCLAuthorizationStatusAuthorizedAlways:
