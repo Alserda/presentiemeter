@@ -10,18 +10,24 @@
 #import "PMBeaconDetector.h"
 
 @interface PMBeaconActivityViewController ()
+
 @end
+
+/* 
+ * This view was used to debug the activities of the beaconDetector
+ * In PMBeaconDetector.m you'll see code appear like 'self.locations addObject:'. This is the material that will appear on this view.
+ */
 
 @implementation PMBeaconActivityViewController
 
+/* When using a tabBarController, this will change the title to 'Activity' */
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"Activity";
     }
-    
-    
+
     return self;
 }
 
@@ -29,7 +35,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    
+    /* Reload the tableview every second. */
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:YES];
 }

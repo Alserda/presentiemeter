@@ -69,11 +69,11 @@
     /** The user is authenticated. Show the right view controller. **/
     self.locationViewController = [[PMLocationViewController alloc] initWithNibName:nil bundle:nil];
     
-    UINavigationController *locationNavController = [[UINavigationController alloc] initWithRootViewController:self.locationViewController];
-    self.window.rootViewController = locationNavController;
-    
     /** Change the appearance of the navigationBar. **/
     [self configureNavigationBar];
+    
+    UINavigationController *locationNavController = [[UINavigationController alloc] initWithRootViewController:self.locationViewController];
+    self.window.rootViewController = locationNavController;
     
     /** Start the beacon scanner **/
     self.beaconfinder = [PMBeaconDetector new];
